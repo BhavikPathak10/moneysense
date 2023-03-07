@@ -1,0 +1,83 @@
+.content {
+    flex: 1;
+    overflow: auto;
+    padding-top: unset;
+    padding-bottom: unset;
+}
+
+mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    mat-card-title{
+    display: flex;
+    align-items: center;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+tr.mat-row,
+tr.mat-footer-row {
+    height: 2.35em;
+}
+
+tr.mat-footer-row {
+    font-weight: 500;
+}
+
+.mat-table thead {
+    vertical-align: bottom;
+}
+
+.mat-column-transactionDate {
+    flex: 1;
+    min-width: 100px;
+    max-width: 120px;
+}
+
+.mat-column-particular {
+    flex: 3;
+    min-width: 120px;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mat-column-reference {
+    flex: 2;
+    min-width: 100px;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mat-column-mode {
+    flex: 1;
+    min-width: 80px;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mat-column-withdrawal {
+    flex: 2;
+    min-width: 100px;
+    max-width: 120px;
+}
+
+.mat-column-deposit {
+    flex: 2;
+    min-width: 100px;
+    max-width: 120px;
+}
+
+.mat-column-balance {
+    flex: 2;
+    min-width: 100px;
+    max-width: 120px;
+}

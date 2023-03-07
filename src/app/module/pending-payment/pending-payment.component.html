@@ -1,0 +1,44 @@
+<div class="fullHeight flexColumn">
+    <mat-card class="fullHeight">
+        <mat-card-title>Pending Payment</mat-card-title>
+        <mat-card-content>
+            <ng-container *ngTemplateOutlet="DxPendingPaymentTable"></ng-container>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<ng-template #DxPendingPaymentTable>
+    <dx-data-grid
+        [dataSource]="pendingPaymentDetails"
+        [allowColumnReordering]="true"
+        [allowColumnResizing]="true"
+        [columnAutoWidth]="true"
+        (onSaved)="savePayment($event)"
+        >
+      <dxi-column dataField="billDate" dataType="date" caption="Bill Date" format="dd-MMM-yyyy"></dxi-column>
+      <dxi-column dataField="head" dataType="string" caption="Head"></dxi-column>
+      <dxi-column dataField="dueDate" dataType="date" caption="Due Date" format="dd-MMM-yyyy"></dxi-column>
+      <dxi-column dataField="invoiceAmount" dataType="number" caption="Invoice Amount" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="amountPaid" dataType="number" caption="Amount Paid" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="pendingPayment" dataType="number" caption="Pending Payment" [allowEditing]="false" cssClass="not-editable" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="remark" dataType="string" caption="Remark"></dxi-column>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-scrolling mode="virtual"></dxo-scrolling>
+      <dxo-editing
+      mode="row"
+      [allowUpdating]="true"
+      [allowDeleting]="true"
+      [allowAdding]="true"
+      ></dxo-editing>
+      <dxo-summary>
+        <dxi-total-item
+        column="amountPaid"
+        summaryType="sum">
+    </dxi-total-item>
+        <dxi-total-item
+            column="pendingPayment"
+            summaryType="sum">
+        </dxi-total-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </ng-template>

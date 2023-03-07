@@ -1,0 +1,83 @@
+<h1 mat-dialog-title>Add Bank</h1>
+<div mat-dialog-content>
+  <form [formGroup]="bankForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Account Name</mat-label>
+      <input
+        matInput
+        placeholder="Enter account name"
+        formControlName="accountName"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Bank Name</mat-label>
+      <input
+        matInput
+        placeholder="Enter bank name"
+        formControlName="bankName"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Branch Name</mat-label>
+      <input
+        matInput
+        placeholder="Enter branch name"
+        formControlName="branch"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Account Number</mat-label>
+      <input
+        matInput
+        placeholder="Enter account number"
+        formControlName="accountNumber"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Account Type</mat-label>
+      <input
+        type="text"
+        placeholder="Select account type"
+        matInput
+        formControlName="accountType"
+        [matAutocomplete]="accountTypeAuto"
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #accountTypeAuto="matAutocomplete"
+      >
+        <mat-option
+          *ngFor="let option of accountTypeConstant"
+          [value]="option.value"
+        >
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Current Balance</mat-label>
+      <input
+        matInput
+        placeholder="Enter current balance"
+        formControlName="currentBalance"
+      />
+    </mat-form-field>
+  </form>
+</div>
+<mat-dialog-actions>
+  <button
+    mat-button
+    [mat-dialog-close]="undefined"
+    [disabled]="data?.isOnboarding"
+  >
+    Cancel
+  </button>
+  <button
+    mat-raised-button
+    (click)="onSaveBank()"
+    cdkFocusInitial
+    color="primary"
+  >
+    Add bank
+  </button>
+</mat-dialog-actions>

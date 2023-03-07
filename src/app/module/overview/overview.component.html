@@ -1,0 +1,81 @@
+<div class="fullHeight flexColumn">
+  <mat-card>
+    <mat-card-title>Overview</mat-card-title>
+  <mat-card-content>
+      <section class="flexRow">
+        <mat-card class="mat-elevation-z0">
+          <mat-card-subtitle>
+            Income at Glance
+          </mat-card-subtitle>
+          <mat-card-title>
+            {{ incomeAtGlanceBalance | currency:'INR' }}
+          </mat-card-title>                
+        </mat-card>
+        <mat-card class="mat-elevation-z0">
+          <mat-card-subtitle>
+            Pending Payment
+          </mat-card-subtitle>
+              <mat-card-title>
+                {{ pendingPaymentBalance | currency:'INR' }}
+              </mat-card-title>
+        </mat-card>
+      </section>
+      <mat-accordion>
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-title> Banks </mat-panel-title>
+          </mat-expansion-panel-header>
+            <section>
+                <ng-container *ngTemplateOutlet="DxbankOverviewTable"></ng-container>
+            </section>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #DxbankOverviewTable>
+  <dx-data-grid
+      [dataSource]="banks"
+      [allowColumnReordering]="true"
+      [allowColumnResizing]="true"
+      [columnAutoWidth]="true"
+      [columns]="['accountType','totalDeposit','totalWithdrawn','estimatedBalance']">
+    <!-- <dxo-group-panel [visible]="true"></dxo-group-panel> -->
+    <dxi-column dataField="accountType" caption="Account Type" [groupIndex]="0"></dxi-column>
+    <dxi-column dataField="accountName" caption="Account Name"></dxi-column>
+    <dxi-column dataField="bankName" caption="Bank"></dxi-column>
+    <dxi-column dataField="branch" caption="Branch"></dxi-column>
+    <dxi-column dataField="acoountNumber" caption="Account number"></dxi-column>
+    <!-- <dxi-column dataField="totalDeposit" caption="Total Deposit" format="₹ ,##0.##"></dxi-column>
+    <dxi-column dataField="totalWithdrawn" caption="Total Withdrawal" format="₹ ,##0.##"></dxi-column> -->
+    <dxi-column dataField="estimatedBalance" caption="Balance" format="₹ ,##0.##"></dxi-column>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+    <dxo-summary>
+      <dxi-group-item
+            column="accountType"
+            summaryType="count"
+            [alignByColumn]="true">
+        </dxi-group-item>
+<!--         <dxi-group-item
+        column="totalDeposit"
+        summaryType="sum"
+        [alignByColumn]="true"
+        displayFormat="₹ {0}">
+      </dxi-group-item>
+      <dxi-group-item
+      column="totalWithdrawn"
+      summaryType="sum"
+      [alignByColumn]="true"
+      displayFormat="₹ {0}">
+    </dxi-group-item> -->
+    <dxi-group-item
+    column="estimatedBalance"
+    summaryType="sum"
+    [alignByColumn]="true"
+    displayFormat="₹ {0}">
+  </dxi-group-item>
+  </dxo-summary>
+  </dx-data-grid>
+</ng-template>

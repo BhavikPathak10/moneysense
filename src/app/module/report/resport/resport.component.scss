@@ -1,0 +1,13 @@
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.pivotReportGrid{
+    height: 85vh;
+    font-size: 0.9rem;
+    ::ng-deep.dx-pivotgrid-area{
+        font-weight: 500 !important;
+    }
+}

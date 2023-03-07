@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>
+  {{ data.title }}
+</h1>
+<div mat-dialog-content>
+  <h3>
+    {{ data.message }}
+  </h3>
+  <h5 *ngIf="data.hint">
+    {{ data.hint }}
+  </h5>
+</div>
+<mat-dialog-actions>
+  <button
+    *ngIf="data.hideCancel ? data.hideCancel : true"
+    mat-button
+    [mat-dialog-close]="false"
+  >
+    {{ data.cancelButtonText ? data.cancelButtonText : "Cancel" }}
+  </button>
+  <button
+    mat-raised-button
+    (click)="onOkClick()"
+    cdkFocusInitial
+    color="primary"
+  >
+    {{ data.okButtonText ? data.okButtonText : "Ok" }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,54 @@
+<section>
+    <div class="header">
+        <h2>{{reportSelected ? 'Report (Headwise)' : 'Ledger'}}</h2>
+        <button type="button" mat-raised-button color="primary" (click)="reportSelected = !reportSelected"> Show {{reportSelected ? 'Ledger':'Report'}} </button>
+    </div>
+    <div *ngIf="reportSelected;else DxLedgerTable">
+        <ng-container *ngTemplateOutlet="DxPivotReportTable"></ng-container>
+    </div>
+    <!-- <ng-container *ngTemplateOutlet="DxLedgerOverviewTable"></ng-container> -->
+</section>
+
+<ng-template #DxLedgerTable>
+    <dx-data-grid
+    [dataSource]="ledgerDetails"
+    [allowColumnReordering]="true"
+    [allowColumnResizing]="true"
+    [columnAutoWidth]="true">
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+      <dxi-column dataField="transactionDate" sortOrder="asc" caption="Date" dataType="date" format="dd-MMM-yyyy"></dxi-column>
+      <dxi-column dataField="accountName" caption="Bank"></dxi-column>
+      <dxi-column dataField="particular" caption="Particular"></dxi-column>
+      <dxi-column dataField="accountHead" caption="Account Head"></dxi-column>
+      <dxi-column dataField="groupHead" caption="Group Head"></dxi-column>
+      <dxi-column dataField="subHead" caption="Sub Head"></dxi-column>
+      <dxi-column dataField="costCenter" caption="Cost Center"></dxi-column>
+      <dxi-column dataField="costCategory" caption="Cost Category"></dxi-column>
+      <dxi-column dataField="withdrawal" caption="Withdraw"></dxi-column>
+      <dxi-column dataField="deposit" caption="Deposit"></dxi-column>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+    </dx-data-grid>
+  </ng-template>
+
+<ng-template #DxPivotReportTable>
+    <dx-pivot-grid
+    class="pivotReportGrid"
+    [allowSortingBySummary]="true"
+    [allowSorting]="false"
+    [allowFiltering]="true"
+    [allowExpandAll]="true"
+    [showBorders]="true"
+    showTotalsPrior="row"
+    [dataSource]="pivotDataSource">
+    <dxo-field-chooser [enabled]="true"></dxo-field-chooser>
+    <dxo-export [enabled]="true" fileName={{getFileName()}}></dxo-export>
+    <dxo-field-panel
+        [visible]="true"
+        [showFilterFields]="true"
+        [showColumnFields]="false"
+        [showRowFields]="false"
+        [showDataFields]="false">
+    </dxo-field-panel>
+    </dx-pivot-grid>
+</ng-template>

@@ -1,0 +1,128 @@
+<mat-card class="scrollable-content">
+  <mat-card-title> Master Details </mat-card-title>
+  <mat-card-content>
+    <ng-container *ngTemplateOutlet="DxMasterTable"></ng-container>
+  </mat-card-content>
+</mat-card>
+
+
+<ng-template #DxMasterTable>
+  <dx-data-grid
+      [dataSource]="masterDetails"
+      [showBorders]="true"
+      [focusedRowEnabled]="true"
+      [(focusedRowKey)]="focusedRowKey"
+      [autoNavigateToFocusedRow]="true"
+      keyExpr="id"
+      >
+    <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
+    <dxo-editing
+      mode="row"
+    >
+    </dxo-editing>
+    <dxi-column dataField="groupHead" caption="Group Head"></dxi-column>
+    <dxi-column dataField="subHead" caption="Sub Head"></dxi-column>
+    <dxi-column dataField="accountHead" caption="Account Head"></dxi-column>
+    <dxi-column dataField="ledger" caption="Particular"></dxi-column>
+    <dxi-column dataField="costCenter" caption="Cost Center"></dxi-column>
+    <dxi-column dataField="costCategory" caption="Cost Category"></dxi-column>
+    <dxi-column type="buttons">
+      <dxi-button dataField="id" text="delete" [onClick]="onDeleteMasterDx">Delete</dxi-button>
+    </dxi-column>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+  </dx-data-grid>
+</ng-template>
+
+<mat-card>
+  <form
+    [formGroup]="masterForm"
+    class="masterFormClass"
+    (ngSubmit)="onAddMaster(formDirective)"
+    #formDirective="ngForm"
+  >
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Group Head</mat-label>
+      <input
+        matInput
+        placeholder="Enter Group head"
+        formControlName="groupHead"
+        [matAutocomplete]="autoGH"
+      />
+      <mat-autocomplete autoActiveFirstOption #autoGH="matAutocomplete" [panelWidth]="200">
+        <mat-option *ngFor="let option of filter_groupHeadOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Sub Head</mat-label>
+      <input matInput placeholder="Enter Sub head" formControlName="subHead" [matAutocomplete]="autoSH"/>
+      <mat-autocomplete autoActiveFirstOption #autoSH="matAutocomplete" [panelWidth]="200">
+        <mat-option *ngFor="let option of filter_subHeadOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Account Head</mat-label>
+      <input
+        matInput
+        placeholder="Enter Account head"
+        formControlName="accountHead"
+        [matAutocomplete]="autoAH"
+      />
+      <mat-autocomplete autoActiveFirstOption #autoAH="matAutocomplete" [panelWidth]="200">
+        <mat-option *ngFor="let option of filter_accountHeadOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Particular</mat-label>
+      <input matInput placeholder="Enter Particular" formControlName="ledger" [matAutocomplete]="autoLedger" />
+      <mat-autocomplete autoActiveFirstOption #autoLedger="matAutocomplete" [panelWidth]="200">
+        <mat-option *ngFor="let option of filter_ledgerOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Cost Center</mat-label>
+      <input
+        matInput
+        placeholder="Enter Cost center"
+        formControlName="costCenter"
+        [matAutocomplete]="autoCostCenter"
+      />
+      <mat-autocomplete autoActiveFirstOption #autoCostCenter="matAutocomplete" [panelWidth]="200">
+        <mat-option *ngFor="let option of filter_costCenterOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Cost Category</mat-label>
+      <input
+        matInput
+        placeholder="Enter Cost category"
+        formControlName="costCategory"
+        [matAutocomplete]="autocostCategory"
+      />
+      <mat-autocomplete autoActiveFirstOption #autocostCategory="matAutocomplete" [panelWidth]="200">
+        <mat-option *ngFor="let option of filter_costCategoryOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="masterForm.invalid"
+      class="col-1"
+    >
+      Add Master
+    </button>
+  </form>
+</mat-card>

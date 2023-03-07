@@ -1,0 +1,125 @@
+<div class="fullHeight flexColumn sidebar-wrapper">
+  <section class="app-logo">
+    <img src="./assets/images/logo.png" alt="MoneySense" />
+    <strong> MoneySense </strong>
+  </section>
+  <section class="side-list">
+    <ul>
+      <mat-accordion [multi]="false">
+        <li class="main-item">
+          <a
+          routerLinkActive="active"
+          role="button"
+          mat-button
+          class="fullWidth"
+          routerLink="/overview"
+            >Overview</a
+          >
+        </li>
+        <li class="main-item">
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Banks
+                <mat-icon
+                  class="addBankDetail pointer"
+                  (click)="openAddBankDetails($event)"
+                >
+                  control_point
+                </mat-icon>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+              <li class="sidebarlistItem" *ngFor="let bank of banks">
+                <a
+                  [routerLink]="'bank/' + bank.accountName"
+                  routerLinkActive="active"
+                  role="button"
+                  mat-button
+                  >{{ bank.accountName }}</a
+                >
+                <mat-icon class="pointer" (click)="deleteBank($event, bank)">
+                  delete_outline
+                </mat-icon>
+              </li>
+            </ng-template>
+          </mat-expansion-panel>
+        </li>
+        <li class="main-item">
+          <a
+            routerLinkActive="active"
+            role="button"
+            mat-button
+            class="fullWidth"
+            routerLink="/report"
+            >Reports</a
+            >
+            <!-- <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title> Reports </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+              <li class="sidebarlistItem">
+                <a
+                  routerLink="/report/particular-overview"
+                  routerLinkActive="active"
+                  role="button"
+                  mat-button
+                  >Particulars overview</a
+                >
+              </li>
+              <li class="sidebarlistItem">
+                <a
+                  routerLink="/report/group-overview"
+                  routerLinkActive="active"
+                  role="button"
+                  mat-button
+                  >Group overview</a
+                >
+              </li>
+              <li class="sidebarlistItem">
+                <a
+                  routerLink="/report/consolidated-bank"
+                  routerLinkActive="active"
+                  role="button"
+                  mat-button
+                  >Banks Consolidated</a
+                >
+              </li>
+            </ng-template> 
+          </mat-expansion-panel>-->
+        </li>
+        <li class="main-item">
+          <a
+          routerLinkActive="active"
+          role="button"
+          mat-button
+          class="fullWidth"
+          routerLink="/income-at-glance"
+            >Income at Glance</a
+          >
+        </li>
+        <li class="main-item">
+          <a
+          routerLinkActive="active"
+          role="button"
+          mat-button
+          class="fullWidth"
+          routerLink="/pending-payment"
+            >Pending payment</a
+          >
+        </li>
+        <li class="main-item">
+          <a
+            routerLink="/admin/master"
+            routerLinkActive="active"
+            role="button"
+            mat-button
+            class="fullWidth"
+            >Master details</a
+          >
+        </li>
+      </mat-accordion>
+    </ul>
+  </section>
+</div>

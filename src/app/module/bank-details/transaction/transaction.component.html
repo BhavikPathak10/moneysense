@@ -1,0 +1,101 @@
+<mat-card>
+  <form
+    [formGroup]="transactionForm"
+    (ngSubmit)="onAddTransaction(formDirective)"
+    class="transactionFormClass"
+    #formDirective="ngForm"
+  >
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Transaction date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        placeholder="dd-MMM-yyyy"
+        formControlName="transactionDate"
+        readonly
+        (focus)="picker.open()"
+        (click)="picker.open()"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Particular</mat-label>
+      <input
+        type="text"
+        placeholder="Select particular"
+        matInput
+        formControlName="particular"
+        [matAutocomplete]="particularAuto"
+      />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #particularAuto="matAutocomplete"
+        [panelWidth]="'auto'"
+      >
+        <mat-option
+          *ngFor="let option of filteredMasterDetails | async"
+          [value]="option?.Ledger"
+          class="particularItem"
+        >
+          {{ option?.Ledger }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="particular?.invalid">Please select valid particular</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Reference</mat-label>
+      <input
+        matInput
+        placeholder="Enter reference"
+        formControlName="reference"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Transaction Mode</mat-label>
+      <mat-select formControlName="transactionMode">
+        <mat-option
+          *ngFor="let option of transactionModeOption"
+          [value]="option.value"
+          class="particularItem"
+        >
+          {{ option.name }}
+        </mat-option>
+    </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Transaction Type</mat-label>
+      <mat-select formControlName="transactionType">
+        <mat-option
+          *ngFor="let option of transactionTypeOption"
+          [value]="option.value"
+          class="particularItem"
+        >
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Transaction Amount</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Enter transaction amount"
+        formControlName="transactionAmount"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="col-1">
+      <mat-label>Remark</mat-label>
+      <input matInput placeholder="Enter remark" formControlName="remark" />
+    </mat-form-field>
+    <button
+      type="submit"
+      mat-raised-button
+      color="primary"
+      [disabled]="transactionForm.invalid"
+      class="col-1"
+    >
+      Add Transaction
+    </button>
+  </form>
+</mat-card>

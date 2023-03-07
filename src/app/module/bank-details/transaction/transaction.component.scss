@@ -1,0 +1,22 @@
+.particularItem.mat-option {
+    height: 2.25em;
+    font-size: 1.2em;
+}
+
+.transactionFormClass {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .col-1 {
+        flex: 1;
+        width: 18vw;
+        max-width: 18vw;
+        min-width: 18vw;
+
+        &.mat-raised-button {
+            height: 42px;
+            line-height: 42px;
+        }
+    }
+}
