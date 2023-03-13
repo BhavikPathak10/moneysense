@@ -5,6 +5,17 @@
     padding-bottom: unset;
 }
 
+mat-card.mat-elevation-z0:hover{
+    transform: scale(0.9);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
 table {
     width: 100%;
+}
+
+::ng-deep #BankDataGrid .dx-datagrid-rowsview .dx-data-row:hover{
+    color: var(--accent-color);
+    cursor: pointer;
 }

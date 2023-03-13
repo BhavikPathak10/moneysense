@@ -13,6 +13,11 @@
             height: 4rem;
             width: auto;
             margin: 0 0 1rem 0;
+            &:hover{
+                transform: scale(0.8);
+                transition: all 0.5s ease;
+                cursor: pointer;
+            }
         }
         strong{
             font-size: 2em;

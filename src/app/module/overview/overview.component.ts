@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BankDetails } from 'src/app/core/models/bankDetails.model';
 import { IncomeAtGlanceModel } from 'src/app/core/models/incomeAtGlance.model';
@@ -24,7 +25,8 @@ export class OverviewComponent implements OnInit {
   constructor(
     private bankStore: BankDetailsStore,
     private incomeStore : IncomeAtGlanceStore,
-    private pendingPaymentStore : PendingPaymentStore
+    private pendingPaymentStore : PendingPaymentStore,
+    private router : Router,
   ) {
     this.subscription.push(
       this.bankStore.bindStore().subscribe((data) => {
@@ -46,6 +48,16 @@ export class OverviewComponent implements OnInit {
   }
   
   ngOnInit(): void {}
+
+  navigate(screenName:string){
+    this.router.navigate(['..',screenName]);
+  }
+  
+  onBankRowClick(e:any){
+    if(e.rowType == 'data'){
+      this.router.navigate(['..','bank',e.data.accountName]);
+    }
+  }
 
   ngOnDestroy():void{
     this.subscription.map(sub=>sub.unsubscribe());

@@ -1,6 +1,6 @@
-<div class="fullHeight flexColumn sidebar-wrapper">
+<div class="flexColumn sidebar-wrapper">
   <section class="app-logo">
-    <img src="./assets/images/logo.png" alt="MoneySense" />
+    <img src="./assets/images/logo.png" alt="MoneySense" (click)="downloadBackup()"/>
     <strong> MoneySense </strong>
   </section>
   <section class="side-list">
@@ -17,7 +17,7 @@
           >
         </li>
         <li class="main-item">
-          <mat-expansion-panel class="mat-elevation-z0">
+          <mat-expansion-panel class="mat-elevation-z0" [expanded]="currentRouteActive">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Banks

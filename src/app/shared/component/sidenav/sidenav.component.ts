@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BankDetails } from 'src/app/core/models/bankDetails.model';
 import { BankService } from 'src/app/core/services/bank.service';
+import { ExcelService } from 'src/app/core/services/excel.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
 import { TransactionService } from 'src/app/core/services/transaction.service';
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
@@ -17,10 +18,11 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   encapsulation: ViewEncapsulation.None,
 })
 export class SidenavComponent implements OnInit {
-  title: string = 'Personal Passbook Management';
+  title: string = 'MoneySense';
   banks: BankDetails[] = [];
 
   subscriptions: Subscription[] = [];
+  currentRouteActive : boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -29,6 +31,7 @@ export class SidenavComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private transactionservice: TransactionService,
+    private excelService :  ExcelService,
     private toast: ToastMessageService
   ) {
     this.subscriptions.push(
@@ -41,7 +44,13 @@ export class SidenavComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.router.events.subscribe(evt => {
+      if (evt instanceof NavigationEnd) {
+        this.currentRouteActive = evt.url.includes('/bank/');
+      }
+    });
+  }
 
   openAddBankDetails(event?: any, forceAdd?: boolean) {
     event && event?.stopPropagation();
@@ -111,6 +120,10 @@ export class SidenavComponent implements OnInit {
         );
       }
     });
+  }
+
+  downloadBackup(){
+    this.excelService.exportAllDetails();
   }
 
   ngOnDestroy(): void {

@@ -9,8 +9,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "runapp": "concurrently --kill-others \"npm run start\" \"json-server --watch db.json --port 3000\"",
-    "runserve": "concurrently --kill-others \"npm run serve\" \"json-server --watch db.json --port 3000\""
+    "runapp": "concurrently --kill-others \"npm run start\" \"json-server --watch db.json --port 3003\"",
+    "runserve": "concurrently --kill-others \"npm run serve\" \"json-server --watch db.json --port 3003\""
   },
   "private": true,
   "dependencies": {
@@ -36,12 +36,14 @@
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
     "write-json-file": "^5.0.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.3.4",
     "@angular/cli": "~13.1.2",
     "@angular/compiler-cli": "~13.1.0",
+    "@types/file-saver": "^2.0.5",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "concurrently": "^7.1.0",
