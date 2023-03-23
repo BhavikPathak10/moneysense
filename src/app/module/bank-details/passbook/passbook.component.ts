@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { TransactionEnum } from 'src/app/core/enums/transaction.enum';
 import { BankDetails } from 'src/app/core/models/bankDetails.model';
@@ -13,6 +14,8 @@ import { TransactionService } from 'src/app/core/services/transaction.service';
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
 import { TransactionStore } from 'src/app/core/stores/transaction.store';
 import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/confirm-dialog.component';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 @Component({
   selector: 'app-passbook',
@@ -181,5 +184,47 @@ export class PassbookComponent implements OnInit {
 
   onEditTransaction(rec: any) {
     //console.log(rec);
+  }
+
+  onExportBankDetails(){
+    const jsPDFDoc = new jsPDF();
+
+    let tableData = JSON.parse(JSON.stringify(this.bankTransactionData.data));
+    
+    let tableFlatData = tableData.map((data:Transaction)=>{
+      return [
+        moment(data.transactionDate).format('D-MMM-YYYY'),
+        data.particular, 
+        data.reference,
+        data.mode,
+        data.deposit.toLocaleString(),
+        data.withdrawal.toLocaleString(),
+        data._balance?.toLocaleString()
+      ]
+      });
+      tableFlatData.push(['Total', '','','',this.estimatedDeposit,this.estimatedWithdrawal,this.estimatedBalance]);
+      let header = this.activeId;
+      let subHead = `${this.activeBank?.accountNumber} | ${this.activeBank?.bankName} | ${this.activeBank?.branch} | ${this.activeBank?.accountType}`;
+
+      jsPDFDoc.setFontSize(18);
+      jsPDFDoc.text(header, 14, 22);
+      jsPDFDoc.setFontSize(11);
+      jsPDFDoc.setTextColor(100);
+
+      let pageSize = jsPDFDoc.internal.pageSize;
+      let pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
+      let text = jsPDFDoc.splitTextToSize(subHead, pageWidth - 35, {});
+      jsPDFDoc.text(text, 14, 30);
+
+    autoTable(jsPDFDoc, 
+      {
+        head:[['Date','Ledger','Reference','Mode','Deposit','Withdraw','Balance']],
+        body:tableFlatData,
+        startY:35,
+        showHead:'everyPage',
+      }
+    );
+    let filename = `${this.activeId}_${moment().format("Do_MMM_YYYY_HH_mm")}.pdf`;
+    jsPDFDoc.save(filename);
   }
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { Master } from 'src/app/core/enums/master.enum';
 import { PendingPaymentModel } from 'src/app/core/models/pendingPayement.model';
 import { PendingPaymentService } from 'src/app/core/services/pending-payment.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
+import { MasterStore } from 'src/app/core/stores/master.store';
 import { PendingPaymentStore } from 'src/app/core/stores/pendingPayemnt.store';
 
 @Component({
@@ -15,12 +17,17 @@ export class PendingPaymentComponent implements OnInit {
   subscription:Subscription[] = [];
 
   pendingPaymentDetails: PendingPaymentModel[] = [];
+  uniqueAccountHead : any = [];
+  MASTER = Master;
 
 
-  constructor(private pendingPayemntStore : PendingPaymentStore , private pendingPaymentService : PendingPaymentService, private toast: ToastMessageService) { 
+  constructor(private pendingPayemntStore : PendingPaymentStore ,private masterStore:MasterStore, private pendingPaymentService : PendingPaymentService, private toast: ToastMessageService) { 
     this.subscription.push(
       this.pendingPayemntStore.bindStore().subscribe((data)=>{
         this.pendingPaymentDetails = data;
+      }),
+      this.masterStore.bindStore().subscribe((data)=>{        
+        this.uniqueAccountHead = [...new Set(data.map((d:any)=>d[this.MASTER.ACCOUNT_HEAD]))];
       })
     )
   }

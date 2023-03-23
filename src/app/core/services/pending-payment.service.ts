@@ -34,9 +34,10 @@ export class PendingPaymentService {
   }
 
   calcComputedData(rowData:PendingPaymentModel){
-    let invAmt = rowData.invoiceAmount ? rowData.invoiceAmount : 0;
-    let amtPaid = rowData.amountPaid ? rowData.amountPaid : 0;
-    rowData.pendingPayment = invAmt-amtPaid;
+    rowData.invoiceAmount = rowData.invoiceAmount ? rowData.invoiceAmount : 0;
+    rowData.amountPaid = rowData.amountPaid ? rowData.amountPaid : 0;
+
+    rowData.pendingPayment = rowData.invoiceAmount-rowData.amountPaid;
     return rowData;
   }
 }

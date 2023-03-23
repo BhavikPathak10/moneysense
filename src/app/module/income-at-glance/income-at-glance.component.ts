@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
+import { BankDetails } from 'src/app/core/models/bankDetails.model';
 import { IncomeAtGlanceModel } from 'src/app/core/models/incomeAtGlance.model';
 import { IncomeService } from 'src/app/core/services/income.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
+import { BankDetailsStore } from 'src/app/core/stores/bank.store';
 import { IncomeAtGlanceStore } from 'src/app/core/stores/incomeAtGlance.store';
 
 @Component({
@@ -15,11 +17,15 @@ export class IncomeAtGlanceComponent implements OnInit {
   subscription:Subscription[] = [];
 
   incomeDetails:IncomeAtGlanceModel[] = [];
+  banks:[] =[];
 
-  constructor(private incomeStore:IncomeAtGlanceStore, private incomeService : IncomeService,private toast :ToastMessageService) {
+  constructor(private incomeStore:IncomeAtGlanceStore, private incomeService : IncomeService,private bankStore: BankDetailsStore, private toast :ToastMessageService) {
     this.subscription.push(
       this.incomeStore.bindStore().subscribe((data)=>{
         this.incomeDetails = data;
+      }),
+      this.bankStore.bindStore().subscribe((data)=>{
+        this.banks = data.map((d:BankDetails)=>d.accountName)
       })
     )
    }

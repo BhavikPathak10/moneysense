@@ -36,7 +36,8 @@ export class IncomeService {
 
     rowData.totalTax = iGST + cGST + sGST;
     rowData.totalAmount = rowData.billAmount + rowData.totalTax;
-    rowData.afterTDS = rowData.totalAmount*0.9;
+    rowData.afterTDS = rowData.billAmount*0.9+rowData.totalTax;
+    rowData.amountRcvd = rowData.amountRcvd ? rowData.amountRcvd : 0;
     rowData.pendingAmount = rowData.afterTDS - rowData.amountRcvd;
     return rowData;
   }

@@ -23,7 +23,7 @@
     <dxi-column dataField="groupHead" caption="Group Head"></dxi-column>
     <dxi-column dataField="subHead" caption="Sub Head"></dxi-column>
     <dxi-column dataField="accountHead" caption="Account Head"></dxi-column>
-    <dxi-column dataField="ledger" caption="Particular"></dxi-column>
+    <dxi-column dataField="ledger" caption="Ledger"></dxi-column>
     <dxi-column dataField="costCenter" caption="Cost Center"></dxi-column>
     <dxi-column dataField="costCategory" caption="Cost Category"></dxi-column>
     <dxi-column type="buttons">
@@ -79,7 +79,7 @@
       </mat-autocomplete>
     </mat-form-field>
     <mat-form-field appearance="outline" class="col-1">
-      <mat-label>Particular</mat-label>
+      <mat-label>Ledger</mat-label>
       <input matInput placeholder="Enter Particular" formControlName="ledger" [matAutocomplete]="autoLedger" />
       <mat-autocomplete autoActiveFirstOption #autoLedger="matAutocomplete" [panelWidth]="200">
         <mat-option *ngFor="let option of filter_ledgerOptions | async" [value]="option">

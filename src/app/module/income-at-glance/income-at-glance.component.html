@@ -15,7 +15,11 @@
         [columnAutoWidth]="true"
         (onSaved)="saveIncome($event)"
         >
-      <dxi-column dataField="account" dataType="string" caption="Account"></dxi-column>
+      <dxi-column dataField="account" dataType="string" caption="Bank">
+        <dxo-lookup
+            [dataSource]="banks">
+        </dxo-lookup>
+      </dxi-column>
       <dxi-column dataField="billNumber" dataType="string" caption="Bill No."></dxi-column>
       <dxi-column dataField="clientName" dataType="string" caption="Client Name"></dxi-column>
       <dxi-column dataField="billAmount" dataType="number" caption="Bill Amount" format="₹ ,##0.##"></dxi-column>

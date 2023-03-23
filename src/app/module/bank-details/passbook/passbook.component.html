@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>
+    <mat-card-title (click)="onExportBankDetails()">
       <mat-icon> wallet </mat-icon>
       {{ activeBank?.accountName }}
     </mat-card-title>
@@ -57,7 +57,7 @@
     </ng-container>
 
     <ng-container matColumnDef="particular">
-      <th mat-header-cell *matHeaderCellDef>Particular</th>
+      <th mat-header-cell *matHeaderCellDef>Ledger</th>
       <td mat-cell *matCellDef="let element" [matTooltip]="element.particular">
         {{ element.particular }}
       </td>
