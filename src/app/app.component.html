@@ -1,6 +1,6 @@
 <div class="full-page">
-<mat-drawer-container hasBackgrop="false">
-  <mat-drawer mode="side" opened>
+<mat-drawer-container hasBackdrop="false">
+  <mat-drawer #drawer mode="side" opened>
      <app-sidenav></app-sidenav>
   </mat-drawer>
   <mat-drawer-content>
@@ -8,4 +8,12 @@
     </router-outlet>
 </mat-drawer-content>
 </mat-drawer-container>
+<!-- <button 
+  mat-mini-fab
+  color="accent"
+  class="toggle-drawer-btn"
+  aria-label="button with a menu icon"
+  (click)="drawer.toggle()"
+  ><mat-icon>menu</mat-icon>
+</button> -->
 </div>

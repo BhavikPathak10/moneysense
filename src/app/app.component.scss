@@ -14,3 +14,10 @@ mat-drawer-container {
         /* max-width: 85rem; */
     }
 }
+
+.toggle-drawer-btn{
+    position: fixed !important;
+    top: 90vh;
+    left: 95vw;
+    z-index: 9999;
+}
