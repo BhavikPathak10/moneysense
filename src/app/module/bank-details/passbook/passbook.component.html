@@ -1,8 +1,12 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <mat-icon> open_in_new </mat-icon>
-      {{ activeBank?.accountName }}
+      <a *ngIf="activeBank?.accountURL;else textTemplate" class="bank-link-btn" [href]="activeBank?.accountURL" target="_blank">
+        {{ activeBank?.accountName }}
+      </a>
+      <ng-template #textTemplate>
+        {{ activeBank?.accountName }}
+      </ng-template>
     </mat-card-title>
     <mat-card-subtitle>
       {{ activeBank?.accountNumber }} | {{ activeBank?.bankName | uppercase }} |

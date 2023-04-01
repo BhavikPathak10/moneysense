@@ -23,8 +23,11 @@ export class BankService {
     return this.api.delete(`banks/${id}`);
   }
 
-  updateBankDetails(data: BankDetails): Observable<any> {
+  updateBankDetails(data: BankDetails): Observable<any>| undefined {
+    if(data.id){
       return this.api.put(`banks/${data.id}`, data);
+    }
+    return new Observable();
   }
 
   syncStore(data?:any){

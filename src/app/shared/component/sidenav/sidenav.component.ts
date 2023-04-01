@@ -107,7 +107,7 @@ export class SidenavComponent implements OnInit {
 
     bankDialog.afterClosed().subscribe((result: BankDetails) => {
       if (result) {
-        this.bankService.updateBankDetails(result).subscribe(
+        this.bankService.updateBankDetails(result)?.subscribe(
           (data) => {
             this.bankService.syncStore();
             this.router.navigate(['bank', result.accountName], {

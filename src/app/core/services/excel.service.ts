@@ -3,6 +3,11 @@ import * as FileSaver from 'file-saver';
 import * as moment from 'moment';
 import { combineLatest } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { BankDetailsStore } from '../stores/bank.store';
+import { IncomeAtGlanceStore } from '../stores/incomeAtGlance.store';
+import { MasterStore } from '../stores/master.store';
+import { PendingPaymentStore } from '../stores/pendingPayemnt.store';
+import { TransactionStore } from '../stores/transaction.store';
 import { BankService } from './bank.service';
 import { IncomeService } from './income.service';
 import { MasterService } from './master.service';
@@ -23,18 +28,18 @@ export class ExcelService {
   payment:[] =[];
 
   constructor(
-    private bankService: BankService,
-    private transactionService: TransactionService,
-    private masterService: MasterService,
-    private incomeService : IncomeService,
-    private pendingPayemntService : PendingPaymentService,
+    private bankStore: BankDetailsStore,
+    private transactionStore: TransactionStore,
+    private masterStore: MasterStore,
+    private incomeStore : IncomeAtGlanceStore,
+    private pendingStore : PendingPaymentStore,
   ) {
     combineLatest({
-      transaction : this.transactionService.getTransactionDetails(),
-      bank : this.bankService.getBankDetails(),
-      master: this.masterService.getMasterDetails(),
-      incomeAtGlance : this.incomeService.getIncomeAtGlanceDetails(),
-      pendingPayment : this.pendingPayemntService.getPendingPaymentDetails()
+      transaction : this.transactionStore.bindStore(),
+      bank : this.bankStore.bindStore(),
+      master: this.masterStore.bindStore(),
+      incomeAtGlance : this.incomeStore.bindStore(),
+      pendingPayment : this.pendingStore.bindStore()
      }).subscribe((data)=>{
       this.bank= data.bank;
       this.transaction = data.transaction;
@@ -46,11 +51,11 @@ export class ExcelService {
 
   public exportAllDetails(fileName?:string){
     this.exportBackupAsExcelFile({
-      master:this.master,
-      transactions:this.transaction,
-      banks:this.bank,
-      incomeAtGlance:this.income,
-      pendingPayment:this.payment
+      master:this.transformDataForExport(this.master),
+      transactions:this.transformDataForExport(this.transaction),
+      banks:this.transformDataForExport(this.bank),
+      incomeAtGlance:this.transformDataForExport(this.income),
+      pendingPayment:this.transformDataForExport(this.payment)
     },'MoneySense_Backup_'+moment().format("Do_MMM_YYYY_HH_mm"));
   }
 
@@ -85,5 +90,12 @@ export class ExcelService {
   private saveAsExcelFile(buffer: any, fileName: string): void {
     const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
     FileSaver.saveAs(data, fileName + EXCEL_EXTENSION);
+  }
+
+  private transformDataForExport(data:any){
+    return data.map((d:any)=>{
+      delete d.id;
+      return d;
+    })
   }
 }
