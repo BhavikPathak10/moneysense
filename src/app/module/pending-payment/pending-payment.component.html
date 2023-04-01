@@ -16,9 +16,9 @@
         (onSaved)="savePayment($event)"
         >
       <dxi-column dataField="billDate" dataType="date" caption="Bill Date" format="dd-MMM-yyyy"></dxi-column>
-      <dxi-column dataField="head" dataType="string" caption="Account Head">
+      <dxi-column [width]="200" dataField="ledger" dataType="string" caption="Ledger">
         <dxo-lookup
-            [dataSource]="uniqueAccountHead">
+            [dataSource]="uniqueLedger">
         </dxo-lookup>
       </dxi-column>
       <dxi-column dataField="dueDate" dataType="date" caption="Due Date" format="dd-MMM-yyyy"></dxi-column>

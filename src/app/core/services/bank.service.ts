@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subscriber } from 'rxjs';
 import { Observable } from 'rxjs';
 import { BankDetails } from '../models/bankDetails.model';
 import { BankDetailsStore } from '../stores/bank.store';
@@ -23,12 +24,16 @@ export class BankService {
   }
 
   updateBankDetails(data: BankDetails): Observable<any> {
-    return this.api.put(`banks/${data.id}`, data);
+      return this.api.put(`banks/${data.id}`, data);
   }
 
-  syncStore(){
+  syncStore(data?:any){
+    if(data){
+      this.bankStore.setStore(this.api.convertDBData_ObjToArray(data));
+      return;
+    }
     this.getBankDetails().subscribe(data=>{
-      this.bankStore.setStore(data);
+      this.bankStore.setStore(this.api.convertDBData_ObjToArray(data));
     })
   }
 }

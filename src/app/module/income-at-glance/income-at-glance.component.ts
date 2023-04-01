@@ -6,6 +6,7 @@ import { IncomeService } from 'src/app/core/services/income.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
 import { IncomeAtGlanceStore } from 'src/app/core/stores/incomeAtGlance.store';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-income-at-glance',
@@ -18,6 +19,7 @@ export class IncomeAtGlanceComponent implements OnInit {
 
   incomeDetails:IncomeAtGlanceModel[] = [];
   banks:[] =[];
+  monthsShort : any = moment.monthsShort();
 
   constructor(private incomeStore:IncomeAtGlanceStore, private incomeService : IncomeService,private bankStore: BankDetailsStore, private toast :ToastMessageService) {
     this.subscription.push(

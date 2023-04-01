@@ -2,7 +2,7 @@ import { Deserializable } from './deserializable.model';
 
 export class PendingPaymentModel implements Deserializable {
   public billDate!: Date;
-  public head?: string;
+  public ledger?: string;
   public dueDate!: Date;
   public invoiceAmount!: number;
   public amountPaid?: number;

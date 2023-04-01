@@ -10,8 +10,13 @@ import { AccountType } from 'src/app/core/constants/bank.constant';
 })
 export class AddBankDialogComponent implements OnInit {
   accountTypeConstant = AccountType;
+  showOtherFields : boolean = false;
 
   bankForm: FormGroup = new FormGroup({
+    accountURL : new FormControl(null),
+    customerID : new FormControl(null),
+    accountPWD : new FormControl(null),
+    accountTxnPWD : new FormControl(null),
     accountName: new FormControl(null, Validators.required),
     bankName: new FormControl(null, Validators.required),
     branch: new FormControl(null, Validators.required),
@@ -22,11 +27,27 @@ export class AddBankDialogComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<AddBankDialogComponent>,@Inject(MAT_DIALOG_DATA) public data: any) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(this.data.bankdata){
+      this.bankForm.get('accountURL')?.setValue(this.data.bankdata.accountURL);
+      this.bankForm.get('customerID')?.setValue(this.data.bankdata.customerID);
+      this.bankForm.get('accountPWD')?.setValue(this.data.bankdata.accountPWD);
+      this.bankForm.get('accountTxnPWD')?.setValue(this.data.bankdata.accountTxnPWD);
+      this.bankForm.get('accountName')?.setValue(this.data.bankdata.accountName);
+      this.bankForm.get('accountName')?.disable();
+      this.bankForm.get('bankName')?.setValue(this.data.bankdata.bankName);
+      this.bankForm.get('branch')?.setValue(this.data.bankdata.branch);
+      this.bankForm.get('accountNumber')?.setValue(this.data.bankdata.accountNumber);
+      this.bankForm.get('accountType')?.setValue(this.data.bankdata.accountType);
+      this.bankForm.get('currentBalance')?.setValue(this.data.bankdata.currentBalance);
+      this.bankForm.get('currentBalance')?.disable();
+    }
+  }
 
   onSaveBank() {
     if (this.bankForm.valid) {
-      this.dialogRef.close(this.bankForm.value);
+     let data =   this.data.bankdata ? {...this.data.bankdata,...this.bankForm.value} : {...this.bankForm.value};
+      this.dialogRef.close(data);
     }
   }
 }

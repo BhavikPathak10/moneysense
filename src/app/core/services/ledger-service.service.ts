@@ -20,6 +20,7 @@ export class LedgerServiceService {
   constructor(private transactionStore : TransactionStore,private masterStore : MasterStore,private ledgerStore : LedgerStore) {
     this.transactionStore.bindStore().subscribe((data:Transaction[])=>{
       this.transactions = data;
+      this.setLedgerDetails();
     });
     this.masterStore.bindStore().subscribe((data)=>{
       this.master = data;

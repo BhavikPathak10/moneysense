@@ -27,9 +27,13 @@ export class PendingPaymentService {
     return this.api.put(`pendingPayment/${data.id}`, data);
   }
 
-  syncStore(){
+  syncStore(data?:any){
+    if(data){
+      this.pendingPaymentStore.setStore(this.api.convertDBData_ObjToArray(data));
+      return;
+    }
     this.getPendingPaymentDetails().subscribe(data=>{
-      this.pendingPaymentStore.setStore(data);
+      this.pendingPaymentStore.setStore(this.api.convertDBData_ObjToArray(data));
     })
   }
 

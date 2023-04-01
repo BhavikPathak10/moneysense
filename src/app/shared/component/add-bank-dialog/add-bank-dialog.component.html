@@ -1,6 +1,42 @@
-<h1 mat-dialog-title>Add Bank</h1>
+<section mat-dialog-title> <h1>Add Bank </h1> <button mat-button color="primary" (click)="showOtherFields = !showOtherFields">{{showOtherFields ? 'Hide':'Show'}} more fields</button></section>
 <div mat-dialog-content>
   <form [formGroup]="bankForm">
+    <ng-container *ngIf="showOtherFields">
+      <mat-form-field appearance="outline">
+        <mat-label>URL</mat-label>
+        <input
+          matInput
+          placeholder="Enter account URL"
+          formControlName="accountURL"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Customer ID</mat-label>
+        <input
+          matInput
+          placeholder="Enter Customer ID"
+          formControlName="customerID"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>PWD</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Enter PWD"
+          formControlName="accountPWD"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Txn PWD</mat-label>
+        <input
+          matInput
+          placeholder="Enter Txn PWD"
+          formControlName="accountTxnPWD"
+        />
+      </mat-form-field>
+      <mat-divider></mat-divider>
+    </ng-container>
     <mat-form-field appearance="outline">
       <mat-label>Account Name</mat-label>
       <input
@@ -78,6 +114,6 @@
     cdkFocusInitial
     color="primary"
   >
-    Add bank
+    {{this.data.bankdata ? 'Save Changes':'Add Bank'}}
   </button>
 </mat-dialog-actions>

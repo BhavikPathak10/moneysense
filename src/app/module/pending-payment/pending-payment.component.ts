@@ -17,7 +17,7 @@ export class PendingPaymentComponent implements OnInit {
   subscription:Subscription[] = [];
 
   pendingPaymentDetails: PendingPaymentModel[] = [];
-  uniqueAccountHead : any = [];
+  uniqueLedger : any = [];
   MASTER = Master;
 
 
@@ -27,7 +27,7 @@ export class PendingPaymentComponent implements OnInit {
         this.pendingPaymentDetails = data;
       }),
       this.masterStore.bindStore().subscribe((data)=>{        
-        this.uniqueAccountHead = [...new Set(data.map((d:any)=>d[this.MASTER.ACCOUNT_HEAD]))];
+        this.uniqueLedger = [...new Set(data.map((d:any)=>d[this.MASTER.LEDGER]))];
       })
     )
   }

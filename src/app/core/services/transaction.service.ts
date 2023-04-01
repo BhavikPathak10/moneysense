@@ -46,9 +46,13 @@ export class TransactionService {
     return this.api.put('transactions', data);
   }
 
-  syncStore() {
+  syncStore(data?:any) {
+    if(data){
+      this.transactionStore.setStore(this.api.convertDBData_ObjToArray(data));
+      return;
+    }
     this.getTransactionDetails().subscribe((data) => {
-      this.transactionStore.setStore(data);
+      this.transactionStore.setStore(this.api.convertDBData_ObjToArray(data));
     });
   }
 
@@ -62,6 +66,7 @@ export class TransactionService {
         console.log('Transactions deleted successfully');
         this.bankService.deleteBank(bank.id).subscribe(
           (data) => {
+            this.bankService.syncStore();
             console.log('Bank Deleted successfully');
           },
           (err) => {
@@ -74,4 +79,6 @@ export class TransactionService {
       }
     );
   }
+
+
 }

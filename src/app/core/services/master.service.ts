@@ -26,9 +26,14 @@ export class MasterService {
     return this.api.post('master', data);
   }
 
-  syncStore() {
+  syncStore(data?:any) {
+    if(data){
+      this.masterStore.setStore(this.api.convertDBData_ObjToArray(data));
+      return;
+    }
     this.getMasterDetails().subscribe((data) => {
-      this.masterStore.setStore(data);
+      this.masterStore.setStore(this.api.convertDBData_ObjToArray(data));
     });
   }
+
 }

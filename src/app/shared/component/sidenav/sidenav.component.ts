@@ -72,12 +72,13 @@ export class SidenavComponent implements OnInit {
         }
         this.bankService.addBank(result).subscribe(
           (data) => {
-            this.banks.push(data);
-            this.router.navigate(['bank', data.accountName], {
+            this.bankService.syncStore();
+            //this.banks.push(data);
+            this.router.navigate(['bank', result.accountName], {
               relativeTo: this.route,
             });
             this.toast.success(
-              `${data.accountName} Bank added successfull`,
+              `${result.accountName} Bank added successfull`,
               'close'
             );
           },
@@ -91,6 +92,43 @@ export class SidenavComponent implements OnInit {
         );
       }
     });
+  }
+
+  editBank(event? : any, bankdata? : any){
+    event && event.stopPropagation();
+
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: { isOnboarding: false, bankdata : bankdata },
+    };
+
+    const bankDialog = this.dialog.open(AddBankDialogComponent, dialogObj);
+
+    bankDialog.afterClosed().subscribe((result: BankDetails) => {
+      if (result) {
+        this.bankService.updateBankDetails(result).subscribe(
+          (data) => {
+            this.bankService.syncStore();
+            this.router.navigate(['bank', result.accountName], {
+              relativeTo: this.route,
+            });
+            this.toast.success(
+              `${result.accountName} Bank updated successfull`,
+              'close'
+            );
+          },
+          (err) => {
+            console.log(err);
+            this.toast.warning(
+              `Some error occured. Please try again later.`,
+              'close'
+            );
+          }
+        )
+      }
+    })
+
   }
 
   deleteBank(event: any, bank: BankDetails) {
@@ -113,13 +151,23 @@ export class SidenavComponent implements OnInit {
     bankDialog.afterClosed().subscribe((result: BankDetails) => {
       if (result) {
         this.transactionservice.deleteBankTransaction(bank);
-        this.bankStore.setStore(this.banks.filter((b) => b.id != bank.id));
+        //this.bankService.syncStore();
+        //this.bankStore.setStore(this.banks.filter((b) => b.id != bank.id));
         this.toast.success(
           `Bank ${bank.accountName} deleted successfully.`,
           'close'
         );
+        //this.navigateTo()
       }
     });
+  }
+
+  navigateTo(){
+    if(this.banks.length > 0){
+      this.router.navigate(['overview'], {
+        relativeTo: this.route,
+      });
+    }
   }
 
   downloadBackup(){

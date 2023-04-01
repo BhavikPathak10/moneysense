@@ -4,6 +4,7 @@ import { Transaction } from 'src/app/core/models/transaction.model';
 import { LedgerStore } from 'src/app/core/stores/ledger.store';
 import PivotGridDataSource from "devextreme/ui/pivot_grid/data_source"
 import * as moment from 'moment';
+import { TransactionStore } from 'src/app/core/stores/transaction.store';
 
 @Component({
   selector: 'app-resport',
@@ -19,9 +20,12 @@ export class ResportComponent implements OnInit {
 
   pivotDataSource : PivotGridDataSource = new PivotGridDataSource();
 
-  constructor(private ledgerStore : LedgerStore) {
+  constructor(private ledgerStore : LedgerStore,private transactionStore : TransactionStore) {
     this.subscription.push(
-      this.ledgerStore.bindStore().subscribe((data)=>{
+      /* this.ledgerStore.bindStore().subscribe((data)=>{
+        this.ledgerDetails = data;
+      }), */
+      this.transactionStore.bindStore().subscribe((data)=>{
         this.ledgerDetails = data;
       })
     );
@@ -30,16 +34,12 @@ export class ResportComponent implements OnInit {
   ngOnInit(): void {
     this.pivotDataSource = new PivotGridDataSource({
       fields:[
-        /* {area:'row',dataField:'groupHead'},
-        {area:'row',dataField:'subHead'}, */
-        {area:'row',dataField:'accountHead'},
-        {area:'row',dataField:'particular'},
-        /* {area:'row',dataField:'costCenter'},
-        {area:'row',dataField:'costCategory'}, */
+        {area:'row',dataField:'accountHead',expanded:true},
+        {area:'row',dataField:'particular',caption:'Ledger'},
         {area:'filter',dataField:'groupHead'},
         {area:'filter',dataField:'subHead'},
         {area:'filter',dataField:'accountHead'},
-        {area:'filter',dataField:'particular'},
+        {area:'filter',dataField:'particular',caption:'Ledger'},
         {area:'filter',dataField:'costCenter'},
         {area:'filter',dataField:'costCategory'},
         {area:'filter',dataField:'accountName'},

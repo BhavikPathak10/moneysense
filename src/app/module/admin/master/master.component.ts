@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { map, Observable, startWith, Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { MasterService } from 'src/app/core/services/master.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
 import { MasterStore } from 'src/app/core/stores/master.store';
 import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/confirm-dialog.component';
+import { DxDataGridComponent } from "devextreme-angular";
 
 @Component({
   selector: 'app-master',
@@ -36,6 +37,7 @@ export class MasterComponent implements OnInit {
   filter_costCategoryOptions: Observable<any[]> | undefined;
 
   focusedRowKey:any ='';
+  @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
 
   displayedColumns = [
     'groupHead',
@@ -142,7 +144,7 @@ export class MasterComponent implements OnInit {
       && rec.costCategory.toLowerCase() == formValue['costCategory'].toLowerCase());
 
       if(detailsAvail){
-        this.focusedRowKey = detailsAvail.id;
+        this.focusedRowKey = this.dataGrid?.instance.keyOf(detailsAvail);
         this.toast.info('Master Details already available at highlighted row.', 'close');
         return;
       }
@@ -210,4 +212,5 @@ export class MasterComponent implements OnInit {
   ngOnDestroy() {
     this.subscription.map((sub) => sub.unsubscribe());
   }
+
 }

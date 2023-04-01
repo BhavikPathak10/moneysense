@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title (click)="onExportBankDetails()">
-      <mat-icon> wallet </mat-icon>
+    <mat-card-title>
+      <mat-icon> open_in_new </mat-icon>
       {{ activeBank?.accountName }}
     </mat-card-title>
     <mat-card-subtitle>
@@ -9,18 +9,19 @@
       {{ activeBank?.branch | titlecase }} |
       {{ activeBank?.accountType | titlecase }}
     </mat-card-subtitle>
-    <!-- <mat-card class="mat-elevation-z0 primary"
-      ><mat-card-title>{{
-        this.estimatedDeposit | currency: "INR":"symbol"
-      }}</mat-card-title
-      ><mat-card-subtitle> Deposit </mat-card-subtitle></mat-card
-    >
-    <mat-card class="mat-elevation-z0 accent"
-      ><mat-card-title>{{
-        this.estimatedWithdrawal | currency: "INR":"symbol"
-      }}</mat-card-title
-      ><mat-card-subtitle> Withdrawal </mat-card-subtitle></mat-card
-    > -->
+<form>
+  <mat-form-field class="dateRangePickerClass" appearance="outline">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+      <input matStartDate formControlName="start" placeholder="Start date">
+      <input matEndDate formControlName="end" placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix  [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <button mat-icon-button color="primary" (click)="onExportBankDetails()"><mat-icon>file_download</mat-icon></button>
+</form>
+  
     <form [formGroup]="balanceForm">
       <mat-form-field appearance="outline">
         <mat-label>Balance</mat-label>
@@ -37,7 +38,7 @@
       </mat-form-field>
     </form>
   </mat-card-header>
-</mat-card>
+  </mat-card>
 
 <mat-card class="content">
   <ng-container *ngTemplateOutlet="bankTransactionTable"></ng-container>

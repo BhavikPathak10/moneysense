@@ -9,6 +9,6 @@ import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [TransactionComponent, PassbookComponent, BankDetailsComponent],
-  imports: [CommonModule, BankDetailsRoutingModule, SharedModule, CoreModule],
+  imports: [CommonModule, BankDetailsRoutingModule, SharedModule, CoreModule]
 })
 export class BankDetailsModule {}

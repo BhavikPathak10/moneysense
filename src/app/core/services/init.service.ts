@@ -19,15 +19,10 @@ import { TransactionService } from './transaction.service';
 export class InitService {
   constructor(
     private bankService: BankService,
-    private bankStore: BankDetailsStore,
     private transactionService: TransactionService,
-    private transactionStore: TransactionStore,
     private masterService: MasterService,
-    private masterStore: MasterStore,
     private ledgerService : LedgerServiceService,
     private incomeService : IncomeService,
-    private incomeStore : IncomeAtGlanceStore,
-    private pendingPaymentStore : PendingPaymentStore,
     private pendingPayemntService : PendingPaymentService,
     private route: Router
   ) {
@@ -42,11 +37,11 @@ export class InitService {
      incomeAtGlance : this.incomeService.getIncomeAtGlanceDetails(),
      pendingPayment : this.pendingPayemntService.getPendingPaymentDetails()
     }).subscribe((data)=>{
-       this.transactionStore.setStore(data.transaction);
-       this.bankStore.setStore(data.bank);
-       this.masterStore.setStore(data.master);
-       this.incomeStore.setStore(data.incomeAtGlance);
-       this.pendingPaymentStore.setStore(data.pendingPayment);
+       this.transactionService.syncStore(data.transaction);
+       this.bankService.syncStore(data.bank);
+       this.masterService.syncStore(data.master);
+       this.incomeService.syncStore(data.incomeAtGlance);
+       this.pendingPayemntService.syncStore(data.pendingPayment);
        this.ledgerService.setLedgerDetails();
        this.route.navigate(['overview']);
     })

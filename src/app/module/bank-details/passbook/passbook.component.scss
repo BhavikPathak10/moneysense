@@ -11,12 +11,18 @@ mat-card-header {
     mat-card-title{
     display: flex;
     align-items: center;
-    &:hover{
+    /* &:hover{
         transform: scale(0.9);
         transition: all 0.3s ease;
         cursor: pointer;
-    }
+    } */
 }
+}
+
+::ng-deep.dateRangePickerClass.mat-form-field-type-mat-date-range-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix{
+    display: inherit !important;
+    align-items: center !important;
+    padding: 0 !important;
 }
 
 table {

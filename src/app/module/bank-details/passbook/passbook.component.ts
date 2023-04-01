@@ -23,7 +23,7 @@ import autoTable from 'jspdf-autotable'
   styleUrls: ['./passbook.component.scss'],
   host: {
     class: 'fullHeight fullWidth flexColumn',
-  },
+  }
 })
 export class PassbookComponent implements OnInit {
   activeBank: BankDetails | undefined = new BankDetails();
@@ -38,6 +38,11 @@ export class PassbookComponent implements OnInit {
   estimatedWithdrawal: number = 0;
   balanceForm: FormGroup = new FormGroup({
     currentBalance: new FormControl(null),
+  });
+
+  range:FormGroup = new FormGroup({
+    start: new FormControl(null),
+    end: new FormControl(null),
   });
 
   transactionEnum = TransactionEnum;
@@ -60,7 +65,7 @@ export class PassbookComponent implements OnInit {
       }),
       this.bankStore.bindStore().subscribe((data) => {
         this.banks = data;
-        if (this.activeId) {
+        if (this.activeId && this.banks.length > 0) {
           this.updateDataByBank();
         }
       }),
@@ -139,8 +144,9 @@ export class PassbookComponent implements OnInit {
     this.activeBank.estimatedBalance = data.balance;
     this.activeBank.totalDeposit = data.deposit;
     this.activeBank.totalWithdrawn = data.withdraw;
-    this.bankService.updateBankDetails(this.activeBank).subscribe(
+    this.bankService.updateBankDetails(this.activeBank)?.subscribe(
       (data) => {
+        //this.bankService.syncStore();
         console.log('UPDATED');
       },
       (err) => {
@@ -190,8 +196,27 @@ export class PassbookComponent implements OnInit {
     const jsPDFDoc = new jsPDF();
 
     let tableData = JSON.parse(JSON.stringify(this.bankTransactionData.data));
+
+    let startDate:any = undefined;
+    let endDate:any = undefined;
     
-    let tableFlatData = tableData.map((data:Transaction)=>{
+    if(this.range.value.start){
+      startDate = moment(this.range.value.start);
+    }
+    if(this.range.value.end){
+       endDate = moment(this.range.value.end);
+    }
+    
+    let selectedRangeData = tableData.filter((data:any)=> {
+      let compareDate = moment(data.transactionDate);
+     
+      if(compareDate.isBetween(startDate,endDate,null,'[]')){
+        return data;
+      }
+      
+    });
+    
+    let tableFlatData = selectedRangeData.map((data:Transaction)=>{
       return [
         moment(data.transactionDate).format('D-MMM-YYYY'),
         data.particular, 
@@ -226,5 +251,5 @@ export class PassbookComponent implements OnInit {
     );
     let filename = `${this.activeId}_${moment().format("Do_MMM_YYYY_HH_mm")}.pdf`;
     jsPDFDoc.save(filename);
-  }
+  } 
 }

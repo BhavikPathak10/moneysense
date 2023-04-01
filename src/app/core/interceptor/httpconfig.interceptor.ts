@@ -23,9 +23,9 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     // ADDING COOKIES TO REQUEST
-    request = request.clone({
-      withCredentials: true,
-    });
+    /* request = request.clone({
+      withCredentials: false,
+    }); */
 
     request.headers.append('Content-Type', 'application/json');
 

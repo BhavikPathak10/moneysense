@@ -38,9 +38,14 @@
                   mat-button
                   >{{ bank.accountName }}</a
                 >
-                <mat-icon class="pointer" (click)="deleteBank($event, bank)">
-                  delete_outline
-                </mat-icon>
+                <section>
+                  <mat-icon class="pointer" (click)="editBank($event, bank)">
+                    edit
+                  </mat-icon>
+                  <mat-icon class="pointer" (click)="deleteBank($event, bank)">
+                    delete_outline
+                  </mat-icon>
+                </section>
               </li>
             </ng-template>
           </mat-expansion-panel>

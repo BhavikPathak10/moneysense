@@ -13,6 +13,7 @@
         [allowColumnReordering]="true"
         [allowColumnResizing]="true"
         [columnAutoWidth]="true"
+        [columnMinWidth]="80"
         (onSaved)="saveIncome($event)"
         >
       <dxi-column dataField="account" dataType="string" caption="Bank">
@@ -20,18 +21,23 @@
             [dataSource]="banks">
         </dxo-lookup>
       </dxi-column>
-      <dxi-column dataField="billNumber" dataType="string" caption="Bill No."></dxi-column>
-      <dxi-column dataField="clientName" dataType="string" caption="Client Name"></dxi-column>
-      <dxi-column dataField="billAmount" dataType="number" caption="Bill Amount" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="igst" dataType="number" caption="IGST 18%" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="cgst" dataType="number" caption="CGST 9%" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="sgst" dataType="number" caption="SGST 9%" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="totalTax" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="Total Tax" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="totalAmount" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="Total Amount" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="afterTDS" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="After TDS 10%" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="paymentRcvdDate" caption="Payment Received Date" dataType="date" format="dd-MMM-yyyy"></dxi-column>
-      <dxi-column dataField="amountRcvd" dataType="number" caption="Amount Received" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="pendingAmount" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="Pending Payment" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="month" dataType="string" caption="Month">
+        <dxo-lookup
+            [dataSource]="monthsShort">
+        </dxo-lookup>
+      </dxi-column>
+      <dxi-column [width]="80" dataField="billNumber" dataType="string" caption="Bill No."></dxi-column>
+      <dxi-column [width]="120" dataField="clientName" dataType="string" caption="Client Name"></dxi-column>
+      <dxi-column [width]="100" dataField="billAmount" dataType="number" caption="Bill Amount" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="80" dataField="igst" dataType="number" caption="IGST 18%" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="80" dataField="cgst" dataType="number" caption="CGST 9%" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="80" dataField="sgst" dataType="number" caption="SGST 9%" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="100" dataField="totalTax" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="Total Tax" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="100" dataField="totalAmount" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="Total Amount" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="80" dataField="afterTDS" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="After TDS 10%" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="100" dataField="paymentRcvdDate" caption="Payment Received Date" dataType="date" format="dd-MMM-yyyy"></dxi-column>
+      <dxi-column [width]="100" dataField="amountRcvd" dataType="number" caption="Amount Received" format="₹ ,##0.##"></dxi-column>
+      <dxi-column [width]="100" dataField="pendingAmount" [allowEditing]="false" cssClass="not-editable" dataType="number" caption="Pending Payment" format="₹ ,##0.##"></dxi-column>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
       <dxo-scrolling mode="virtual"></dxo-scrolling>
       <dxo-editing
@@ -41,14 +47,11 @@
       [allowAdding]="true"
       ></dxo-editing>
       <dxo-summary>
-        <dxi-total-item
-        column="amountRcvd"
-        summaryType="sum">
-    </dxi-total-item>
-        <dxi-total-item
-            column="pendingAmount"
-            summaryType="sum">
-        </dxi-total-item>
+        <dxi-total-item column="amountRcvd" summaryType="sum"></dxi-total-item>
+        <dxi-total-item column="pendingAmount" summaryType="sum"></dxi-total-item>
+        <dxi-total-item column="billAmount" summaryType="sum"></dxi-total-item>
+        <dxi-total-item column="totalTax" summaryType="sum"></dxi-total-item>
+        <dxi-total-item column="totalAmount" summaryType="sum"></dxi-total-item>
     </dxo-summary>
     </dx-data-grid>
   </ng-template>

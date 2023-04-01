@@ -3,6 +3,17 @@ form {
     flex-direction: column;
 }
 
+section{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+mat-divider{
+    margin-bottom: 1em;
+    border-top-width: 2px;
+}
+
 mat-dialog-actions {
     display: flex;
     justify-content: flex-end;

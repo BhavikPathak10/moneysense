@@ -43,9 +43,13 @@ export class IncomeService {
   }
 
 
-  syncStore(){
+  syncStore(data?:any){
+    if(data){
+      this.incomeStore.setStore(this.api.convertDBData_ObjToArray(data));
+      return;
+    }
     this.getIncomeAtGlanceDetails().subscribe(data=>{
-      this.incomeStore.setStore(data);
+      this.incomeStore.setStore(this.api.convertDBData_ObjToArray(data));
     })
   }
 }
