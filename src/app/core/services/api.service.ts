@@ -1,13 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  //API = 'http://localhost:3003/';
-  API = "https://moneysense-app-default-rtdb.firebaseio.com/";
-  //API = "https://rxjs-posts-default-rtdb.firebaseio.com/";
+  //API = "https://moneysense-app-default-rtdb.firebaseio.com/";
+  API = environment.API;
+  //API = "https://ppm-db-default-rtdb.firebaseio.com/";
+
+  
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,18 @@
     <mat-card-subtitle>
       {{ activeBank?.accountNumber }} | {{ activeBank?.bankName | uppercase }} |
       {{ activeBank?.branch | titlecase }} |
-      {{ activeBank?.accountType | titlecase }}
+      {{ activeBank?.accountType | titlecase }} 
+      
+      <button mat-icon-button [matMenuTriggerFor]="passbook_menu">
+        <mat-icon>info</mat-icon>
+      </button>
+      <mat-menu #passbook_menu="matMenu" class="mat-elevation-z2 bank-detail-more-css">
+       <button mat-icon-button> <mat-icon (click)="copyDetails()">content_copy</mat-icon></button>
+          <p mat-menu-item disabled>Customer ID : <strong>{{ activeBank?.customerID }}</strong></p>
+          <p mat-menu-item disabled>Pwd: <strong> {{ activeBank?.accountPWD }}</strong> </p>
+          <p mat-menu-item disabled>Txn PwD: <strong>{{activeBank?.accountTxnPWD }}</strong></p>
+      </mat-menu>
+
     </mat-card-subtitle>
 <form>
   <mat-form-field class="dateRangePickerClass" appearance="outline">

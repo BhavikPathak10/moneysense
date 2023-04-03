@@ -14,6 +14,7 @@ import { TransactionService } from 'src/app/core/services/transaction.service';
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
 import { TransactionStore } from 'src/app/core/stores/transaction.store';
 import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/confirm-dialog.component';
+import { Clipboard } from "@angular/cdk/clipboard";
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
@@ -54,7 +55,8 @@ export class PassbookComponent implements OnInit {
     private transactionStore: TransactionStore,
     private transactionService: TransactionService,
     private dialog: MatDialog,
-    private toast: ToastMessageService
+    private toast: ToastMessageService,
+    private clipboard: Clipboard
   ) {
     this.subscription.push(
       this.route.params.subscribe((param) => {
@@ -252,4 +254,10 @@ export class PassbookComponent implements OnInit {
     let filename = `${this.activeId}_${moment().format("Do_MMM_YYYY_HH_mm")}.pdf`;
     jsPDFDoc.save(filename);
   } 
+
+  copyDetails(){
+    let text = `Customer ID : ${this.activeBank?.customerID}\nAccount PWD : ${this.activeBank?.accountPWD}\nAccount Txn PWD : ${this.activeBank?.accountTxnPWD}`;
+    this.clipboard.copy(text);
+    this.toast.info("Text copied to clipboard",'close');
+  }
 }

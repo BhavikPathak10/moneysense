@@ -5,6 +5,25 @@
     padding-bottom: unset;
 }
 
+.mat-icon-button{
+    height: 2em;
+    width: 2em;
+    line-height: 2em;
+    mat-icon.mat-icon.material-icons{
+        font-size: 1.2em;
+    }
+}
+
+::ng-deep.bank-detail-more-css{
+    min-width: 200px;
+    margin-top:10px;
+    .mat-icon-button{
+        margin-top:-10px;
+        float: right;
+    }
+
+}
+
 mat-card-header {
     display: flex;
     justify-content: space-between;
@@ -24,6 +43,18 @@ mat-card-header {
     padding: 0 !important;
     text-align: inherit;
     font-size: inherit;
+}
+
+.mat-menu-item {
+    height: 2em;
+    line-height: 2em;
+    margin: 0px !important;
+    &[disabled]
+    {
+            cursor: default;
+            color: unset;
+            opacity: 0.8;
+    }
 }
 
 ::ng-deep.dateRangePickerClass.mat-form-field-type-mat-date-range-input .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix{
