@@ -1,0 +1,60 @@
+.full-page{
+    &.flexReverse{
+        flex-flow: row-reverse !important;
+        .design{
+            background-position: right !important;
+        }
+    }
+    >section{
+        &.interaction{
+            width: 60vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            .form-login{
+                width: 50%;
+            }
+            .form-header{
+                font: 700 44px / 58px Nunito;
+            }
+            .form-navigate-text{
+                text-align: center;
+                margin:unset;
+                button{
+                 padding: unset;
+                 min-width: 50px;   
+                }
+            }
+            button[type="submit"]{
+                letter-spacing: 1px;
+            }
+        }
+        &.design{
+            flex: 1;
+            background-size: cover;
+            background-position: unset;
+            filter:contrast(0.7) brightness(1.2);
+            &.signup{
+                background-image: url('../../../../assets/images/SignUp.jpg');
+            }
+            &.signin{
+                background-image: url('../../../../assets/images/SignIn.jpg');
+            }
+            &.invalidForm{
+                filter:grayscale(1);
+            }
+         }
+    }
+}
+
+.app-logo{
+    position: absolute;
+    z-index: 9999;
+    img{
+        position: absolute;
+    height: 8vh;
+    top: 3vh;
+    left: 2vw;
+    }
+}

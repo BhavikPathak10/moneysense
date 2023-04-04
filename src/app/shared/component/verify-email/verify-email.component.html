@@ -1,0 +1,18 @@
+<div class="full-page">
+    <mat-card class="mat-elevation-z0">
+        <mat-card-header>
+          <mat-card-title>Verfiy your Email</mat-card-title>
+          <mat-card-subtitle>You will need to verify your email to complete registration</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <img src="../../../../assets/images/verify-email.jpg" alt="Verify Email" class="card-img"/>
+        <p>
+            An email has been sent to <strong>{{user}}</strong> with a link to verify your account. If you have not received the email after a few minutes, please check you spam folder
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-flat-button disabled>Resend Email</button>
+          <button mat-stroked-button (click)="navigateTo()"> Sign In</button>
+        </mat-card-actions>
+      </mat-card>      
+</div>

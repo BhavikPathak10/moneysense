@@ -95,6 +95,10 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                     }
+
+                    section{
+                        min-width: 50px;
+                    }
                 }
             }
         }
@@ -102,5 +106,12 @@
         .active {
             color: var(--accent-color) !important;
         }
+    }
+
+    .bottom{
+        bottom: 1em;
+        align-self: center;
+        display: flex;
+        position: absolute;
     }
 }

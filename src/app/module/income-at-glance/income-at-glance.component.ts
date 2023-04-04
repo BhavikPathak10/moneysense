@@ -7,6 +7,8 @@ import { ToastMessageService } from 'src/app/core/services/toast-message.service
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
 import { IncomeAtGlanceStore } from 'src/app/core/stores/incomeAtGlance.store';
 import * as moment from 'moment';
+import { MasterStore } from 'src/app/core/stores/master.store';
+import { Master } from 'src/app/core/enums/master.enum';
 
 @Component({
   selector: 'app-income-at-glance',
@@ -16,18 +18,22 @@ import * as moment from 'moment';
 export class IncomeAtGlanceComponent implements OnInit {
 
   subscription:Subscription[] = [];
-
   incomeDetails:IncomeAtGlanceModel[] = [];
   banks:[] =[];
+  uniqueClientName:any = [];
   monthsShort : any = moment.monthsShort();
+  MASTER = Master;
 
-  constructor(private incomeStore:IncomeAtGlanceStore, private incomeService : IncomeService,private bankStore: BankDetailsStore, private toast :ToastMessageService) {
+  constructor(private incomeStore:IncomeAtGlanceStore,private masterStore : MasterStore, private incomeService : IncomeService,private bankStore: BankDetailsStore, private toast :ToastMessageService) {
     this.subscription.push(
       this.incomeStore.bindStore().subscribe((data)=>{
         this.incomeDetails = data;
       }),
       this.bankStore.bindStore().subscribe((data)=>{
         this.banks = data.map((d:BankDetails)=>d.accountName)
+      }),
+      this.masterStore.bindStore().subscribe((data)=>{
+        this.uniqueClientName = [...new Set(data.map((d:any)=>d[this.MASTER.LEDGER]))];
       })
     )
    }

@@ -43,7 +43,8 @@ export class InitService {
        this.incomeService.syncStore(data.incomeAtGlance);
        this.pendingPayemntService.syncStore(data.pendingPayment);
        this.ledgerService.setLedgerDetails();
-       this.route.navigate(['overview']);
+       this.route.navigate(['home','overview']);
+       //this.route.navigate(['auth','login']);
     })
   }
 }

@@ -27,6 +27,7 @@ export class OverviewComponent implements OnInit {
     private incomeStore : IncomeAtGlanceStore,
     private pendingPaymentStore : PendingPaymentStore,
     private router : Router,
+    private route: ActivatedRoute
   ) {
     this.subscription.push(
       this.bankStore.bindStore().subscribe((data) => {
@@ -50,12 +51,12 @@ export class OverviewComponent implements OnInit {
   ngOnInit(): void {}
 
   navigate(screenName:string){
-    this.router.navigate(['..',screenName]);
+    this.router.navigate(["..",screenName],{relativeTo:this.route});
   }
   
   onBankRowClick(e:any){
     if(e.rowType == 'data'){
-      this.router.navigate(['..','bank',e.data.accountName]);
+      this.router.navigate(['..','bank',e.data.accountName],{relativeTo:this.route});
     }
   }
 

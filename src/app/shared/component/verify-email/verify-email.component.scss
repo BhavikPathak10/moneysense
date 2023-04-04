@@ -1,0 +1,42 @@
+.full-page{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-lighter-color);
+}
+
+mat-card{
+    padding: 5em 4em;
+    max-width: 50vw;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    mat-card-title{
+        color:var(--primary-darker-color);
+        font: 500 24px/42px Nunito;
+    }
+    mat-card-subtitle{
+        color:var(--primary-darker-color);
+        font: 400 16px/24px Nunito;
+    }
+    .card-img{
+        height: auto;
+        width: 25vw;
+        filter:contrast(0.7) brightness(1.2);
+    }
+    mat-card-content{
+        p{
+            color: var(--palette-grey-8-rgb);
+            font : 500 14px/20px Nunito;
+            margin-top:10px;
+        }
+    }
+    mat-card-actions{
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+        align-items: center;
+    }
+}

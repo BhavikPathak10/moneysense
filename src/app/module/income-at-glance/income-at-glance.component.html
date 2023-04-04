@@ -27,7 +27,11 @@
         </dxo-lookup>
       </dxi-column>
       <dxi-column [width]="80" dataField="billNumber" dataType="string" caption="Bill No."></dxi-column>
-      <dxi-column [width]="120" dataField="clientName" dataType="string" caption="Client Name"></dxi-column>
+      <dxi-column [width]="120" dataField="clientName" dataType="string" caption="Client Name">
+        <dxo-lookup
+            [dataSource]="uniqueClientName">
+        </dxo-lookup>
+      </dxi-column>
       <dxi-column [width]="100" dataField="billAmount" dataType="number" caption="Bill Amount" format="₹ ,##0.##"></dxi-column>
       <dxi-column [width]="80" dataField="igst" dataType="number" caption="IGST 18%" format="₹ ,##0.##"></dxi-column>
       <dxi-column [width]="80" dataField="cgst" dataType="number" caption="CGST 9%" format="₹ ,##0.##"></dxi-column>

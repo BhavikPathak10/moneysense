@@ -7,6 +7,9 @@ import { PageNotFoundComponent } from './component/page-not-found/page-not-found
 import { AddBankDialogComponent } from './component/add-bank-dialog/add-bank-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialog.component';
+import { HomeComponent } from './component/home/home.component';
+import { LoginComponent } from './component/login/login.component';
+import { VerifyEmailComponent } from './component/verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +17,9 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
     PageNotFoundComponent,
     AddBankDialogComponent,
     ConfirmDialogComponent,
+    HomeComponent,
+    LoginComponent,
+    VerifyEmailComponent,
   ],
   imports: [
     CommonModule,

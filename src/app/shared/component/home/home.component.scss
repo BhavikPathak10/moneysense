@@ -1,0 +1,23 @@
+mat-drawer-container {
+    height: 100%;
+    width: 100%;
+
+    mat-drawer {
+        width: 18rem;
+        min-width: 150px;
+        border-right: unset;
+        background: var(--primary-darker-color);
+        color: var(--palette-grey-2-rgb);
+    }
+
+    mat-drawer-content {
+        /* max-width: 85rem; */
+    }
+}
+
+.toggle-drawer-btn{
+    position: fixed !important;
+    top: 90vh;
+    left: 95vw;
+    z-index: 9999;
+}

@@ -9,11 +9,13 @@ import { SharedModule } from './shared/shared.module';
 import { IncomeAtGlanceComponent } from './module/income-at-glance/income-at-glance.component';
 import { PendingPaymentComponent } from './module/pending-payment/pending-payment.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
 import { OverviewComponent } from './module/overview/overview.component';
 import { DxDataGridModule } from 'devextreme-angular';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { DxDataGridModule } from 'devextreme-angular';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    DxDataGridModule
+    DxDataGridModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -39,7 +42,7 @@ import { DxDataGridModule } from 'devextreme-angular';
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,
       multi: true,
-    },
+    }
   ],
   bootstrap: [AppComponent],
 })

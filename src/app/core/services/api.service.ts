@@ -6,17 +6,12 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ApiService {
-  //API = "https://moneysense-app-default-rtdb.firebaseio.com/";
-  API = environment.API;
-  //API = "https://ppm-db-default-rtdb.firebaseio.com/";
-
-  
+  API = `${environment.firebaseConfig.databaseURL}/`;
 
   constructor(private http: HttpClient) {}
 
   public get(url: string, options?: any) {
     return this.http.get(`${this.API}${url}.json`, options);
-    //return this.http.get(`${this.API}posts.json`, options);
   }
 
   public post(url: string, data: any, options?: any) {

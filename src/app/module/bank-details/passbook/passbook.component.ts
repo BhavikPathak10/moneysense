@@ -17,6 +17,10 @@ import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/
 import { Clipboard } from "@angular/cdk/clipboard";
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import { DatePipe } from '@angular/common';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
 
 @Component({
   selector: 'app-passbook',
@@ -24,7 +28,14 @@ import autoTable from 'jspdf-autotable'
   styleUrls: ['./passbook.component.scss'],
   host: {
     class: 'fullHeight fullWidth flexColumn',
-  }
+  },
+  providers:[    {
+    provide: DateAdapter,
+    useClass: MomentDateAdapter,
+    deps: [MAT_DATE_LOCALE]
+  },
+  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  DatePipe]
 })
 export class PassbookComponent implements OnInit {
   activeBank: BankDetails | undefined = new BankDetails();
@@ -42,8 +53,8 @@ export class PassbookComponent implements OnInit {
   });
 
   range:FormGroup = new FormGroup({
-    start: new FormControl(null),
-    end: new FormControl(null),
+    start: new FormControl(moment().startOf('month')),
+    end: new FormControl(moment().endOf('month')),
   });
 
   transactionEnum = TransactionEnum;

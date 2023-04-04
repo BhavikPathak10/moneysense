@@ -14,27 +14,23 @@ import { TransactionEnum } from 'src/app/core/enums/transaction.enum';
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
 import { BankDetails } from 'src/app/core/models/bankDetails.model';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
-
-
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD-MMM-yyyy',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  },
-};
+import { DatePipe } from '@angular/common';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
 
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
   styleUrls: ['./transaction.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    DatePipe
   ],
   host: {
     class: 'fullWidth',

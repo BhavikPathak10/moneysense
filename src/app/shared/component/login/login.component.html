@@ -1,0 +1,36 @@
+<section class="app-logo">
+    <img src="./assets/images/logo.png" alt="MoneySense"/>
+  </section>
+<div class="full-page flexRow" [ngClass]="{flexReverse: isSignUp}">
+    <section class="design" [ngClass]="{signup: isSignUp, signin: !isSignUp  }">
+    </section>
+    <section class="interaction">
+        <h1 class="form-header"> {{ isSignUp ? 'Sign up' : 'Sign In'}}</h1>
+        <mat-card class="form-login mat-elevation-z0">
+        <form [formGroup]="form" class="flexColumn" (ngSubmit)="onSubmit()">
+                        
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email">
+              <mat-error *ngIf="form.get('email')?.invalid">Please enter a valid email address</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password">
+              <mat-error *ngIf="form.get('password')?.invalid">Password is invalid</mat-error>
+            </mat-form-field>
+            
+            <mat-form-field *ngIf="isSignUp" appearance="outline">
+              <mat-label>Confirm Password</mat-label>
+              <input matInput type="password" formControlName="confirmPassword">
+              <mat-error *ngIf="form.get('confirmPassword')?.invalid">Confirm Password is invalid</mat-error>
+            </mat-form-field>
+            
+            <h4 class="form-navigate-text">{{ isSignUp ?  'Already' : 'Add' }} a member? <button type="button" (click)="togglePages()" mat-button color="primary">Sign {{ isSignUp ? 'In' : 'Up' }}</button> </h4>
+            <button [disabled]="form.invalid" mat-flat-button color="primary" type="submit"> {{ isSignUp ? 'Register' : 'Log In'}}</button>
+            
+          </form>
+        </mat-card>
+    </section>
+</div>
