@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BankDetails } from 'src/app/core/models/bankDetails.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { BankService } from 'src/app/core/services/bank.service';
 import { ExcelService } from 'src/app/core/services/excel.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
@@ -32,7 +33,8 @@ export class SidenavComponent implements OnInit {
     private route: ActivatedRoute,
     private transactionservice: TransactionService,
     private excelService :  ExcelService,
-    private toast: ToastMessageService
+    private toast: ToastMessageService,
+    private auth : AuthService,
   ) {
     this.subscriptions.push(
       this.bankStore.bindStore().subscribe((data) => {
@@ -140,7 +142,7 @@ export class SidenavComponent implements OnInit {
       data: {
         okButtonText: 'Yes',
         cancelButtonText: 'No',
-        hideCancel: false,
+        hideCancel: 'no',
         title: 'Delete Bank',
         message: `Are you sure you want to delete ${bank.accountName} and its transactions?`,
       },
@@ -172,6 +174,10 @@ export class SidenavComponent implements OnInit {
 
   downloadBackup(){
     this.excelService.exportAllDetails();
+  }
+
+  logout(){
+    this.auth.logout();
   }
 
   ngOnDestroy(): void {

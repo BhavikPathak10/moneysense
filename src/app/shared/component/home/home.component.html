@@ -2,9 +2,21 @@
     <mat-drawer-container hasBackdrop="false">
       <mat-drawer #drawer mode="side" opened>
          <app-sidenav></app-sidenav>
-      </mat-drawer>
-      <mat-drawer-content>
-        <router-outlet>
-        </router-outlet>
-    </mat-drawer-content>
-    </mat-drawer-container>
+        </mat-drawer> 
+        <mat-drawer-content>
+          <router-outlet>
+          </router-outlet>
+        </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+
+<!-- <div class="full-page flexColumn">
+  <mat-toolbar color="primary">
+    <app-sidenav></app-sidenav>
+  </mat-toolbar>
+
+<div class="content">
+  <router-outlet>
+  </router-outlet>
+</div>
+</div> -->

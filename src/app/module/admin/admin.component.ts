@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss'],
   host:{
-    class:'fullHeight fullWidth flexColumn'
+    class:'flexColumn'
   }
 })
 export class AdminComponent implements OnInit {

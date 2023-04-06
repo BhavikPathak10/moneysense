@@ -14,7 +14,7 @@ import { DxDataGridComponent } from "devextreme-angular";
   templateUrl: './master.component.html',
   styleUrls: ['./master.component.scss'],
   host: {
-    class: 'full-page flexColumn',
+    class: 'flexColumn',
   },
 })
 export class MasterComponent implements OnInit {
@@ -194,7 +194,7 @@ export class MasterComponent implements OnInit {
       data: {
         okButtonText: 'Yes',
         cancelButtonText: 'No',
-        hideCancel: false,
+        hideCancel: 'no',
         title: 'Delete master detail',
         message: `Are you sure you want to delete Master detail?`,
       },

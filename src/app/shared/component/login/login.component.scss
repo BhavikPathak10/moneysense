@@ -1,4 +1,5 @@
 .full-page{
+    background: var(--primary-lighter-color);
     &.flexReverse{
         flex-flow: row-reverse !important;
         .design{
@@ -7,16 +8,30 @@
     }
     >section{
         &.interaction{
-            width: 60vw;
+            min-width: 60vw;
+            flex:3;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             .form-login{
                 width: 50%;
+                padding: 55px 40px;
+                border-radius: 20px;
+                ::ng-deep.mat-form-field-appearance-fill .mat-form-field-flex{
+                    background-color: unset;
+                }
+                input{
+                    font-size: 1.5em;
+                    font-weight: 500;
+                }
             }
             .form-header{
-                font: 700 44px / 58px Nunito;
+                font: 100 44px / 58px Nunito;
+                text-align: center;
+            }
+            .navigate-forms-footer{
+                justify-content: space-evenly;
             }
             .form-navigate-text{
                 text-align: center;
@@ -31,15 +46,16 @@
             }
         }
         &.design{
-            flex: 1;
-            background-size: cover;
-            background-position: unset;
-            filter:contrast(0.7) brightness(1.2);
+            flex: 2;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter:opacity(0.9);
             &.signup{
-                background-image: url('../../../../assets/images/SignUp.jpg');
+                background-image: url('../../../../assets/images/SignUp.png');
             }
             &.signin{
-                background-image: url('../../../../assets/images/SignIn.jpg');
+                background-image: url('../../../../assets/images/SignIn.png');
             }
             &.invalidForm{
                 filter:grayscale(1);
@@ -49,12 +65,17 @@
 }
 
 .app-logo{
-    position: absolute;
+    position: relative;
+    top: 40px;
     z-index: 9999;
     img{
-        position: absolute;
-    height: 8vh;
-    top: 3vh;
-    left: 2vw;
+        height: 70px;
     }
 }
+
+
+@media screen and (max-width: 800px) {
+    .design{
+        display: none;
+    }
+  }

@@ -1,18 +1,21 @@
-<div class="full-page">
+<div class="full-page flexColumn">
     <mat-card class="mat-elevation-z0">
         <mat-card-header>
-          <mat-card-title>Verfiy your Email</mat-card-title>
-          <mat-card-subtitle>You will need to verify your email to complete registration</mat-card-subtitle>
+          <mat-card-title>{{action == 'reset-password' ? 'Reset your Password': 'Verfiy your Email' }}</mat-card-title>
+          <mat-card-subtitle *ngIf="action != 'reset-password'">You will need to verify your email to proceed further</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-            <img src="../../../../assets/images/verify-email.jpg" alt="Verify Email" class="card-img"/>
+            <img src="../../../../assets/images/verify-email.png" alt="Verify Email" class="card-img"/>
         <p>
-            An email has been sent to <strong>{{user}}</strong> with a link to verify your account. If you have not received the email after a few minutes, please check you spam folder
+            An email has been sent to 
+            <strong>{{action == 'reset-password' ? state?.email ? state.email : 'you' : state?.user ? state.user?.email : 'you' }}</strong>
+            with a link to {{action == 'reset-password' ?  'reset your password' : 'verify your account'}}. If you have not received the email after a few minutes, please check you spam folder
           </p>
         </mat-card-content>
         <mat-card-actions>
           <button mat-flat-button disabled>Resend Email</button>
           <button mat-stroked-button (click)="navigateTo()"> Sign In</button>
         </mat-card-actions>
-      </mat-card>      
+      </mat-card>
+      <app-footer-text></app-footer-text>      
 </div>

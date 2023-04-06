@@ -9,9 +9,12 @@ import { Router } from '@angular/router';
 export class VerifyEmailComponent implements OnInit {
 
   user: string = 'you';
+  action :string = '';
+  state : any =undefined;
 
   constructor(private router: Router ) {
-    this.user = this.router.getCurrentNavigation()?.extras?.state ? this.router.getCurrentNavigation()!.extras!.state!['email'] : this.user
+     this.state = this.router.getCurrentNavigation()?.extras?.state;
+    this.action = this.state?.['action'];
   }
 
   

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { BankDetailsStore } from '../stores/bank.store';
@@ -11,6 +12,7 @@ import { IncomeService } from './income.service';
 import { LedgerServiceService } from './ledger-service.service';
 import { MasterService } from './master.service';
 import { PendingPaymentService } from './pending-payment.service';
+import { TokenStorageService } from './token-storage.service';
 import { TransactionService } from './transaction.service';
 
 @Injectable({
@@ -24,10 +26,7 @@ export class InitService {
     private ledgerService : LedgerServiceService,
     private incomeService : IncomeService,
     private pendingPayemntService : PendingPaymentService,
-    private route: Router
-  ) {
-    this.initApp();
-  }
+   ) {}
 
   initApp() {
     combineLatest({
@@ -43,8 +42,6 @@ export class InitService {
        this.incomeService.syncStore(data.incomeAtGlance);
        this.pendingPayemntService.syncStore(data.pendingPayment);
        this.ledgerService.setLedgerDetails();
-       this.route.navigate(['home','overview']);
-       //this.route.navigate(['auth','login']);
     })
   }
 }

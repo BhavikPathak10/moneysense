@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
 import { IncomeAtGlanceComponent } from './module/income-at-glance/income-at-glance.component';
 import { OverviewComponent } from './module/overview/overview.component';
 import { PendingPaymentComponent } from './module/pending-payment/pending-payment.component';
@@ -7,6 +8,7 @@ import { HomeComponent } from './shared/component/home/home.component';
 import { LoginComponent } from './shared/component/login/login.component';
 import { PageNotFoundComponent } from './shared/component/page-not-found/page-not-found.component';
 import { VerifyEmailComponent } from './shared/component/verify-email/verify-email.component';
+
 const routes: Routes = [
   {
     path:'auth',
@@ -16,11 +18,15 @@ const routes: Routes = [
     },{
       path:'verify-email',
       component:VerifyEmailComponent
+    },{
+      path:'**',
+      redirectTo:'login'
     }]
   },
   {
     path:'home',
     component:HomeComponent,
+    canActivate:[AuthGuard],
     children:[
       {
         path: 'overview',
@@ -51,16 +57,31 @@ const routes: Routes = [
         loadChildren: () =>
           import('./module/admin/admin.module').then((m) => m.AdminModule),
       },
+      {
+        path: '**',
+        redirectTo:'overview'
+      },
     ]
   },
   {
-    path:'**',
+    path:'page-not-found',
     component:PageNotFoundComponent
+  },
+  {
+    path:'',
+    redirectTo:'auth',
+    pathMatch:'full'
+  },
+  {
+    path:'**',
+    redirectTo:'auth',
+    pathMatch:'full'
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers:[AuthGuard]
 })
 export class AppRoutingModule {}

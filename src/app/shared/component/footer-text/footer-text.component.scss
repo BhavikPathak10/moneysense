@@ -1,0 +1,15 @@
+.text{
+    font-family: Nunito;
+    display: flex;
+    align-items: center;
+    color: var(--text-accent-lighter-color);
+    font-size: 12px;
+    letter-spacing: 1px;
+    mat-icon{
+        color:var(--palette-error-rgb);
+        font-size: 1em;
+        height: 1em;
+        width: auto;
+        padding: 0.5em;
+    }
+}

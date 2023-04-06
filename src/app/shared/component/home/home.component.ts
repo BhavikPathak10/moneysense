@@ -8,8 +8,11 @@ import { InitService } from 'src/app/core/services/init.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() {}
+  constructor(private init : InitService) {
+    this.init.initApp();
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
 }

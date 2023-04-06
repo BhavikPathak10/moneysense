@@ -175,7 +175,7 @@ export class PassbookComponent implements OnInit {
       data: {
         okButtonText: 'Yes',
         cancelButtonText: 'No',
-        hideCancel: false,
+        hideCancel: 'no',
         title: 'Delete Transaction',
         message: `Are you sure you want to delete transaction?`,
       },

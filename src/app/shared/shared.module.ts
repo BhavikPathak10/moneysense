@@ -10,6 +10,7 @@ import { ConfirmDialogComponent } from './component/confirm-dialog/confirm-dialo
 import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { VerifyEmailComponent } from './component/verify-email/verify-email.component';
+import { FooterTextComponent } from './component/footer-text/footer-text.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { VerifyEmailComponent } from './component/verify-email/verify-email.comp
     HomeComponent,
     LoginComponent,
     VerifyEmailComponent,
+    FooterTextComponent,
   ],
   imports: [
     CommonModule,

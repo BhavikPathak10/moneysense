@@ -11,7 +11,7 @@
 </div>
 <mat-dialog-actions>
   <button
-    *ngIf="data.hideCancel ? data.hideCancel : true"
+    *ngIf="data.hideCancel == 'no'"
     mat-button
     [mat-dialog-close]="false"
   >

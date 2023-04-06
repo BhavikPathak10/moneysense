@@ -16,7 +16,7 @@ export class ConfirmDialogComponent implements OnInit {
       hint?: string;
       okButtonText?: string;
       cancelButtonText?: string;
-      hideCancel?: boolean;
+      hideCancel?: string;
       icon?: string;
     }
   ) {}

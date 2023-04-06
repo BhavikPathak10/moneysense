@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { InitService } from './core/services/init.service';
 
 @Component({
@@ -9,6 +10,6 @@ import { InitService } from './core/services/init.service';
 
 export class AppComponent {
 
-  constructor(private initService : InitService) {}
+  constructor() {}
 
 }
