@@ -1,9 +1,7 @@
-<mat-card class="scrollable-content">
-  <mat-card-title> Master Details </mat-card-title>
-  <mat-card-content>
-    <ng-container *ngTemplateOutlet="DxMasterTable"></ng-container>
-  </mat-card-content>
-</mat-card>
+<div class="flexColumn fullHeight">
+  <ng-container *ngTemplateOutlet="DxMasterTable"></ng-container>
+</div>
+
 
 
 <ng-template #DxMasterTable>
@@ -14,27 +12,51 @@
       [(focusedRowKey)]="focusedRowKey"
       [autoNavigateToFocusedRow]="true"
       keyExpr="id"
+      (onSaved)="saveMaster($event)"
       >
     <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
     <dxo-editing
       mode="row"
-    >
-    </dxo-editing>
-    <dxi-column dataField="groupHead" caption="Group Head"></dxi-column>
-    <dxi-column dataField="subHead" caption="Sub Head"></dxi-column>
-    <dxi-column dataField="accountHead" caption="Account Head"></dxi-column>
-    <dxi-column dataField="ledger" caption="Ledger"></dxi-column>
-    <dxi-column dataField="costCenter" caption="Cost Center"></dxi-column>
-    <dxi-column dataField="costCategory" caption="Cost Category"></dxi-column>
-    <dxi-column type="buttons">
-      <dxi-button dataField="id" text="delete" [onClick]="onDeleteMasterDx">Delete</dxi-button>
+      [allowUpdating]="false"
+      [allowDeleting]="true"
+      [allowAdding]="true"
+      ></dxo-editing>
+    <dxi-column dataField="groupHead" caption="Group Head">
+      <!-- <dxo-lookup
+            [dataSource]="groupHeadOptions">
+        </dxo-lookup> -->
+    </dxi-column>
+    <dxi-column dataField="subHead" caption="Sub Head">
+      <!-- <dxo-lookup
+            [dataSource]="subHeadOptions">
+        </dxo-lookup> -->
+    </dxi-column>
+    <dxi-column dataField="accountHead" caption="Account Head">
+      <!-- <dxo-lookup
+            [dataSource]="accountHeadOptions">
+        </dxo-lookup> -->
+    </dxi-column>
+    <dxi-column dataField="ledger" caption="Ledger">
+      <!-- <dxo-lookup
+            [dataSource]="ledgerOptions">
+        </dxo-lookup> -->
+    </dxi-column>
+    <dxi-column dataField="costCenter" caption="Cost Center">
+      <!-- <dxo-lookup
+            [dataSource]="costCenterOptions">
+        </dxo-lookup> -->
+    </dxi-column>
+    <dxi-column dataField="costCategory" caption="Cost Category">
+      <!-- <dxo-lookup
+            [dataSource]="costCategoryOptions">
+        </dxo-lookup> -->
     </dxi-column>
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-search-panel [visible]="true"></dxo-search-panel>
   </dx-data-grid>
 </ng-template>
 
-<mat-card>
+<!-- <mat-card>
   <form
     [formGroup]="masterForm"
     class="masterFormClass"
@@ -125,4 +147,4 @@
       Add Master
     </button>
   </form>
-</mat-card>
+</mat-card> -->

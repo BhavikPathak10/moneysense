@@ -1,4 +1,4 @@
-mat-drawer-container {
+/* mat-drawer-container {
     height: 100%;
     width: 100%;
 
@@ -15,11 +15,27 @@ mat-drawer-container {
     top: 90vh;
     left: 95vw;
     z-index: 9999;
+} */
+.app-toolbar{
+    background: var(--primary-darker-color);
+    height: 45px;
+    max-height: 45px;
+    min-height: 45px;
+    mat-toolbar-row{
+        height: 45px;
+        &.secondary{
+            background: var(--palette-grey-5-rgb);
+            color: var(--primary-darker-color);
+        }
+    }
 }
 
-
-/* .content{
+.content{
     display: flex;
     flex: 1;
     overflow-y: auto;
-} */
+    >mat-card{
+        overflow: auto;
+        width: 100%;
+    }
+}

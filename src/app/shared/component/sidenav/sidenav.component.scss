@@ -1,4 +1,4 @@
-.sidebar-wrapper {
+/* .sidebar-wrapper {
     background: var(--primary-darker-color);
     color: var(--palette-grey-2-rgb);
 
@@ -114,4 +114,38 @@
         display: flex;
         position: absolute;
     }
+} */
+
+.toolbar-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .app-logo{
+        height: 34px;
+        width: auto;
+        cursor: pointer;
+        margin-right: 0.5em;
+    }
+
+    a,button{
+        color: var(--palette-grey-2-rgb);
+    }
+
+    .active {
+        color: var(--accent-color) !important;
+        border-bottom: 3px solid;
+        margin: 2px 0px -5px 0px;
+        border-radius: 0px;
+    }
+}
+
+.example-spacer{
+    flex:1 1 auto;
+}
+
+.addBankDetail-btn-css{
+width: 2em;
+font-size: 1em;
+height: 1em;
 }

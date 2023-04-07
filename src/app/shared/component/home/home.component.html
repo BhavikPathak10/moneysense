@@ -1,4 +1,4 @@
-<div class="full-page">
+<!-- <div class="full-page">
     <mat-drawer-container hasBackdrop="false">
       <mat-drawer #drawer mode="side" opened>
          <app-sidenav></app-sidenav>
@@ -8,15 +8,22 @@
           </router-outlet>
         </mat-drawer-content>
   </mat-drawer-container>
-</div>
+</div> -->
 
-<!-- <div class="full-page flexColumn">
-  <mat-toolbar color="primary">
-    <app-sidenav></app-sidenav>
+<div class="full-page flexColumn">
+  <mat-toolbar color="primary" class="fullWidth app-toolbar">
+    <mat-toolbar-row>
+      <app-sidenav></app-sidenav>
+    </mat-toolbar-row>
+   <!--  <mat-toolbar-row class="secondary">
+      
+    </mat-toolbar-row> -->
   </mat-toolbar>
 
 <div class="content">
-  <router-outlet>
-  </router-outlet>
+  <mat-card>
+    <router-outlet>
+    </router-outlet>
+  </mat-card>
 </div>
-</div> -->
+</div>

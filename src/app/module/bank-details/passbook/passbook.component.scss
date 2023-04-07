@@ -1,8 +1,16 @@
+mat-card.flex-1{
+    border:1px solid var(--palette-grey-1-rgb);
+}
+
 .content {
-    flex: 1;
+    max-height: 46vh;
     overflow: auto;
     padding-top: unset;
     padding-bottom: unset;
+}
+
+section{
+    justify-content: space-between;
 }
 
 .mat-icon-button{
@@ -129,4 +137,36 @@ tr.mat-footer-row {
     flex: 2;
     min-width: 100px;
     max-width: 120px;
+}
+
+mat-icon{
+    font-size: 18px;
+    text-align: center;
+    color:var(--palette-grey-7-rgb);
+}
+
+.bank-details-css{
+    a,>div{
+        display: flex;
+        align-items: end;
+        text-decoration: none;
+        mat-icon:first-of-type{
+            margin-left:0.5em;
+        }
+    }
+    h1,h2,h3,h4,h5,h6{
+        margin:unset;
+        display: flex;
+        align-items: center;
+        mat-icon{
+            align-self: flex-end;
+            &:first-of-type{
+                margin-left:0.5em;
+            }
+        }
+    }
+}
+
+input:disabled{
+   color: var(--text-accent-lighter-color) !important;
 }

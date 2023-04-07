@@ -33,7 +33,7 @@ import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
     DatePipe
   ],
   host: {
-    class: 'fullWidth',
+    //class: 'fullWidth',
   },
 }) 
 export class TransactionComponent implements OnInit {

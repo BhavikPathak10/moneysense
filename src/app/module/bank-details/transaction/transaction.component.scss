@@ -10,13 +10,17 @@
 
     .col-1 {
         flex: 1;
-        width: 18vw;
-        max-width: 18vw;
-        min-width: 18vw;
+        width: 22vw;
+        max-width: 22vw;
+        min-width: 22vw;
 
         &.mat-raised-button {
-            height: 42px;
-            line-height: 42px;
+            height: 46px;
+            line-height: 46px;
         }
     }
+}
+
+mat-card{
+   padding: 16px 8px 0px 8px
 }

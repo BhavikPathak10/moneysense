@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { TransactionEnum } from 'src/app/core/enums/transaction.enum';
@@ -21,13 +21,14 @@ import { DatePipe } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
+import { AddBankDialogComponent } from 'src/app/shared/component/add-bank-dialog/add-bank-dialog.component';
 
 @Component({
   selector: 'app-passbook',
   templateUrl: './passbook.component.html',
   styleUrls: ['./passbook.component.scss'],
   host: {
-    class: 'fullHeight fullWidth flexColumn',
+    class: 'flexColumn flex-1',
   },
   providers:[    {
     provide: DateAdapter,
@@ -61,6 +62,7 @@ export class PassbookComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router : Router,
     private bankStore: BankDetailsStore,
     private bankService: BankService,
     private transactionStore: TransactionStore,
@@ -270,5 +272,80 @@ export class PassbookComponent implements OnInit {
     let text = `Customer ID : ${this.activeBank?.customerID}\nAccount PWD : ${this.activeBank?.accountPWD}\nAccount Txn PWD : ${this.activeBank?.accountTxnPWD}`;
     this.clipboard.copy(text);
     this.toast.info("Text copied to clipboard",'close');
+  }
+
+  editBank(event? : any, bankdata? : any){
+    event && event.preventDefault();
+
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: { isOnboarding: false, bankdata : bankdata },
+    };
+
+    const bankDialog = this.dialog.open(AddBankDialogComponent, dialogObj);
+
+    bankDialog.afterClosed().subscribe((result: BankDetails) => {
+      if (result) {
+        this.bankService.updateBankDetails(result)?.subscribe(
+          (data) => {
+            this.bankService.syncStore();
+            this.router.navigate(['home','bank', result.accountName]);
+            this.toast.success(
+              `${result.accountName} Bank updated successfull`,
+              'close'
+            );
+          })
+        }
+      },
+      (err) => {
+            console.log(err);
+            this.toast.warning(
+              `Some error occured. Please try again later.`,
+              'close'
+            );
+      }
+      )
+  }
+
+  deleteBank(event: any, bank?: BankDetails) {
+    event && event.preventDefault();
+
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: {
+        okButtonText: 'Yes',
+        cancelButtonText: 'No',
+        hideCancel: 'no',
+        title: 'Delete Bank',
+        message: `Are you sure you want to delete ${bank?.accountName} and its transactions?`,
+      },
+    };
+
+    const bankDialog = this.dialog.open(ConfirmDialogComponent, dialogObj);
+
+    bankDialog.afterClosed().subscribe((result: BankDetails) => {
+      if (result) {
+        this.transactionService.deleteBankTransaction(bank!);
+        this.router.navigate(['home','overview']);
+        this.toast.success(
+          `Bank ${bank!.accountName} deleted successfully.`,
+          'close'
+        );
+      }
+    });
+  }
+
+  viewBankDetails(event:any, bankData: any){
+    event && event.stopPropagation();
+
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: false,
+      data: { isOnboarding: false,isViewData:true, bankdata : bankData },
+    };
+
+    this.dialog.open(AddBankDialogComponent, dialogObj);
   }
 }

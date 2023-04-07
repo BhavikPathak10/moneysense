@@ -16,11 +16,14 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  host:{
+    class:'fullWidth'
+  }
 })
 export class SidenavComponent implements OnInit {
   title: string = 'MoneySense';
   banks: BankDetails[] = [];
+  bankMenuOpen = false;
 
   subscriptions: Subscription[] = [];
   currentRouteActive : boolean = false;
@@ -96,74 +99,6 @@ export class SidenavComponent implements OnInit {
     });
   }
 
-  editBank(event? : any, bankdata? : any){
-    event && event.stopPropagation();
-
-    let dialogObj = {
-      minWidth: 450,
-      disableClose: true,
-      data: { isOnboarding: false, bankdata : bankdata },
-    };
-
-    const bankDialog = this.dialog.open(AddBankDialogComponent, dialogObj);
-
-    bankDialog.afterClosed().subscribe((result: BankDetails) => {
-      if (result) {
-        this.bankService.updateBankDetails(result)?.subscribe(
-          (data) => {
-            this.bankService.syncStore();
-            this.router.navigate(['bank', result.accountName], {
-              relativeTo: this.route,
-            });
-            this.toast.success(
-              `${result.accountName} Bank updated successfull`,
-              'close'
-            );
-          },
-          (err) => {
-            console.log(err);
-            this.toast.warning(
-              `Some error occured. Please try again later.`,
-              'close'
-            );
-          }
-        )
-      }
-    })
-
-  }
-
-  deleteBank(event: any, bank: BankDetails) {
-    event.stopPropagation();
-
-    let dialogObj = {
-      minWidth: 450,
-      disableClose: true,
-      data: {
-        okButtonText: 'Yes',
-        cancelButtonText: 'No',
-        hideCancel: 'no',
-        title: 'Delete Bank',
-        message: `Are you sure you want to delete ${bank.accountName} and its transactions?`,
-      },
-    };
-
-    const bankDialog = this.dialog.open(ConfirmDialogComponent, dialogObj);
-
-    bankDialog.afterClosed().subscribe((result: BankDetails) => {
-      if (result) {
-        this.transactionservice.deleteBankTransaction(bank);
-        //this.bankService.syncStore();
-        //this.bankStore.setStore(this.banks.filter((b) => b.id != bank.id));
-        this.toast.success(
-          `Bank ${bank.accountName} deleted successfully.`,
-          'close'
-        );
-        //this.navigateTo()
-      }
-    });
-  }
-
   navigateTo(){
     if(this.banks.length > 0){
       this.router.navigate(['overview'], {
@@ -177,7 +112,30 @@ export class SidenavComponent implements OnInit {
   }
 
   logout(){
-    this.auth.logout();
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: {
+        title: 'Confirm logout',
+        message: 'Are you sure you want to log out?',
+        hint: "Your session will be closed and you'll need to log in again to access your account.",
+        okButtonText: 'Logout',
+        cancelButtonText: 'Cancel',
+        hideCancel: 'no',
+        icon: 'power_settings_new'
+    }}
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,dialogObj);
+
+    dialogRef.afterClosed().subscribe((result)=>{
+      if(result){
+        this.auth.logout();
+      }
+    })
+  }
+
+  isRouteActive(url:string) {
+   return this.router.url.includes(url);
   }
 
   ngOnDestroy(): void {

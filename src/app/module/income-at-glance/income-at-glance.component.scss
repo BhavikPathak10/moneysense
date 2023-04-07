@@ -1,3 +1,10 @@
-::ng-deep .dx-datagrid-rowsview .not-editable{
-    background-color: var(--palette-grey-1-rgb);
+
+
+::ng-deep {
+    dx-data-grid{
+        height: inherit;
+    }
+    .dx-datagrid-rowsview .not-editable{
+        background-color: var(--palette-grey-1-rgb);
+    }
 }

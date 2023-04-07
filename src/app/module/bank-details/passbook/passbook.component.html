@@ -1,30 +1,26 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>
-      <a *ngIf="activeBank?.accountURL;else textTemplate" class="bank-link-btn" [href]="activeBank?.accountURL" target="_blank">
-        {{ activeBank?.accountName }}
-      </a>
-      <ng-template #textTemplate>
-        {{ activeBank?.accountName }}
-      </ng-template>
-    </mat-card-title>
-    <mat-card-subtitle>
+<mat-card class="flex-1 mat-elevation-z0">
+<section class="flexRow">
+  <div class="bank-details-css">
+    <div>
+    <a *ngIf="activeBank?.accountURL;else textTemplate" class="bank-link-btn" [href]="activeBank?.accountURL" target="_blank">
+      <h1>{{ activeBank?.accountName }} </h1>
+      <ng-container *ngTemplateOutlet="bankActionTemplate"></ng-container>
+    </a>
+    <ng-template #textTemplate>
+      <h1>{{ activeBank?.accountName }} </h1>
+      <ng-container *ngTemplateOutlet="bankActionTemplate"></ng-container>
+    </ng-template>
+  </div>
+
+    <h4>
       {{ activeBank?.accountNumber }} | {{ activeBank?.bankName | uppercase }} |
       {{ activeBank?.branch | titlecase }} |
       {{ activeBank?.accountType | titlecase }} 
       
-      <button mat-icon-button [matMenuTriggerFor]="passbook_menu">
-        <mat-icon>info</mat-icon>
-      </button>
-      <mat-menu #passbook_menu="matMenu" class="mat-elevation-z2 bank-detail-more-css">
-       <button mat-icon-button> <mat-icon (click)="copyDetails()">content_copy</mat-icon></button>
-          <p mat-menu-item disabled>Customer ID : <strong>{{ activeBank?.customerID }}</strong></p>
-          <p mat-menu-item disabled>Pwd: <strong> {{ activeBank?.accountPWD }}</strong> </p>
-          <p mat-menu-item disabled>Txn PwD: <strong>{{activeBank?.accountTxnPWD }}</strong></p>
-      </mat-menu>
-
-    </mat-card-subtitle>
-<form>
+        <mat-icon class="pointer" (click)="viewBankDetails($event, activeBank)">visibility</mat-icon>
+    </h4>
+  </div>
+  <form>
   <mat-form-field class="dateRangePickerClass" appearance="outline">
     <mat-label>Enter a date range</mat-label>
     <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
@@ -35,9 +31,9 @@
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
   <button mat-icon-button color="primary" (click)="onExportBankDetails()"><mat-icon>file_download</mat-icon></button>
-</form>
-  
-    <form [formGroup]="balanceForm">
+  </form>
+
+  <form [formGroup]="balanceForm">
       <mat-form-field appearance="outline">
         <mat-label>Balance</mat-label>
         <input
@@ -51,20 +47,17 @@
           >Updated On {{ this.activeBank?.balanceUpdatedAt | date: "medium" }}
         </mat-hint> -->
       </mat-form-field>
-    </form>
-  </mat-card-header>
-  </mat-card>
+  </form>
+</section>
 
-<mat-card class="content">
+<div class="content">
   <ng-container *ngTemplateOutlet="bankTransactionTable"></ng-container>
+</div>
 </mat-card>
 
 <ng-template #bankTransactionTable>
   <table mat-table [dataSource]="bankTransactionData">
-    <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-
-    <ng-container matColumnDef="transactionDate">
+     <ng-container matColumnDef="transactionDate">
       <th mat-header-cell *matHeaderCellDef>Date</th>
       <td mat-cell *matCellDef="let element">
         {{ element.transactionDate | date: "dd-MMM-yyyy" }}
@@ -145,4 +138,13 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
   </table>
+</ng-template>
+
+<ng-template #bankActionTemplate>
+  <mat-icon class="pointer" (click)="editBank($event, activeBank)">
+    edit
+  </mat-icon>
+  <mat-icon class="pointer" (click)="deleteBank($event, activeBank)">
+    delete_outline
+  </mat-icon>
 </ng-template>

@@ -42,6 +42,12 @@ export class AddBankDialogComponent implements OnInit {
       this.bankForm.get('currentBalance')?.setValue(this.data.bankdata.currentBalance);
       this.bankForm.get('currentBalance')?.disable();
     }
+    if(this.data.isViewData){
+      this.bankForm.get('accountURL')?.disable();
+      this.bankForm.get('customerID')?.disable();
+      this.bankForm.get('accountPWD')?.disable();
+      this.bankForm.get('accountTxnPWD')?.disable();
+    }
   }
 
   onSaveBank() {

@@ -1,20 +1,3 @@
-.mat-card.scrollable-content {
-    flex: 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    >.mat-card-title-group {
-        display: block;
-    }
-
-    >.mat-card-content {
-        //overflow-y: auto;
-        min-height: 300px;
-        flex: 1;
-    }
-}
-
 .mat-card{
     padding:10px;
 }
@@ -47,5 +30,5 @@
 }
 
 dx-data-grid{
-    height: 100%;
+    height: inherit;
 }

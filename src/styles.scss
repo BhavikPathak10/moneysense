@@ -44,6 +44,7 @@ body {
     font-size: 0.85rem !important;
     font-family: Roboto, "Helvetica Neue", sans-serif !important;
     cursor: default;
+        height:100%;
 }
 
 .full-page {
@@ -52,6 +53,10 @@ body {
     left: 0 !important;
     width: 100% !important;
     height: 100% !important;
+}
+
+.flex-1{
+    flex:1;
 }
 
 /* CUSTOM APP SCSS */
@@ -70,13 +75,10 @@ mat-card {
         color: var(--text-accent-color);
     }
 }
-
-form {
-    /*     font-size: 0.9em; */
-}
-
-.wdr-credits {
-    display: none;
+mat-form-field{
+    input{
+        font-weight: 500 !important; 
+    }
 }
 
 ::-webkit-scrollbar-track {

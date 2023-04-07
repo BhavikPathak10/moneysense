@@ -1,13 +1,10 @@
-<section>
-    <div class="header">
-        <h2>{{reportSelected ? 'Report (Headwise)' : 'Ledger'}}</h2>
-        <button type="button" mat-raised-button color="primary" (click)="reportSelected = !reportSelected"> Show {{reportSelected ? 'Ledger':'Report'}} </button>
-    </div>
-    <div *ngIf="reportSelected;else DxLedgerTable">
-        <ng-container *ngTemplateOutlet="DxPivotReportTable"></ng-container>
-    </div>
-    <!-- <ng-container *ngTemplateOutlet="DxLedgerOverviewTable"></ng-container> -->
-</section>
+<div class="header">
+    <h2>{{reportSelected ? 'Report (Headwise)' : 'Ledger'}}</h2>
+    <button type="button" mat-raised-button color="primary" (click)="reportSelected = !reportSelected"> Show {{reportSelected ? 'Ledger':'Report'}} </button>
+</div>
+<div *ngIf="reportSelected;else DxLedgerTable">
+    <ng-container *ngTemplateOutlet="DxPivotReportTable"></ng-container>
+</div>
 
 <ng-template #DxLedgerTable>
     <dx-data-grid
@@ -15,6 +12,7 @@
     [allowColumnReordering]="true"
     [allowColumnResizing]="true"
     [columnAutoWidth]="true">
+    <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
     <dxo-group-panel [visible]="true"></dxo-group-panel>
       <dxi-column dataField="transactionDate" sortOrder="asc" caption="Date" dataType="date" format="dd-MMM-yyyy"></dxi-column>
       <dxi-column dataField="accountName" caption="Bank"></dxi-column>
@@ -43,6 +41,7 @@
     [dataSource]="pivotDataSource"
     >
     <dxo-field-chooser [enabled]="true"></dxo-field-chooser>
+    <dxo-scrolling mode="virtual"></dxo-scrolling>
     <dxo-export [enabled]="true" fileName={{getFileName()}}></dxo-export>
     <dxo-field-panel
         [visible]="true"

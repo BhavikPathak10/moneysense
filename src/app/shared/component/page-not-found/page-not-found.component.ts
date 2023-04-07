@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageNotFoundComponent implements OnInit {
 
+  list:any = Array(1000).fill('SOME CONTENT HERE'); 
   constructor() { }
 
   ngOnInit(): void {

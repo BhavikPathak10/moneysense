@@ -1,39 +1,32 @@
-<div class="flexColumn">
-  <mat-card>
-    <mat-card-title>Overview</mat-card-title>
-  <mat-card-content>
-      <section class="flexRow">
-        <mat-card class="mat-elevation-z0" (click)="navigate('income-at-glance')">
-          <mat-card-subtitle>
-            Income at Glance
-          </mat-card-subtitle>
-          <mat-card-title>
-            {{ incomeAtGlanceBalance | currency:'INR' }}
-          </mat-card-title>                
-        </mat-card>
-        <mat-card class="mat-elevation-z0" (click)="navigate('pending-payment')">
-          <mat-card-subtitle>
-            Pending Payment
-          </mat-card-subtitle>
-              <mat-card-title>
-                {{ pendingPaymentBalance | currency:'INR' }}
-              </mat-card-title>
-        </mat-card>
-      </section>
-      <mat-accordion>
-        <mat-expansion-panel expanded>
-          <mat-expansion-panel-header>
-            <mat-panel-title> Banks </mat-panel-title>
-          </mat-expansion-panel-header>
-            <section>
-                <ng-container *ngTemplateOutlet="DxbankOverviewTable"></ng-container>
-            </section>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </mat-card-content>
-  </mat-card>
-</div>
 
+<section class="flexRow">
+  <mat-card class="mat-elevation-z0" (click)="navigate('income-at-glance')">
+    <mat-card-subtitle>
+      Income at Glance
+    </mat-card-subtitle>
+    <mat-card-title>
+      {{ incomeAtGlanceBalance | currency:'INR' }}
+    </mat-card-title>                
+  </mat-card>
+  <mat-card class="mat-elevation-z0" (click)="navigate('pending-payment')">
+    <mat-card-subtitle>
+      Pending Payment
+    </mat-card-subtitle>
+        <mat-card-title>
+          {{ pendingPaymentBalance | currency:'INR' }}
+        </mat-card-title>
+  </mat-card>
+</section>
+<mat-accordion>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title> Banks </mat-panel-title>
+    </mat-expansion-panel-header>
+      <section>
+          <ng-container *ngTemplateOutlet="DxbankOverviewTable"></ng-container>
+      </section>
+  </mat-expansion-panel>
+  
 <ng-template #DxbankOverviewTable>
   <dx-data-grid
       [dataSource]="banks"

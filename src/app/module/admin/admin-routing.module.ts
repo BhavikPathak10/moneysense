@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './admin.component';
+import { MasterComponent } from './master/master.component';
 
 const routes: Routes = [
   {
     path: 'master',
-    component: AdminComponent,
+    component: MasterComponent,
   },
   {
     path: '',

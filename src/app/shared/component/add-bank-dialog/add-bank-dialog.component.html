@@ -1,7 +1,10 @@
-<section mat-dialog-title> <h1>Add Bank </h1> <button mat-button color="primary" (click)="showOtherFields = !showOtherFields">{{showOtherFields ? 'Hide':'Show'}} more fields</button></section>
+<section mat-dialog-title> 
+  <h1> {{this.data.isViewData ? 'View Details' : this.data.bankdata ? 'Edit Bank': 'Add Bank'}} </h1>
+  <button *ngIf="!this.data.isViewData" mat-button color="primary" (click)="showOtherFields = !showOtherFields">{{showOtherFields ? 'Hide':'Show'}} more fields</button>
+</section>
 <div mat-dialog-content>
   <form [formGroup]="bankForm">
-    <ng-container *ngIf="showOtherFields">
+    <ng-container *ngIf="showOtherFields || this.data.isViewData">
       <mat-form-field appearance="outline">
         <mat-label>URL</mat-label>
         <input
@@ -34,8 +37,9 @@
           formControlName="accountTxnPWD"
         />
       </mat-form-field>
-      <mat-divider></mat-divider>
+      <mat-divider *ngIf="!this.data.isViewData"></mat-divider>
     </ng-container>
+    <ng-container *ngIf="!this.data.isViewData">
     <mat-form-field appearance="outline">
       <mat-label>Account Name</mat-label>
       <input
@@ -97,6 +101,7 @@
         formControlName="currentBalance"
       />
     </mat-form-field>
+  </ng-container>
   </form>
 </div>
 <mat-dialog-actions>
@@ -105,9 +110,10 @@
     [mat-dialog-close]="undefined"
     [disabled]="data?.isOnboarding"
   >
-    Cancel
+    {{this.data.isViewData ? 'Close':'Cancel'}}
   </button>
   <button
+  *ngIf="!this.data.isViewData"
     mat-raised-button
     (click)="onSaveBank()"
     cdkFocusInitial

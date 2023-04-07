@@ -5,7 +5,7 @@
 }
 
 .pivotReportGrid{
-    height: 85vh;
+    max-height: 77vh;
     font-size: 0.9rem;
     ::ng-deep.dx-pivotgrid-area{
         font-weight: 500 !important;
