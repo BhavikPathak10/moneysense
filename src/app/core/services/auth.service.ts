@@ -40,7 +40,6 @@ export class AuthService {
         if(res.user?.emailVerified == true) {
           this.router.navigate(['home','overview']);
         } else {
-          this.toast.success('Registration successfull','close');
           this.router.navigate(['auth','verify-email']);
         }
       })
@@ -73,7 +72,8 @@ export class AuthService {
    // email varification
    sendEmailForVerification(user : any) {
     user.sendEmailVerification().then((res : any) => {
-      this.router.navigate(['auth','verify-email'],{state:{user:user,action:'new-user'}});
+      this.toast.success('Registration successfull','close');
+      this.router.navigate(['auth','verify-email'],{state:{email:user.email,action:'new-user'}});
     }, (err : any) => {
       this.toast.warning('Something went wrong. Not able to send mail to your email.','close');
     })

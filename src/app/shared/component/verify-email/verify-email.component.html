@@ -8,7 +8,7 @@
             <img src="../../../../assets/images/verify-email.png" alt="Verify Email" class="card-img"/>
         <p>
             An email has been sent to 
-            <strong>{{action == 'reset-password' ? state?.email ? state.email : 'you' : state?.user ? state.user?.email : 'you' }}</strong>
+            <strong>{{action ? state.email : 'you'}}</strong>
             with a link to {{action == 'reset-password' ?  'reset your password' : 'verify your account'}}. If you have not received the email after a few minutes, please check you spam folder
           </p>
         </mat-card-content>
