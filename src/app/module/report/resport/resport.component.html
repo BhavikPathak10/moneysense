@@ -1,9 +1,11 @@
-<div class="header">
-    <h2>{{reportSelected ? 'Report (Headwise)' : 'Ledger'}}</h2>
-    <button type="button" mat-raised-button color="primary" (click)="reportSelected = !reportSelected"> Show {{reportSelected ? 'Ledger':'Report'}} </button>
-</div>
-<div *ngIf="reportSelected;else DxLedgerTable">
-    <ng-container *ngTemplateOutlet="DxPivotReportTable"></ng-container>
+<div class="flexColumn fullHeight">
+    <section class="flexRow header">
+        <h2>{{reportSelected ? 'Report (Headwise)' : 'Ledger'}}</h2>
+        <button type="button" mat-raised-button color="primary" (click)="reportSelected = !reportSelected"> Show {{reportSelected ? 'Ledger':'Report'}} </button>
+    </section>
+    <ng-container *ngIf="reportSelected;else DxLedgerTable">
+        <ng-template *ngTemplateOutlet="DxPivotReportTable"></ng-template>
+    </ng-container>
 </div>
 
 <ng-template #DxLedgerTable>
