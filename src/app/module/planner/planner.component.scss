@@ -8,9 +8,16 @@ mat-stepper{
 }
 
 .side-drawer{
-    .toggle-button{
-        align-self: stretch;
-        margin-left: 20px;
+    section.flexRow{
+        justify-content: space-between;
+        align-items: center;
+        .header{
+            margin:unset;
+            margin-left:20px;
+        }
+        .toggle-button.adjust-margin{
+            left:-1px;
+        }
     }
 }
 
@@ -30,9 +37,14 @@ mat-stepper{
     }
     .buttons{
         position: absolute;
-        top: 0;
+        top: -5px;
         right: 20px;
     }
+}
+
+.content-wrapper{
+    margin:10px;
+    overflow-y: auto;
 }
 
 .is-number-field{

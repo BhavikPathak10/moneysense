@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { datetime, RRule, RRuleSet, rrulestr } from 'rrule';
 
 import { Subscription } from 'rxjs';
+import { PlannerService } from 'src/app/core/services/planner.service';
 import { PlannerStore } from 'src/app/core/stores/planner.store';
 
 @Component({
@@ -19,12 +19,13 @@ export class PlannerCalendarComponent implements OnInit {
   planSchedule:any = [];
 
   constructor(
-    private plannerStore : PlannerStore
+    private plannerStore : PlannerStore,
+    private plannerService : PlannerService
   ) { 
     this.subscription.push(
       this.plannerStore.bindStore().subscribe((data)=>{
         this.planners = data.map((p:any)=>{
-          p.recurrenceDates = this.generateReccurence(p.taskRecurrence);
+          p.recurrenceDates = this.plannerService.getRecurrenceRuleForPlan(p.taskRecurrence).dates;
           return p;
          });
          this.generateGrid();
@@ -40,10 +41,10 @@ export class PlannerCalendarComponent implements OnInit {
     this.planners.forEach((t:any)=>{
     let flatArr = t.recurrenceDates.map((dt:any)=>{
         return {
-            taskdate: moment(dt).format('YYYY/MM/DD'),
-            month : moment(dt).set('date',1).format('YYYY/MM/DD'),
-            year :moment(dt).format('YYYY'),
-            week : moment(dt).isoWeek(),
+            taskdate: moment(new Date(dt)).format('YYYY/MM/DD'),
+            month : moment(new Date(dt)).set('date',1).format('YYYY/MM/DD'),
+            year :moment(new Date(dt)).format('YYYY'),
+            week : moment(new Date(dt)).isoWeek(),
             budget:t.taskEstBudget,
             name : t.taskName,
             idx: t.id,
@@ -55,44 +56,14 @@ export class PlannerCalendarComponent implements OnInit {
   }
 
   generateReccurence(recurr:any){
-    if(!recurr.isRepeat){
-      return [moment(recurr.startDate).format(this.DATE_FORMAT_DD_MMM_YYYY)];
-    }
-    
-    let startdate = moment(recurr.startDate);
-    let enddate = moment().add(1,'years'); //a year from todays date.
-    if(recurr.endDate && moment(recurr.endDate).isBefore(enddate)){
-      enddate = moment(recurr.endDate);
-    }
+   return this.plannerService.getRecurrenceRuleForPlan(recurr).dates;
+  }
 
-    let recurrInterval:any = {
-      dtstart: datetime(startdate.year(), startdate.month(), startdate.date()),
-      until: datetime(enddate.year(), enddate.month(), enddate.date()),
-      interval : recurr.every
-    };
-
-    switch (recurr.unit) {
-      case 'DAYS':
-        recurrInterval.freq = RRule.DAILY;
-        break;
-        case 'WEEKS':
-          recurrInterval.freq = RRule.WEEKLY;
-          recurrInterval.byweekday = recurr.weekdays
-          break;
-        case 'MONTHS':
-          recurrInterval.freq = RRule.MONTHLY;
-          recurrInterval.bymonthday = recurr.date;
-          break;
-          case 'YEARS':
-            recurrInterval.freq = RRule.YEARLY;
-            recurrInterval.bymonth = recurr.months;
-            recurrInterval.bymonthday = recurr.date;
-        break;
-      default:
-        break;
+  onCellPrepared(e:any) {
+    e.cellElement.classList.remove('lapsed');
+    if(e.rowType == 'data' && moment(e.data.taskdate).isBefore(new Date())){
+      e.cellElement.classList.add('lapsed');
     }
-
-    return new RRule(recurrInterval).all().map(dt=>moment(dt).format(this.DATE_FORMAT_DD_MMM_YYYY));
   }
 
   ngOnDestroy(){

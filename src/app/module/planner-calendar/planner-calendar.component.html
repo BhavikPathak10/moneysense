@@ -10,10 +10,11 @@
         [allowColumnReordering]="true"
         [allowColumnResizing]="true"
         [columnAutoWidth]="true"
+        (onCellPrepared)="onCellPrepared($event)"
         >
         <dxo-sorting
         mode="multiple">
-    </dxo-sorting>
+      </dxo-sorting>
         <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
       <dxi-column dataField="year" caption="Year" [groupIndex]="0"></dxi-column>.
       <dxi-column dataField="month" caption="Month" dataType="date" format="MMMM" [groupIndex]="1"></dxi-column>

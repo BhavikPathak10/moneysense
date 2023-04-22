@@ -89,32 +89,7 @@ export class MasterComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    /* this.filter_groupHeadOptions = this.masterForm.get('groupHead')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value,this.groupHeadOptions))
-    );
-    this.filter_subHeadOptions = this.masterForm.get('subHead')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value,this.subHeadOptions))
-    );
-    this.filter_accountHeadOptions = this.masterForm.get('accountHead')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value,this.accountHeadOptions))
-    );
-    this.filter_ledgerOptions = this.masterForm.get('ledger')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value,this.ledgerOptions))
-    );
-    this.filter_costCenterOptions = this.masterForm.get('costCenter')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value,this.costCenterOptions))
-    );
-    this.filter_costCategoryOptions = this.masterForm.get('costCategory')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value,this.costCategoryOptions))
-    ); */
-  }
+  ngOnInit(): void {}
 
   private _filter(value: string, arrayList:Array<any>): any {
     const filterValue = value?.toLowerCase();
@@ -123,90 +98,6 @@ export class MasterComponent implements OnInit {
     );
   }
 
-  /* onAddMaster(formDirective:FormGroupDirective) {
-    if (this.masterForm.valid) {
-      let formValue = this.masterForm.value;
-      let obj = {
-        'Group Head': formValue['groupHead'].toUpperCase(),
-        'Sub Head': formValue['subHead'].toUpperCase(),
-        'Account Head': formValue['accountHead'].toUpperCase(),
-        Ledger: formValue['ledger'].toUpperCase(),
-        'Cost Center': formValue['costCenter'].toUpperCase(),
-        'Cost Category': formValue['costCategory'].toUpperCase(),
-      };
-
-      let detailsAvail = this.masterDetails.find((rec:any)=> rec.ledger.toLowerCase() == formValue['ledger'].toLowerCase()) || this.masterDetails.find((rec:any)=> rec.groupHead.toLowerCase() == formValue['groupHead'].toLowerCase() 
-      && rec.subHead.toLowerCase() == formValue['subHead'].toLowerCase() 
-      && rec.accountHead.toLowerCase() == formValue['accountHead'].toLowerCase() 
-      && rec.ledger.toLowerCase() == formValue['ledger'].toLowerCase() 
-      && rec.costCenter.toLowerCase() == formValue['costCenter'].toLowerCase() 
-      && rec.costCategory.toLowerCase() == formValue['costCategory'].toLowerCase());
-
-      if(detailsAvail){
-        this.focusedRowKey = this.dataGrid?.instance.keyOf(detailsAvail);
-        this.toast.info('Master Details already available at highlighted row.', 'close');
-        return;
-      }
-
-      this.masterService.addMasterData(obj).subscribe(
-        (data) => {
-          this.masterService.syncStore();
-          formDirective.resetForm();
-          this.masterForm.reset();
-          this.toast.success('Master Details added successfully.', 'close');
-        },
-        (err) => {
-          this.toast.warning(
-            'Some error occured. Please try again later.',
-            'close'
-          );
-        }
-      );
-    }
-  } */
-  
-  /*   onDeleteMasterDx(e?:any){
-    if(e && e.row && e.row.data){
-      this.onDeleteMaster(e.row.data.id);
-    }
-  }
-  
-  onDeleteMaster(rowId: any) {
-    let deleteConfirmed = () => {
-      this.masterService.deleteMaster(rowId).subscribe(
-        (data) => {
-          this.masterService.syncStore();
-          this.toast.success('Master detail deleted successfully.', 'close');
-        },
-        (err) => {
-          this.toast.success(
-            'Some error occured. Please try again later.',
-            'close'
-            );
-          }
-          );
-        };
-        
-        let dialogObj = {
-          minWidth: 450,
-          disableClose: true,
-          data: {
-            okButtonText: 'Yes',
-            cancelButtonText: 'No',
-            hideCancel: 'no',
-        title: 'Delete master detail',
-        message: `Are you sure you want to delete Master detail?`,
-      },
-    };
-
-    const dialog = this.dialog?.open(ConfirmDialogComponent, dialogObj);
-
-    dialog?.afterClosed().subscribe((result) => {
-      if (result) {
-        deleteConfirmed();
-      }
-    });
-  } */
 
   saveMaster(e:any){
     let data = e.changes[0].data || e.changes[0].key;

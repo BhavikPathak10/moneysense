@@ -10,11 +10,16 @@
 
 <ng-template #matTabPlanner>
   <div class="side-drawer fullHeight flexColumn">
-    <div class="flex-1" *ngIf="!showPlanner; else addTaskStepper">
+    <section class="flexRow">
+      <h2 class="header"> {{ showPlanner ? 'Add Task' : 'Task List' }} </h2>
+      <button *ngIf="showPlanner" mat-stroked-button color="primary" class="toggle-button adjust-margin" (click)="onTogglePlanner()">Show Tasks</button>
+      <button *ngIf="!showPlanner" mat-flat-button color="primary" class="toggle-button" (click)="onTogglePlanner()">Add Task</button>
+    </section>
+    <div class="flex-1 content-wrapper" *ngIf="!showPlanner; else addTaskStepper">
       <ng-container *ngIf="planner.length > 0">
         <div class="plan-item" *ngFor="let item of planner">
           <h3>{{item?.taskName}} <span>{{item?.taskEstBudget | currency:'INR'}}</span> </h3>
-          <p>Second line</p>
+          <p>{{item?.recurText}}</p>
           <section class="buttons">
             <button mat-icon-button (click)="editPlanner(item)">
               <mat-icon>edit</mat-icon>
@@ -27,15 +32,14 @@
         </div>
       </ng-container>
     </div>
-    <button mat-flat-button color="primary" class="toggle-button" (click)="onTogglePlanner()">{{ showPlanner ? 'Show Plans' : 'Add Plan' }}</button>
   </div>
   </ng-template>
 
 <ng-template #addTaskStepper>
-    <mat-stepper class="flex-1" orientation="vertical" [linear]="true" #stepper>
+    <mat-stepper class="flex-1 content-wrapper" orientation="vertical" [linear]="true" #stepper>
         <mat-step [stepControl]="taskNametFormGroup">
           <form [formGroup]="taskNametFormGroup">
-            <ng-template matStepLabel>Plan Detail</ng-template>
+            <ng-template matStepLabel>Task Detail</ng-template>
             <div class="flexColumn">
             <mat-form-field appearance="outline">
                 <mat-label>Name</mat-label>
@@ -128,9 +132,9 @@
             <form [formGroup]="thirdFormGroup">
               <ng-template matStepLabel>Set a payment detail</ng-template>
               <div>
-                <button mat-button (click)="stepper.reset()">Reset</button>
+                <!-- <button mat-button (click)="stepper.reset()">Reset</button>  -->
                 <button mat-button matStepperPrevious>Back</button>
-                <button mat-flat-button color="primary" (click)="onPlanAddorUpdate()"> {{isActivePlan ? 'Update': 'Add'}} Plan</button>
+                <button mat-flat-button color="primary" (click)="onPlanAddorUpdate()"> {{isActivePlan ? 'Update': 'Add'}} Task to calendar</button>
               </div>
             </form>
           </mat-step>

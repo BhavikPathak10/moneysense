@@ -1,3 +1,8 @@
 dx-data-grid{
     height: 100%;
 }
+::ng-deep{
+    .lapsed{
+    color:var(--palette-quaternary-rgb);
+    }
+}

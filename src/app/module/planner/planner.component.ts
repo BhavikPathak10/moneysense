@@ -50,7 +50,11 @@ export class PlannerComponent implements OnInit {
     ) {
     this.subscription.push(
       this.plannerStore.bindStore().subscribe((data)=>{
-        this.planner = data;
+        this.planner = data.map((d:any)=>{
+          d.recurText = this.plannerService.getRecurrenceRuleForPlan(d.taskRecurrence).text
+          return d;
+        });
+
       })
     );
   }
