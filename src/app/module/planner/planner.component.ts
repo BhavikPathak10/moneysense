@@ -34,7 +34,7 @@ export class PlannerComponent implements OnInit {
     weekdays:[],
     months :[],
     date:[],
-    startDate: [new Date(), Validators.required],
+    startDate: [moment(new Date()), Validators.required],
     endDate: [],
   });
   thirdFormGroup = this._formBuilder.group({
@@ -154,7 +154,7 @@ export class PlannerComponent implements OnInit {
   onTogglePlanner(){
     this.showPlanner = !this.showPlanner;
     this.isActivePlan = false;
-    this.scheduleFormGroup.reset({startDate:moment(),every:1,unit:'DAYS',isRepeat:false});
+    this.scheduleFormGroup.reset({startDate:moment(new Date()),every:1,unit:'DAYS',isRepeat:false});
     this.taskNametFormGroup.reset();
   }
 

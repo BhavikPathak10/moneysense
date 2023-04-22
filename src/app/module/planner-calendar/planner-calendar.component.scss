@@ -5,4 +5,10 @@ dx-data-grid{
     .lapsed{
     color:var(--palette-quaternary-rgb);
     }
+    .strike{
+        text-decoration: line-through;
+    }
+    .dx-link-icon{
+        color:var(--palette-grey-6-rgb) !important;
+    }
 }

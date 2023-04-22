@@ -16,7 +16,7 @@
       <button *ngIf="!showPlanner" mat-flat-button color="primary" class="toggle-button" (click)="onTogglePlanner()">Add Task</button>
     </section>
     <div class="flex-1 content-wrapper" *ngIf="!showPlanner; else addTaskStepper">
-      <ng-container *ngIf="planner.length > 0">
+      <ng-container *ngIf="planner.length > 0;else noPlanTemplate">
         <div class="plan-item" *ngFor="let item of planner">
           <h3>{{item?.taskName}} <span>{{item?.taskEstBudget | currency:'INR'}}</span> </h3>
           <p>{{item?.recurText}}</p>
@@ -28,9 +28,15 @@
               <mat-icon>delete_outlined</mat-icon>
             </button>
           </section>
-          <mat-divider></mat-divider>
         </div>
       </ng-container>
+      <ng-template #noPlanTemplate>
+        <section class="flexColumn fullHeight no-plan-section">
+          <h2>Be proactive, track expenses!</h2>
+          <button mat-button color="primary" (click)="onTogglePlanner()"><strong> Add a task </strong></button> 
+          <h4>Keep a year-long view on your expenses <br>Track with ease</h4>
+        </section>
+      </ng-template>
     </div>
   </div>
   </ng-template>
@@ -75,6 +81,7 @@
             <div class="flexRow repeat-toggle">
               <mat-label> Repeat </mat-label> <mat-slide-toggle color="primary" formControlName="isRepeat"></mat-slide-toggle>
             </div>
+            <ng-container *ngIf="scheduleFormGroup.get('isRepeat')?.value">
             <div class="flexRow">
               <mat-form-field class="is-number-field" appearance="outline">
                 <mat-label>Every</mat-label>
@@ -122,6 +129,7 @@
               <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
               <mat-datepicker #pickerEnd></mat-datepicker>
             </mat-form-field>
+            </ng-container>
             <div>
               <button mat-button matStepperPrevious>Back</button>
               <button mat-button matStepperNext>Next</button>

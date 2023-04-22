@@ -66,6 +66,19 @@ export class PlannerCalendarComponent implements OnInit {
     }
   }
 
+  markAsDone(e:any){
+    console.log(e);
+  }
+  
+  markAsIgnore(e:any){
+    console.log(e);
+    e.event.preventDefault();
+    e.row.cells.forEach((cell:any)=>{
+      cell.cellElement.classList.remove('lapsed');
+      cell.cellElement.classList.add('strike');
+    })
+  }
+
   ngOnDestroy(){
     this.subscription.map((sub)=>sub.unsubscribe());
   }
