@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -12,13 +13,17 @@ export class VerifyEmailComponent implements OnInit {
   action :string = '';
   state : any =undefined;
 
-  constructor(private router: Router ) {
+  constructor(private router: Router, private auth : AuthService ) {
      this.state = this.router.getCurrentNavigation()?.extras?.state;
     this.action = this.state?.['action'];
   }
 
   
   ngOnInit(): void {
+  }
+
+  resendVerification(){
+    this.auth.resendVerification();
   }
 
   navigateTo(){

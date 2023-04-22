@@ -13,7 +13,7 @@
           </p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-flat-button disabled>Resend Email</button>
+          <button mat-flat-button [disabled]="true" (click)="resendVerification()">Resend Email</button>
           <button mat-stroked-button (click)="navigateTo()"> Sign In</button>
         </mat-card-actions>
       </mat-card>

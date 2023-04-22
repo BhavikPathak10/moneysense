@@ -3,7 +3,6 @@ import {AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/confirm-dialog.component';
-import { InitService } from './init.service';
 import { ToastMessageService } from './toast-message.service';
 import { TokenStorageService } from './token-storage.service';
 
@@ -59,6 +58,15 @@ export class AuthService {
     })
   }
 
+  resendVerification(){
+    this.fireauth.currentUser.then((res)=>{
+      res?.sendEmailVerification().then(()=>{
+        this.toast.success('Email has been sent for verification.','close');
+      },()=>{
+        this.toast.warning('Some error occured, Please try again later.','close');
+      })
+    })
+  }
   // sign out
   logout() {
     this.fireauth.signOut().then( () => {

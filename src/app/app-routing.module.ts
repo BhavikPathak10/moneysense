@@ -4,6 +4,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { IncomeAtGlanceComponent } from './module/income-at-glance/income-at-glance.component';
 import { OverviewComponent } from './module/overview/overview.component';
 import { PendingPaymentComponent } from './module/pending-payment/pending-payment.component';
+import { PlannerComponent } from './module/planner/planner.component';
 import { HomeComponent } from './shared/component/home/home.component';
 import { LoginComponent } from './shared/component/login/login.component';
 import { PageNotFoundComponent } from './shared/component/page-not-found/page-not-found.component';
@@ -56,6 +57,10 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: () =>
           import('./module/admin/admin.module').then((m) => m.AdminModule),
+      },
+      {
+        path: 'planner',
+        component: PlannerComponent,
       },
       {
         path: '**',

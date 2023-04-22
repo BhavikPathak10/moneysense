@@ -1,0 +1,40 @@
+<section class="fullHeight">
+    <ng-container *ngTemplateOutlet="DxSchedulerTable"></ng-container>
+</section>
+
+
+
+<ng-template #DxSchedulerTable>
+    <dx-data-grid
+        [dataSource]="planSchedule"
+        [allowColumnReordering]="true"
+        [allowColumnResizing]="true"
+        [columnAutoWidth]="true"
+        >
+        <dxo-sorting
+        mode="multiple">
+    </dxo-sorting>
+        <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
+      <dxi-column dataField="year" caption="Year" [groupIndex]="0"></dxi-column>.
+      <dxi-column dataField="month" caption="Month" dataType="date" format="MMMM" [groupIndex]="1"></dxi-column>
+      <dxi-column dataField="week" caption="week" [groupIndex]="2"></dxi-column>
+      <dxi-column dataField="taskdate" caption="Date" dataType="date" format="dd-MMM-yyyy" [sortIndex]="1" sortOrder="asc"></dxi-column>
+      <dxi-column dataField="name" caption="Name"></dxi-column>
+      <dxi-column dataField="budget" caption="Estimated budget" format="₹ ,##0.##"></dxi-column>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-summary>
+        <dxi-group-item
+              column="week"
+              summaryType="count"
+              [alignByColumn]="true">
+          </dxi-group-item>
+      <dxi-group-item
+      column="budget"
+      summaryType="sum"
+      [alignByColumn]="true"
+      valueFormat="₹ ,##0.##"
+      displayFormat="{0}">
+    </dxi-group-item>
+    </dxo-summary>
+    </dx-data-grid>
+  </ng-template>

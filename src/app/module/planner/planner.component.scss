@@ -1,0 +1,56 @@
+mat-drawer{
+    min-width: 30vw;
+    max-width: 30vw;
+}
+
+mat-stepper{
+    overflow-y: auto;
+}
+
+.side-drawer{
+    .toggle-button{
+        align-self: stretch;
+        margin-left: 20px;
+    }
+}
+
+.plan-item{
+    margin:8px 0px 8px 16px;
+    position: relative;
+    h3{
+        margin-bottom:unset;
+        font-weight: 600;
+        span{
+            font-weight: 400;
+            font-size: 12px;
+        }
+    }
+    p{
+        color : var(--palette-grey-7-rgb);
+    }
+    .buttons{
+        position: absolute;
+        top: 0;
+        right: 20px;
+    }
+}
+
+.is-number-field{
+    margin-right: 16px;
+    width: 60px;
+}
+.repeat-toggle{
+    margin-bottom: 16px;
+    align-items: center;
+    mat-label{
+        margin-right:16px;
+    }
+}
+.week-select{
+    margin-bottom: 16px;
+}
+
+.mat-button-toggle-checked{
+    background: var(--primary-color);
+    color: var(--text-primary-darker-color);
+}

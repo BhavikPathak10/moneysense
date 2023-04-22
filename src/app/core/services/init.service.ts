@@ -12,6 +12,7 @@ import { IncomeService } from './income.service';
 import { LedgerServiceService } from './ledger-service.service';
 import { MasterService } from './master.service';
 import { PendingPaymentService } from './pending-payment.service';
+import { PlannerService } from './planner.service';
 import { TokenStorageService } from './token-storage.service';
 import { TransactionService } from './transaction.service';
 
@@ -26,6 +27,7 @@ export class InitService {
     private ledgerService : LedgerServiceService,
     private incomeService : IncomeService,
     private pendingPayemntService : PendingPaymentService,
+    private plannerService : PlannerService,
    ) {}
 
   initApp() {
@@ -34,13 +36,15 @@ export class InitService {
      bank : this.bankService.getBankDetails(),
      master: this.masterService.getMasterDetails(),
      incomeAtGlance : this.incomeService.getIncomeAtGlanceDetails(),
-     pendingPayment : this.pendingPayemntService.getPendingPaymentDetails()
+     pendingPayment : this.pendingPayemntService.getPendingPaymentDetails(),
+     plannerService : this.plannerService.getPlannerDetails()
     }).subscribe((data)=>{
        this.transactionService.syncStore(data.transaction);
        this.bankService.syncStore(data.bank);
        this.masterService.syncStore(data.master);
        this.incomeService.syncStore(data.incomeAtGlance);
        this.pendingPayemntService.syncStore(data.pendingPayment);
+       this.plannerService.syncStore(data.plannerService);
        this.ledgerService.setLedgerDetails();
     })
   }

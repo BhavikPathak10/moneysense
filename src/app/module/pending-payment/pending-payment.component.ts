@@ -20,7 +20,6 @@ export class PendingPaymentComponent implements OnInit {
   uniqueLedger : any = [];
   MASTER = Master;
 
-
   constructor(private pendingPayemntStore : PendingPaymentStore ,private masterStore:MasterStore, private pendingPaymentService : PendingPaymentService, private toast: ToastMessageService) { 
     this.subscription.push(
       this.pendingPayemntStore.bindStore().subscribe((data)=>{
@@ -61,6 +60,10 @@ export class PendingPaymentComponent implements OnInit {
         break;
     }
     return obs;
+  }
+
+  ngOnDestroy():void{
+    this.subscription.map(sub=>sub.unsubscribe());
   }
 
 }

@@ -16,6 +16,8 @@ import { OverviewComponent } from './module/overview/overview.component';
 import { DxDataGridModule } from 'devextreme-angular';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
+import { PlannerComponent } from './module/planner/planner.component';
+import { PlannerCalendarComponent } from './module/planner-calendar/planner-calendar.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { AngularFireModule } from '@angular/fire/compat';
     IncomeAtGlanceComponent,
     PendingPaymentComponent,
     OverviewComponent,
+    PlannerComponent,
+    PlannerCalendarComponent,
   ],
   imports: [
     BrowserModule,
