@@ -1,11 +1,18 @@
 <section class="fullHeight">
-    <ng-container *ngTemplateOutlet="DxSchedulerTable"></ng-container>
+<!--   <mat-form-field appearance="outline">
+    <mat-label>Group by</mat-label>
+    <mat-select [formControl]="groupBy" multiple>
+      <mat-option *ngFor="let period of periods" [value]="period">{{period}}</mat-option>
+    </mat-select>
+  </mat-form-field> -->
+  <ng-container *ngTemplateOutlet="DxSchedulerTable"></ng-container>
 </section>
 
 
 
 <ng-template #DxSchedulerTable>
     <dx-data-grid
+        #dxDataPlannerGrid
         [dataSource]="planSchedule"
         [allowColumnReordering]="true"
         [allowColumnResizing]="true"
@@ -19,7 +26,7 @@
         <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
       <dxi-column dataField="year" caption="Year" [groupIndex]="0"></dxi-column>.
       <dxi-column dataField="month" caption="Month" dataType="date" format="MMMM" [groupIndex]="1"></dxi-column>
-      <dxi-column dataField="week" caption="week" [groupIndex]="2"></dxi-column>
+      <dxi-column dataField="week" caption="Week" [groupIndex]="2"></dxi-column>
       <dxi-column dataField="taskdate" caption="Date" dataType="date" format="dd-MMM-yyyy" [sortIndex]="1" sortOrder="asc"></dxi-column>
       <dxi-column dataField="name" caption="Name"></dxi-column>
       <dxi-column dataField="budget" caption="Estimated budget" format="₹ ,##0.##"></dxi-column>
