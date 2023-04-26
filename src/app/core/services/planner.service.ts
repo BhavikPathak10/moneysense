@@ -17,6 +17,10 @@ export class PlannerService {
     return this.api.get('planner');
   }
 
+  getPlanDetails(id:any): Observable<any> {
+    return this.api.get(`planner/${id}`);
+  }
+
   addPlannerData(data: any): Observable<any> {
     return this.api.post('planner', data);
   }

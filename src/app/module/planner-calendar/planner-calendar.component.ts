@@ -3,6 +3,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import * as moment from 'moment';
 
@@ -10,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
 import { PlannerService } from 'src/app/core/services/planner.service';
 import { PlannerStore } from 'src/app/core/stores/planner.store';
+import { ConfirmPlannerDetailsComponent } from 'src/app/shared/component/confirm-planner-details/confirm-planner-details.component';
 
 @Component({
   selector: 'app-planner-calendar',
@@ -21,8 +23,10 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   DATE_FORMAT_DD_MMM_YYYY = 'DD-MMM-YYYY'
 
   subscription:Subscription[] = [];
-  planners = [];
+  planners:any = [];
   planSchedule:any = [];
+
+  taskNames :any[] = [];
 
   periods: string[] = ['Month','Week'];
   groupBy = new FormControl(this.periods);
@@ -31,8 +35,9 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
   constructor(
     private plannerStore : PlannerStore,
-    private plannerService : PlannerService
-  ) { 
+    private plannerService : PlannerService,
+    private dialog : MatDialog
+  ) {
     this.subscription.push(
       this.plannerStore.bindStore().subscribe((data)=>{
         this.planners = data.map((p:any)=>{
@@ -40,6 +45,7 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
           return p;
          });
          this.generateGrid();
+         this.taskNames = [...new Set(this.planners.map((d:any)=>d.taskName))];
       })
     )
     this.groupBy.valueChanges.subscribe((data)=>{
@@ -77,7 +83,8 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     let arr:any = [];
     this.planners.forEach((t:any)=>{
     let flatArr = t.recurrenceDates.map((dt:any)=>{
-        return {
+        let cData = this.getCompletedDetails(t,dt);
+        let obj = {
             taskdate: moment(new Date(dt)).format('YYYY/MM/DD'),
             month : moment(new Date(dt)).set('date',1).format('YYYY/MM/DD'),
             year :moment(new Date(dt)).format('YYYY'),
@@ -87,10 +94,22 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
             name : t.taskName,
             idx: t.id,
           }
+          let data:any = {...obj,...cData};
+          data.difference = data.budget - (data.transactionAmount ? data.transactionAmount : 0);
+          return data;
         })
     arr.push(...flatArr);
     })
     this.planSchedule = [...arr];
+  }
+
+  getCompletedDetails(plan:any,dt:any){
+    let date = moment(new Date(dt)).format('YYYY/MM/DD')
+    let matchedData = {};
+    if(plan.hasOwnProperty('completedDates')){
+      matchedData = plan.completedDates.find((cd:any)=>moment(cd.transactionDate).format('YYYY/MM/DD')===date);
+    }
+    return matchedData;
   }
 
   generateReccurence(recurr:any){
@@ -98,15 +117,28 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   }
 
   onCellPrepared(e:any) {
-    e.cellElement.classList.remove('lapsed');
     if(e.rowType == 'data' && moment(e.data.taskdate).isBefore(new Date())){
       e.cellElement.classList.add('lapsed');
     }
+    if(e.rowType == 'data' && e.data.hasOwnProperty('transactionAmount')){
+      e.cellElement.classList.add('completed');
+    }
   }
 
-  markAsDone(e:any){
-    console.log(e);
+  markAsDoneDialog(e:any){
+    if(e.row.data.hasOwnProperty('transactionAmount') && e.row.data.transactionAmount){
+      e.event.preventDefault();
+      return;
+    }
     e.event.preventDefault();
+    let dialogObj = {
+      minWidth: 450,
+      data: {
+        record:e.row.data,
+      }
+    };
+
+    const dialog = this.dialog?.open(ConfirmPlannerDetailsComponent, dialogObj);
   }
   
   markAsIgnore(e:any){

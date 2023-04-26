@@ -11,6 +11,8 @@ import { HomeComponent } from './component/home/home.component';
 import { LoginComponent } from './component/login/login.component';
 import { VerifyEmailComponent } from './component/verify-email/verify-email.component';
 import { FooterTextComponent } from './component/footer-text/footer-text.component';
+import { TransactionDetailsComponent } from './component/transaction-details/transaction-details.component';
+import { ConfirmPlannerDetailsComponent } from './component/confirm-planner-details/confirm-planner-details.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { FooterTextComponent } from './component/footer-text/footer-text.compone
     LoginComponent,
     VerifyEmailComponent,
     FooterTextComponent,
+    TransactionDetailsComponent,
+    ConfirmPlannerDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,7 @@ import { FooterTextComponent } from './component/footer-text/footer-text.compone
     FormsModule,
     ReactiveFormsModule,
     ConfirmDialogComponent,
+    TransactionDetailsComponent
   ],
 })
 export class SharedModule {}

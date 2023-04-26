@@ -1,0 +1,13 @@
+.mat-option-css.mat-option {
+    height: 2.25em;
+    font-size: 1.2em;
+}
+
+.overview{
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    mat-form-field{
+        flex:1;
+        margin:0 10px;
+    }
+}

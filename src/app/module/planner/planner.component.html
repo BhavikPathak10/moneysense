@@ -1,8 +1,11 @@
 <mat-drawer-container class="fullHeight" [hasBackdrop]="false">
     <mat-drawer-content>
+        <button class="drawer-toggle-button" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon>{{ drawer.opened ? 'keyboard_double_arrow_left' : 'keyboard_double_arrow_right'}}</mat-icon>
+        </button>
       <app-planner-calendar></app-planner-calendar>
     </mat-drawer-content>
-    <mat-drawer position="end" mode="side" [disableClose]="true" opened>
+    <mat-drawer #drawer position="start" mode="side">
         <ng-container *ngTemplateOutlet="matTabPlanner"></ng-container>
     </mat-drawer>
 </mat-drawer-container>
@@ -11,15 +14,16 @@
 <ng-template #matTabPlanner>
   <div class="side-drawer fullHeight flexColumn">
     <section class="flexRow">
+      <button *ngIf="showPlanner" mat-icon-button color="primary" class="toggle-button" (click)="onTogglePlanner()"><mat-icon>arrow_back</mat-icon></button>
       <h2 class="header"> {{ showPlanner ? 'Add Task' : 'Task List' }} </h2>
-      <button *ngIf="showPlanner" mat-stroked-button color="primary" class="toggle-button adjust-margin" (click)="onTogglePlanner()">Show Tasks</button>
-      <button *ngIf="!showPlanner" mat-flat-button color="primary" class="toggle-button" (click)="onTogglePlanner()">Add Task</button>
+      <button *ngIf="!showPlanner" mat-icon-button color="primary" class="toggle-button" (click)="onTogglePlanner()"><mat-icon>add_box_outline</mat-icon></button>
     </section>
     <div class="flex-1 content-wrapper" *ngIf="!showPlanner; else addTaskStepper">
       <ng-container *ngIf="planner.length > 0;else noPlanTemplate">
         <div class="plan-item" *ngFor="let item of planner">
           <h3>{{item?.taskName}} <span>{{item?.taskEstBudget | currency:'INR'}}</span> </h3>
           <p>{{item?.recurText}}</p>
+          <!-- <p>{{getPaymentText(item?.paymentDetails)}}</p> -->
           <section class="buttons">
             <button mat-icon-button (click)="editPlanner(item)">
               <mat-icon>edit</mat-icon>
@@ -42,7 +46,7 @@
   </ng-template>
 
 <ng-template #addTaskStepper>
-    <mat-stepper class="flex-1 content-wrapper" orientation="vertical" [linear]="true" #stepper>
+    <mat-stepper class="flex-1 content-wrapper" orientation="vertical" [linear]="true" #stepper (selectionChange)="selectionChange($event)">
         <mat-step [stepControl]="taskNametFormGroup">
           <form [formGroup]="taskNametFormGroup">
             <ng-template matStepLabel>Task Detail</ng-template>
@@ -136,15 +140,13 @@
             </div>
           </form>
         </mat-step>
-        <mat-step [stepControl]="thirdFormGroup" [optional]="true">
-            <form [formGroup]="thirdFormGroup">
+        <mat-step [optional]="true">
               <ng-template matStepLabel>Set a payment detail</ng-template>
-              <div>
-                <!-- <button mat-button (click)="stepper.reset()">Reset</button>  -->
+              <app-transaction-details [paymentDetail]="isActivePlan.paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+              <div> 
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-flat-button color="primary" (click)="onPlanAddorUpdate()"> {{isActivePlan ? 'Update': 'Add'}} Task to calendar</button>
               </div>
-            </form>
           </mat-step>
     </mat-stepper>
 </ng-template>

@@ -1,0 +1,11 @@
+<h3 mat-dialog-title>Confirm transaction details
+    <span mat-dialog-subtitle>for {{activePlanInstance.taskName}}</span>
+</h3>
+
+<div mat-dialog-content>
+    <app-transaction-details [transactionDetail]="{date: data.record.taskdate, amount: data.record.budget}" [paymentDetail]="activePlanInstance.paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" (click)="onDoneClick()" cdkFocusInitial>Done</button>
+</div>

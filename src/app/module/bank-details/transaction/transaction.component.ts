@@ -37,8 +37,8 @@ import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
   },
 }) 
 export class TransactionComponent implements OnInit {
-  transactionTypeOption = TransactionType;
   transactionEnum = TransactionEnum;
+  transactionTypeOption = TransactionType;
   transactionModeOption = TransactionMode;
   MASTER = Master;
   banks?: BankDetails[] = undefined;

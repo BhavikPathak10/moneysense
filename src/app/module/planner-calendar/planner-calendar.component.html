@@ -1,10 +1,4 @@
 <section class="fullHeight">
-<!--   <mat-form-field appearance="outline">
-    <mat-label>Group by</mat-label>
-    <mat-select [formControl]="groupBy" multiple>
-      <mat-option *ngFor="let period of periods" [value]="period">{{period}}</mat-option>
-    </mat-select>
-  </mat-form-field> -->
   <ng-container *ngTemplateOutlet="DxSchedulerTable"></ng-container>
 </section>
 
@@ -17,30 +11,31 @@
         [allowColumnReordering]="true"
         [allowColumnResizing]="true"
         [columnAutoWidth]="true"
+        [columnHidingEnabled]="true"
         (onCellPrepared)="onCellPrepared($event)"
         >
         <dxo-sorting
         mode="multiple">
       </dxo-sorting>
-      <dxi-column type="buttons" [buttons]="['done','ignore']"></dxi-column>
-        <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
+      
+      <dxo-scrolling mode="virtual" [preloadEnabled]="true"></dxo-scrolling>
       <dxi-column dataField="year" caption="Year" [groupIndex]="0"></dxi-column>.
       <dxi-column dataField="month" caption="Month" dataType="date" format="MMMM" [groupIndex]="1"></dxi-column>
       <dxi-column dataField="week" caption="Week" [groupIndex]="2"></dxi-column>
       <dxi-column dataField="taskdate" caption="Date" dataType="date" format="dd-MMM-yyyy" [sortIndex]="1" sortOrder="asc"></dxi-column>
-      <dxi-column dataField="name" caption="Name"></dxi-column>
-      <dxi-column dataField="budget" caption="Estimated budget" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="name" caption="Name">
+        <dxo-lookup
+            [dataSource]="taskNames">
+        </dxo-lookup>
+      </dxi-column>
+      <dxi-column dataField="budget" caption="Estimated" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="transactionAmount" caption="Actual" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="difference" caption="Delta" format="₹ ,##0.##"></dxi-column>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
       <dxi-column type="buttons" caption="Mark as">
-        <dxi-button name="done" text="Done" icon="todo" [onClick]="markAsDone">Done</dxi-button>
-        <dxi-button name="ignore" text="Ignore" icon="trash" [onClick]="markAsIgnore">Ignore</dxi-button>
+        <dxi-button name="done" text="Done" icon="todo" [onClick]="markAsDoneDialog.bind(this)">Done</dxi-button>
     </dxi-column>
       <dxo-summary>
-        <!-- <dxi-group-item
-              column="week"
-              summaryType="count"
-              [alignByColumn]="true">
-          </dxi-group-item> -->
       <dxi-group-item
       column="budget"
       summaryType="sum"
@@ -48,6 +43,20 @@
       valueFormat="₹ ,##0.##"
       displayFormat="{0}">
     </dxi-group-item>
+    <dxi-group-item
+    column="transactionAmount"
+    summaryType="sum"
+    [alignByColumn]="true"
+    valueFormat="₹ ,##0.##"
+    displayFormat="{0}">
+  </dxi-group-item>
+  <dxi-group-item
+  column="difference"
+  summaryType="sum"
+  [alignByColumn]="true"
+  valueFormat="₹ ,##0.##"
+  displayFormat="{0}">
+</dxi-group-item>
     </dxo-summary>
     </dx-data-grid>
   </ng-template>

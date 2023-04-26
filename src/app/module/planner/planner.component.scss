@@ -3,20 +3,24 @@ mat-drawer{
     max-width: 30vw;
 }
 
+.drawer-toggle-button{
+    position: absolute;
+    top: -5px;
+    left: 0;
+    z-index: 9999;
+}
+
 mat-stepper{
     overflow-y: auto;
 }
 
 .side-drawer{
     section.flexRow{
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
         .header{
             margin:unset;
             margin-left:20px;
-        }
-        .toggle-button.adjust-margin{
-            left:-1px;
         }
     }
 }

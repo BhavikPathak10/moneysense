@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 
 @Component({
   selector: 'app-planner',
@@ -35,6 +36,7 @@ export class PlannerComponent implements OnInit {
   planner:any = [];
   showPlanner = false;
   isActivePlan:any = false;
+  paymentDetail : any;
 
   taskNametFormGroup = this._formBuilder.group({
     taskName: ['',Validators.required],
@@ -49,9 +51,6 @@ export class PlannerComponent implements OnInit {
     date:[],
     startDate: [moment(new Date()), Validators.required],
     endDate: [],
-  });
-  thirdFormGroup = this._formBuilder.group({
-    //secondCtrl: ['', Validators.required],
   });
 
   constructor(
@@ -90,8 +89,8 @@ export class PlannerComponent implements OnInit {
         startDate:this.scheduleFormGroup.value['startDate'],
         endDate:this.scheduleFormGroup.value['endDate']
       },
-      /* PaymentDetails: {},
-      completedDates: [],
+      paymentDetails: this.paymentDetail,
+      /* completedDates: [],
       lapsedDates: [] */
     };
 
@@ -169,6 +168,23 @@ export class PlannerComponent implements OnInit {
     this.isActivePlan = false;
     this.scheduleFormGroup.reset({startDate:moment(new Date()),every:1,unit:'DAYS',isRepeat:false});
     this.taskNametFormGroup.reset();
+  }
+
+  selectionChange(event: StepperSelectionEvent){
+    const stepHeaderEl = document.querySelector(
+      `mat-step-header[aria-posinset="${event.selectedIndex + 1}"]`
+    );
+    if (stepHeaderEl) {
+      setTimeout(()=>stepHeaderEl.scrollIntoView({ behavior: 'smooth' }),200)
+    }
+  }
+
+  getPaymentText(data:any){
+    console.log(data);
+  }
+
+  onUpdateTransactionDetail(data:any){
+    this.paymentDetail = data;
   }
 
   ngOnDestroy():void{
