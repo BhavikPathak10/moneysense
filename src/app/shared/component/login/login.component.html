@@ -29,7 +29,7 @@
             
             <button [disabled]="form.invalid" mat-flat-button color="primary" type="submit"> {{ isSignUp ? 'Register' : resetPassword ? 'Reset My Password' : 'Log In'}}</button>
             <section class="flexRow navigate-forms-footer">
-              <h4 *ngIf="!resetPassword" class="form-navigate-text">{{ isSignUp ?  'Already' : 'Not' }} a member? <button type="button" (click)="togglePages()" mat-button color="primary">Sign {{ isSignUp ? 'In' : 'Up' }}</button> 
+              <h4 *ngIf="!resetPassword && showSignUpFlow" class="form-navigate-text">{{ isSignUp ?  'Already' : 'Not' }} a member? <button type="button" (click)="togglePages()" mat-button color="primary">Sign {{ isSignUp ? 'In' : 'Up' }}</button> 
               </h4>
               <h4><button type="button" mat-button color="primary" *ngIf="!isSignUp" (click)="forgotPassword()"> {{ resetPassword ? 'Sign In' : 'Forgot Password'}}</button></h4>
             </section>

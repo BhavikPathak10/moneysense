@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { TaskUpdatedEvent } from 'devextreme/ui/gantt';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -12,6 +13,8 @@ export class LoginComponent implements OnInit {
 form: FormGroup = new FormGroup({});
 isSignUp:boolean = false;
 resetPassword:boolean = false;
+
+showSignUpFlow : boolean = false;
 
 constructor(private fb: FormBuilder, private auth: AuthService) { }
 
