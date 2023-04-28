@@ -1,64 +1,62 @@
-
 <div class="toolbar-wrapper">
-<img src="./assets/images/logo.png" alt="MoneySense" class="app-logo" (click)="downloadBackup()"/>
-<span>{{title}}</span>
-<span class="example-spacer"></span>
-<a routerLinkActive="active"
-  role="button"
-  mat-button
-  routerLink="overview">
-Overview
-</a>
-<button mat-button [ngClass]="{active: isRouteActive('/home/bank/')}" [matMenuTriggerFor]="banksMenu" (menuOpened)="bankMenuOpen = true" (menuClosed)="bankMenuOpen = false">Bank</button>
-<mat-icon
-class="addBankDetail-btn-css pointer"
-(click)="openAddBankDetails($event)"
->
-control_point
-</mat-icon>
-<mat-menu #banksMenu="matMenu">
-  <button *ngFor="let bank of banks"
-  [routerLink]="'bank/' + bank.accountName"
-  role="button"
-  routerLinkActive="active"
-  mat-button
-  [title]="bank.accountName"
-  >{{ bank.accountName }}
-</button>
-</mat-menu>
-<a
-  routerLinkActive="active"
-  role="button"
-  mat-button
-  routerLink="report"
-  >Reports</a
-  >
-<a
-  routerLinkActive="active"
-  role="button"
-  mat-button
-  routerLink="income-at-glance"
-  >Income at Glance</a
-  >
-<a
-  routerLinkActive="active"
-  role="button"
-  mat-button
-  routerLink="pending-payment"
-  >Pending payment</a
-  >
+  <img src="./assets/images/logo.png" alt="MoneySense" class="app-logo" (click)="downloadBackup()"/>
+  <span>{{title}}</span>
+  <span class="example-spacer"></span>
+  <a routerLinkActive="active"
+     role="button"
+     mat-button
+     routerLink="overview">
+  Overview
+  </a>
+  <button mat-button [ngClass]="{active: isRouteActive('/home/bank/')}" [matMenuTriggerFor]="banksMenu" (menuOpened)="bankMenuOpen = true" (menuClosed)="bankMenuOpen = false">Bank</button>
+  <mat-icon
+     class="addBankDetail-btn-css pointer"
+     (click)="openAddBankDetails($event)"
+     >
+     control_point
+  </mat-icon>
+  <mat-menu #banksMenu="matMenu">
+     <button *ngFor="let bank of banks"
+     [routerLink]="'bank/' + bank.accountName"
+     routerLinkActive="active"
+     mat-menu-item
+     [title]="bank.accountName"
+     >{{ bank.accountName }}
+     </button>
+  </mat-menu>
+  <a
+     routerLinkActive="active"
+     role="button"
+     mat-button
+     routerLink="report"
+     >Reports</a
+     >
+  <a
+     routerLinkActive="active"
+     role="button"
+     mat-button
+     routerLink="income-at-glance"
+     >Income at Glance</a
+     >
+  <a
+     routerLinkActive="active"
+     role="button"
+     mat-button
+     routerLink="pending-payment"
+     >Pending payment</a
+     >
   <a routerLink="planner"
-  routerLinkActive="active"
-  role="button"
-  mat-button
-  >Bugdet Planner</a>
-<a routerLink="admin/master"
-  routerLinkActive="active"
-  role="button"
-  mat-button
-  >Master details</a>
-<span class="example-spacer"></span>
-<button mat-icon-button (click)="logout()">
-  <mat-icon>power_settings_new</mat-icon>
-</button>
+     routerLinkActive="active"
+     role="button"
+     mat-button
+     >Bugdet Planner</a>
+  <a routerLink="admin/master"
+     routerLinkActive="active"
+     role="button"
+     mat-button
+     >Master details</a>
+  <span class="example-spacer"></span>
+  <button mat-icon-button (click)="logout()">
+     <mat-icon>power_settings_new</mat-icon>
+  </button>
 </div>
