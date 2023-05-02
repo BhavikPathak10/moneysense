@@ -42,7 +42,7 @@ export class ResportComponent implements OnInit {
         {area:'filter',dataField:'particular',caption:'Ledger'},
         {area:'filter',dataField:'costCenter'},
         {area:'filter',dataField:'costCategory'},
-        {area:'filter',dataField:'accountName'},
+        {area:'filter',dataField:'accountName',caption:'Bank'},
         {area:'column',dataField:'transactionDate',dataType:"date",groupName:'Date'},
         { groupName: "Date", groupInterval: "year", groupIndex: 0 },
         { groupName: "Date", groupInterval: "month", groupIndex: 1 },

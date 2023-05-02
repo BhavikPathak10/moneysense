@@ -40,6 +40,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+//Overlay module
+import {OverlayModule} from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [],
@@ -80,6 +82,7 @@ import { MatTableModule } from '@angular/material/table';
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    OverlayModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -118,6 +121,7 @@ import { MatTableModule } from '@angular/material/table';
     MatPaginatorModule,
     MatSortModule,
     MatTableModule,
+    OverlayModule
   ],
 })
 export class MaterialModule {}

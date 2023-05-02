@@ -129,14 +129,13 @@
         <mat-icon (click)="onDeleteTransaction(element)" class="pointer">
           delete_outline</mat-icon
         >
-        <!--         <mat-icon (click)="onEditTransaction(element)">edit_outline</mat-icon> -->
       </td>
       <td mat-footer-cell *matFooterCellDef></td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ 'negative-balance-row': row._balance < 0 }"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" [ngClass]="{ 'negative-balance-row': this.estimatedBalance < 0 }"></tr>
   </table>
 </ng-template>
 

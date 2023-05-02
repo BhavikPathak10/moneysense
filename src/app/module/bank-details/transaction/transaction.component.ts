@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { map, Observable, startWith, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { debounceTime, forkJoin, map, Observable, startWith, Subscription } from 'rxjs';
 import {
   TransactionMode,
   TransactionType,
@@ -18,6 +18,7 @@ import { DatePipe } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
+import { TransactionStore } from 'src/app/core/stores/transaction.store';
 
 @Component({
   selector: 'app-transaction',
@@ -42,10 +43,19 @@ export class TransactionComponent implements OnInit {
   transactionModeOption = TransactionMode;
   MASTER = Master;
   banks?: BankDetails[] = undefined;
+  banksFiltered?: BankDetails[] = undefined;
+  isOpen : boolean = false;
+  isInternalTransfer : boolean = false;
+  internalBankSelected : any = undefined;
 
   subscription: Subscription[] = [];
   masterDetail: any;
+  referenceData:any = [];
+
+  INTERNAL_TRANSFER_KEYS:Array<string> = ['Internal Transfer'];
+
   filteredMasterDetails: Observable<any[]> | undefined;
+  filteredReference: Observable<any[]> | undefined;
   activeId: string = '';
 
   transactionForm: FormGroup = new FormGroup({
@@ -70,12 +80,18 @@ export class TransactionComponent implements OnInit {
     return this.transactionForm.get('transactionAmount');
   }
 
+  get reference() {
+    return this.transactionForm.get('reference');
+  }
+
   constructor(
     private masterStore: MasterStore,
     private route: ActivatedRoute,
+    private router: Router,
     private transactionService: TransactionService,
     private bankStore: BankDetailsStore,
-    private toast: ToastMessageService
+    private toast: ToastMessageService,
+    private transactionStore : TransactionStore
   ) {
     this.subscription.push(
       this.masterStore.bindStore().subscribe((data) => {
@@ -83,9 +99,14 @@ export class TransactionComponent implements OnInit {
       }),
       this.route.params.subscribe((param) => {
         this.activeId = param['bank_accountName'];
+        this.banksFiltered = this.banks?.filter((bank)=>bank.accountName !== this.activeId); 
       }),
       this.bankStore.bindStore().subscribe((data) => {
         this.banks = data;
+        this.banksFiltered = this.banks?.filter((bank)=>bank.accountName !== this.activeId); 
+      }),
+      this.transactionStore.bindStore().subscribe((data)=>{
+        this.referenceData = [...new Set(data.map((d:Transaction)=>d.reference).filter((d:any)=>d))];
       })
     );
   }
@@ -94,6 +115,13 @@ export class TransactionComponent implements OnInit {
     const filterValue = value?.toLowerCase();
     return this.masterDetail?.filter((option: any) =>
       option[this.MASTER.LEDGER].toLowerCase().includes(filterValue)
+    );
+  }
+
+  private _filterRef(value: string): any {
+    const filterValue = value?.toLowerCase();
+    return this.referenceData?.filter((option: any) =>
+      option.toLowerCase().includes(filterValue)
     );
   }
 
@@ -110,18 +138,52 @@ export class TransactionComponent implements OnInit {
       startWith(''),
       map((value) => this._filter(value))
     );
+    this.filteredReference = this.reference?.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filterRef(value))
+    );
+    this.reference?.valueChanges.pipe(
+      debounceTime(500)
+    ).subscribe((data:any)=>{
+      if(this.INTERNAL_TRANSFER_KEYS.map(v=>v.toLowerCase()).includes(data.toLowerCase())){
+        this.isInternalTransfer = true;
+      }else{
+        this.isInternalTransfer = false;
+        this.internalBankSelected = '';
+      }
+    })
   }
 
   onAddTransaction(formDirective: FormGroupDirective) {
     if (this.transactionForm.valid) {
       let data = this.addcomputedValues(this.transactionForm.value);
-      this.transactionService.add(data).subscribe((result) => {
+      let objSubscription:any = {data1 : this.transactionService.add(data)};
+
+      if(this.isInternalTransfer && this.internalBankSelected){
+       let transferData = new Transaction().deserialize({
+          ...data,
+          accountName : this.internalBankSelected,
+          transactionType:data.transactionType?.toLowerCase() === this.transactionEnum.WITHDARWAL ? this.transactionEnum.DEPOSIT.toUpperCase() : this.transactionEnum.WITHDARWAL.toUpperCase(),
+          withdrawal : data.deposit,
+          deposit : data.withdrawal
+        });
+        objSubscription = {...objSubscription, data2 : this.transactionService.add(transferData)};
+      }
+
+      forkJoin(objSubscription).subscribe((res)=>{
         this.transactionService.syncStore();
         this.toast.success('Transaction has been added.', 'close');
-      });
-      formDirective.resetForm();
-      this.transactionForm.reset();
+        formDirective.resetForm();
+        this.onBankSelect(false);
+        this.isInternalTransfer = false;
+        this.transactionForm.reset();
+      })
     }
+  }
+
+  addLedger(){
+    this.router.navigate(['home','admin','master']);
+    this.transactionService.returnBank$.next(this.activeId);
   }
 
   addcomputedValues(p_data: any) {
@@ -151,5 +213,10 @@ export class TransactionComponent implements OnInit {
         : `FY ${currentYear - 1}-${currentYear}`;
 
     return data;
+  }
+
+  onBankSelect(val:any){
+    this.internalBankSelected = val;
+    this.isOpen = false;
   }
 }

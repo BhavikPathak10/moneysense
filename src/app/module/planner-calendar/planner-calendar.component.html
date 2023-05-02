@@ -5,6 +5,19 @@
 
 
 <ng-template #DxSchedulerTable>
+<dx-popover #dxPopOver
+  [(target)]="popoverTarget"
+  [showTitle]="true"
+  title="Transaction Details"
+  > 
+  <div>
+    <p>Date : {{transactionDetails.date | date: "dd-MMM-yyyy"}}</p>
+    <p>Bank : {{transactionDetails.bank | titlecase}}</p>
+    <p>Ledger : {{transactionDetails.ledger | uppercase}}</p>
+    <p>Mode : {{transactionDetails.mode | titlecase}}</p>
+  </div>
+</dx-popover>
+
     <dx-data-grid
         #dxDataPlannerGrid
         [dataSource]="planSchedule"
@@ -13,6 +26,7 @@
         [columnAutoWidth]="true"
         [columnHidingEnabled]="true"
         (onCellPrepared)="onCellPrepared($event)"
+        (onCellHoverChanged)="onCellHoverChanged($event)"
         >
         <dxo-sorting
         mode="multiple">
@@ -26,14 +40,15 @@
       <dxi-column dataField="name" caption="Name">
         <dxo-lookup
             [dataSource]="taskNames">
-        </dxo-lookup>
+      </dxo-lookup>        
       </dxi-column>
       <dxi-column dataField="budget" dataType="number" caption="Estimated" format="₹ ,##0.##"></dxi-column>
       <dxi-column dataField="transactionAmount" dataType="number" caption="Actual" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="difference" dataType="number" caption="Delta" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="difference" dataType="number" caption="Difference" format="₹ ,##0.##"></dxi-column>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
       <dxi-column type="buttons" caption="Mark as">
-        <dxi-button name="done" text="Done" icon="todo" [onClick]="markAsDoneDialog.bind(this)">Done</dxi-button>
+        <dxi-button name="done" text="Done" icon="todo" [visible]="isDoneVisible.bind(this)" [onClick]="markAsDoneDialog.bind(this)">Done</dxi-button>
+        <dxi-button name="undo" text="Undo" icon="undo" [visible]="isUndoVisible.bind(this)" [onClick]="markAsUndoDialog.bind(this)">Done</dxi-button>
     </dxi-column>
       <dxo-summary>
       <dxi-group-item

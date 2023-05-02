@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { BankDetails } from '../models/bankDetails.model';
 import { Transaction } from '../models/transaction.model';
 import { TransactionStore } from '../stores/transaction.store';
@@ -12,6 +12,8 @@ import { LedgerServiceService } from './ledger-service.service';
 })
 export class TransactionService {
   transactions: Transaction[] = [];
+
+  public returnBank$: ReplaySubject<string> = new ReplaySubject<string>(1);
 
   constructor(
     private api: ApiService,
@@ -33,7 +35,10 @@ export class TransactionService {
     return this.api.post('transactions', data);
   }
 
-  delete(rec: Transaction): Observable<any> {
+  delete(rec: Transaction|any,key?:string): Observable<any> {
+    if(key){
+      rec.id = rec[key];
+    }
     this.ledgerService.removeLedgerDetails(rec.id);
     return this.api.delete(`transactions/${rec.id}`);
   }

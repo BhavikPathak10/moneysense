@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { TaskUpdatedEvent } from 'devextreme/ui/gantt';
 import { AuthService } from 'src/app/core/services/auth.service';
 
@@ -16,10 +17,11 @@ resetPassword:boolean = false;
 
 showSignUpFlow : boolean = false;
 
-constructor(private fb: FormBuilder, private auth: AuthService) { }
+constructor(private fb: FormBuilder, private auth: AuthService, private dialog : MatDialog) { }
 
 ngOnInit() {
   this.loadForm();
+  this.dialog.closeAll();
 }
 
 loadForm(email?:string){

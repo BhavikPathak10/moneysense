@@ -1,22 +1,22 @@
-import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DxPopoverComponent } from 'devextreme-angular';
 import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import * as moment from 'moment';
 
 import { Subscription } from 'rxjs';
-import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
 import { PlannerService } from 'src/app/core/services/planner.service';
+import { ToastMessageService } from 'src/app/core/services/toast-message.service';
+import { TransactionService } from 'src/app/core/services/transaction.service';
 import { PlannerStore } from 'src/app/core/stores/planner.store';
+import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/confirm-dialog.component';
 import { ConfirmPlannerDetailsComponent } from 'src/app/shared/component/confirm-planner-details/confirm-planner-details.component';
 
 @Component({
   selector: 'app-planner-calendar',
   templateUrl: './planner-calendar.component.html',
-  styleUrls: ['./planner-calendar.component.scss']
+  styleUrls: ['./planner-calendar.component.scss'],
 })
 export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
@@ -28,14 +28,21 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
   taskNames :any[] = [];
 
+  transactionDetails : {date?:any, bank?:any, mode?:any, ledger?:any} = {};
+
   periods: string[] = ['Month','Week'];
   groupBy = new FormControl(this.periods);
 
+  popoverTarget:any;
+
   @ViewChild("dxDataPlannerGrid", { static: false }) dataGrid?: DxDataGridComponent;
+  @ViewChild("dxPopOver", { static: false }) popOver?: DxPopoverComponent;
 
   constructor(
     private plannerStore : PlannerStore,
     private plannerService : PlannerService,
+    private transactionService : TransactionService,
+    private toast : ToastMessageService,
     private dialog : MatDialog
   ) {
     this.subscription.push(
@@ -107,7 +114,11 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     let date = moment(new Date(dt)).format('YYYY/MM/DD')
     let matchedData = {};
     if(plan.hasOwnProperty('completedDates')){
-      matchedData = plan.completedDates.find((cd:any)=>moment(cd.transactionDate).format('YYYY/MM/DD')===date);
+      let indx = plan.completedDates.map((d:any)=>moment(d.taskdate).format('YYYY/MM/DD')).indexOf(date);
+      //matchedData = plan.completedDates.find((cd:any)=>moment(cd.taskdate).format('YYYY/MM/DD')===date);
+      if(indx>-1){
+        matchedData = plan.completedDates[indx];
+      }
     }
     return matchedData;
   }
@@ -120,13 +131,24 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     if(e.rowType == 'data' && moment(e.data.taskdate).isBefore(new Date())){
       e.cellElement.classList.add('lapsed');
     }
-    if(e.rowType == 'data' && e.data.hasOwnProperty('transactionAmount')){
+    if(e.rowType == 'data' && e.data.hasOwnProperty('transactionId')){
       e.cellElement.classList.add('completed');
     }
   }
 
+  onCellHoverChanged(e:any){
+    if (e.rowType === "data" && e.eventType === "mouseover" && e.row.data.hasOwnProperty('transactionId')) {  
+      this.transactionDetails = {date : e.row.data.transactionDate , bank : e.row.data.bank, mode : e.row.data.transactionMode, ledger : e.row.data.particular}
+      this.popoverTarget = e.cellElement;
+      this.popOver?.instance.show();
+    }  
+    if (e.rowType === "data" && e.eventType === "mouseout") {  
+      this.popOver?.instance.hide();  
+    }  
+  }
+
   markAsDoneDialog(e:any){
-    if(e.row.data.hasOwnProperty('transactionAmount') && e.row.data.transactionAmount){
+    if(e.row.data.hasOwnProperty('transactionId') && e.row.data.transactionId){
       e.event.preventDefault();
       return;
     }
@@ -140,6 +162,44 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
     const dialog = this.dialog?.open(ConfirmPlannerDetailsComponent, dialogObj);
   }
+
+
+  markAsUndoDialog(e:any){
+    e.event.preventDefault();
+    let rowData = e.row.data;
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: {
+        okButtonText: 'Undo',
+        cancelButtonText: 'Cancel',
+        hideCancel: 'no',
+        title: 'Undo Payment',
+        message: `This action will delete the related transaction from the bank. Are you sure you want to undo payment?`,
+      },
+    };
+
+    const dialog = this.dialog?.open(ConfirmDialogComponent, dialogObj);
+
+    dialog?.afterClosed().subscribe((result) => {
+      if (result) {
+        let activePlan = this.planners.find((p:any)=>p.id == rowData.idx);
+        activePlan.completedDates.splice(
+          activePlan.completedDates.findIndex((cTask:any)=>moment(cTask.taskdate).format('YYYY/MM/DD') == moment(rowData.taskdate).format('YYYY/MM/DD')),
+          1);
+          if(activePlan.completedDates.length == 0){
+            delete activePlan.completedDates;
+          }
+          this.plannerService.updatePlannerData(activePlan).subscribe(()=>{
+            this.plannerService.syncStore();        
+            this.transactionService.delete(rowData,'transactionId').subscribe(()=>{
+              this.toast.success('This instance of schedule has been reverted successfully.','close');  
+              this.transactionService.syncStore();
+            });
+          })
+      }
+    });
+  }
   
   markAsIgnore(e:any){
     console.log(e);
@@ -148,6 +208,22 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
       cell.cellElement.classList.remove('lapsed');
       cell.cellElement.classList.add('strike');
     })
+  }
+
+  isDoneVisible(e:any){
+    let row = e.row;
+    if(row.rowType == 'data' && row.data.hasOwnProperty('transactionId')){
+      return false;
+    }
+    return true;
+  }
+
+  isUndoVisible(e:any){
+    let row = e.row;
+    if(row.rowType == 'data' && row.data.hasOwnProperty('transactionId')){
+      return true;
+    }
+    return false;
   }
 
   private getWeekOfMonth(d:Date){

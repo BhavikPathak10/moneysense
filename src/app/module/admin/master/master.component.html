@@ -1,4 +1,7 @@
 <div class="flexColumn fullHeight">
+  <button *ngIf="backToBank" mat-icon-button class="back-button" (click)="routeToBank()" matTooltip="Back to {{backToBank}} bank">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
   <ng-container *ngTemplateOutlet="DxMasterTable"></ng-container>
 </div>
 

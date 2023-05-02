@@ -18,6 +18,7 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { PlannerComponent } from './module/planner/planner.component';
 import { PlannerCalendarComponent } from './module/planner-calendar/planner-calendar.component';
+import { DxPopoverModule } from 'devextreme-angular';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PlannerCalendarComponent } from './module/planner-calendar/planner-cale
     ReactiveFormsModule,
     HttpClientModule,
     DxDataGridModule,
+    DxPopoverModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [

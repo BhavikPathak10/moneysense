@@ -170,3 +170,8 @@ mat-icon{
 input:disabled{
    color: var(--text-accent-lighter-color) !important;
 }
+
+.negative-balance-row td
+{
+    color:var(--warn-color);
+}

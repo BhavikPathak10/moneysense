@@ -27,7 +27,8 @@
         matInput
         formControlName="particular"
         [matAutocomplete]="particularAuto"
-      />
+        />
+      <mat-icon matSuffix class="role-button" role="button" (click)="addLedger()">add</mat-icon>
       <mat-autocomplete
         autoActiveFirstOption
         #particularAuto="matAutocomplete"
@@ -47,9 +48,40 @@
       <mat-label>Reference</mat-label>
       <input
         matInput
+        type="text"
         placeholder="Enter reference"
         formControlName="reference"
+        [matAutocomplete]="referenceAuto"
       />
+      <mat-icon matSuffix class="role-button" [ngClass]="{'display-none': !isInternalTransfer}" type="button" (click)="isOpen =!isOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">{{internalBankSelected ? 'assured_workload': 'account_balance' }} </mat-icon>
+      <mat-hint class="flexRow" *ngIf="internalBankSelected"> with {{  internalBankSelected }}
+        <mat-icon class="role-button" color="warn" type="button" (click)="onBankSelect(false)">clear</mat-icon>
+      </mat-hint>
+      <ng-template
+      cdkConnectedOverlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isOpen">
+        <mat-card (mouseleave)="isOpen = false">
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let bank of banksFiltered" [value]="bank.accountName" (click)="onBankSelect(bank.accountName)">
+              {{bank.accountName}}
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-card>
+      </ng-template>
+       <mat-autocomplete
+        autoActiveFirstOption
+        #referenceAuto="matAutocomplete"
+        [panelWidth]="'auto'"
+      >
+        <mat-option
+          *ngFor="let option of filteredReference | async"
+          [value]="option"
+          class="particularItem"
+        >
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
     <mat-form-field appearance="outline" class="col-1">
       <mat-label>Transaction Mode</mat-label>

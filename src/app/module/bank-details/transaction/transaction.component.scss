@@ -24,3 +24,15 @@
 mat-card{
    padding: 16px 8px 0px 8px
 }
+
+.role-button{
+    cursor: pointer;
+    opacity: 0.4;
+    &:hover{
+        opacity: 0.8;
+    }
+}
+
+.display-none{
+    display: none !important;
+}

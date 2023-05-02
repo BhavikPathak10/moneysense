@@ -46,24 +46,25 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
   }
 
   onDoneClick(){
-    let date = moment(this.paymentDetails.transactionDate).format('DD-MMM-YYYY');
     let planDetail = this.plannerService.getPlanDetails(this.activePlanInstance.id);
-    let planDetailSub = planDetail.subscribe((data)=>{
-      if(!data.hasOwnProperty('completedDates')){
-        data['completedDates'] = [];
-      }
-      data['completedDates'].push(this.paymentDetails);
+    let planDetailSub = planDetail.subscribe((planDetailData)=>{
       let paymentdata = this.addcomputedValues(this.paymentDetails);
-
-      forkJoin({
-        plan : this.plannerService.updatePlannerData({...data,id:this.activePlanInstance.id}),
-        transaction : this.transactionService.add(paymentdata)
-      }).subscribe(()=>{
-        this.transactionService.syncStore();
-        this.plannerService.syncStore();
-        this.toast.success('Transaction has been added and this instance is marked as completed .', 'close');
-        planDetailSub.unsubscribe();
-        this.dialogRef.close();
+      this.transactionService.add(paymentdata).subscribe((result)=>{
+        if(result && result.name){
+          this.paymentDetails.transactionId = result.name;
+          this.paymentDetails.taskdate = this.data.record.taskdate;
+          if(!planDetailData.hasOwnProperty('completedDates')){
+            planDetailData['completedDates'] = [];
+          }
+          planDetailData['completedDates'].push(this.paymentDetails);
+          this.plannerService.updatePlannerData({...planDetailData,id:this.activePlanInstance.id}).subscribe(()=>{
+            this.transactionService.syncStore();
+            this.plannerService.syncStore();
+            this.toast.success('Transaction has been added and this instance is marked as completed .', 'close');
+            planDetailSub.unsubscribe();
+            this.dialogRef.close();
+          })
+        }
       })
     })
   }

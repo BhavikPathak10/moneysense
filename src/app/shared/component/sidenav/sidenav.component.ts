@@ -6,6 +6,7 @@ import { BankDetails } from 'src/app/core/models/bankDetails.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { BankService } from 'src/app/core/services/bank.service';
 import { ExcelService } from 'src/app/core/services/excel.service';
+import { ResponsiveService } from 'src/app/core/services/responsive.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
 import { TransactionService } from 'src/app/core/services/transaction.service';
 import { BankDetailsStore } from 'src/app/core/stores/bank.store';
@@ -24,9 +25,11 @@ export class SidenavComponent implements OnInit {
   title: string = 'MoneySense';
   banks: BankDetails[] = [];
   bankMenuOpen = false;
+  showRoutes = false;
 
   subscriptions: Subscription[] = [];
   currentRouteActive : boolean = false;
+  isTabletOrSmaller : boolean = false;
 
   constructor(
     public dialog: MatDialog,
@@ -34,10 +37,10 @@ export class SidenavComponent implements OnInit {
     private bankStore: BankDetailsStore,
     private router: Router,
     private route: ActivatedRoute,
-    private transactionservice: TransactionService,
     private excelService :  ExcelService,
     private toast: ToastMessageService,
     private auth : AuthService,
+    private responsive : ResponsiveService
   ) {
     this.subscriptions.push(
       this.bankStore.bindStore().subscribe((data) => {
@@ -45,6 +48,9 @@ export class SidenavComponent implements OnInit {
         if (this.banks.length < 1) {
           this.openAddBankDetails(undefined, true);
         }
+      }),
+      this.responsive.isTabletOrSmaller$.subscribe((data:any)=>{
+        this.isTabletOrSmaller = data;
       })
     );
   }
@@ -55,6 +61,10 @@ export class SidenavComponent implements OnInit {
         this.currentRouteActive = evt.url.includes('/bank/');
       }
     });
+  }
+
+  toggleRoutes(){
+    this.showRoutes = !this.showRoutes;
   }
 
   openAddBankDetails(event?: any, forceAdd?: boolean) {

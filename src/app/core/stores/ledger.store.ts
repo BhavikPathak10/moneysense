@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
-import { BankDetails } from '../models/bankDetails.model';
+import { Observable, ReplaySubject } from 'rxjs';
 import { Transaction } from '../models/transaction.model';
 
 @Injectable({

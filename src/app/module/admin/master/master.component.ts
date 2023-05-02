@@ -6,6 +6,8 @@ import { MasterService } from 'src/app/core/services/master.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
 import { MasterStore } from 'src/app/core/stores/master.store';
 import { DxDataGridComponent } from "devextreme-angular";
+import { TransactionService } from 'src/app/core/services/transaction.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-master',
@@ -20,6 +22,7 @@ export class MasterComponent implements OnInit {
   masterDetails: any = [];
   _masterDetails: any = [];
   MASTER = Master;
+  backToBank:string = ''; 
 
   groupHeadOptions : Array<any> =[];
   subHeadOptions: Array<any> =[];
@@ -57,9 +60,11 @@ export class MasterComponent implements OnInit {
   }); */
 
   constructor(
+    private router : Router,
     private masterStore: MasterStore,
     private masterService: MasterService,
     private toast: ToastMessageService,
+    private transactionService : TransactionService
   ) {
 
     //this.onDeleteMasterDx = this.onDeleteMasterDx.bind(this);
@@ -85,6 +90,9 @@ export class MasterComponent implements OnInit {
         this.ledgerOptions = [...new Set(this.masterDetails.map((x:any)=>x['ledger']))];
         this.costCenterOptions = [...new Set(this.masterDetails.map((x:any)=>x['costCenter']))];
         this.costCategoryOptions = [...new Set(this.masterDetails.map((x:any)=>x['costCategory']))];
+      }),
+      this.transactionService.returnBank$.subscribe((data)=>{
+        this.backToBank = data;
       })
     );
   }
@@ -98,6 +106,10 @@ export class MasterComponent implements OnInit {
     );
   }
 
+  routeToBank(){
+    this.router.navigate(['home','bank',this.backToBank]);
+    this.transactionService.returnBank$.next('');
+  }
 
   saveMaster(e:any){
     let data = e.changes[0].data || e.changes[0].key;
@@ -122,7 +134,7 @@ export class MasterComponent implements OnInit {
         }
         break;
       case 'remove':
-        obs = this.masterService.deleteMaster(data.id);
+        obs = this.masterService.deleteMaster(data);
       break;
       default:
       break;

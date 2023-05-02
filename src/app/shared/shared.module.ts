@@ -14,6 +14,7 @@ import { FooterTextComponent } from './component/footer-text/footer-text.compone
 import { TransactionDetailsComponent } from './component/transaction-details/transaction-details.component';
 import { ConfirmPlannerDetailsComponent } from './component/confirm-planner-details/confirm-planner-details.component';
 
+
 @NgModule({
   declarations: [
     SidenavComponent,

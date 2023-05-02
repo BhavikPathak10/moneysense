@@ -1,121 +1,3 @@
-/* .sidebar-wrapper {
-    background: var(--primary-darker-color);
-    color: var(--palette-grey-2-rgb);
-
-    .app-logo {
-        min-height: 8rem;
-        margin-bottom: 2rem;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        img {
-            height: 4rem;
-            width: auto;
-            margin: 0 0 1rem 0;
-            &:hover{
-                transform: scale(0.8);
-                transition: all 0.5s ease;
-                cursor: pointer;
-            }
-        }
-        strong{
-            font-size: 2em;
-            line-height: 0em;
-            font-weight: 400;
-            letter-spacing: 2px;
-        }
-    }
-
-    .side-list {
-        flex: 1;
-
-        mat-expansion-panel {
-            background: var(--primary-darker-color);
-            color: var(--palette-grey-2-rgb);
-
-            &.mat-expanded {
-                background: var(--primary-color);
-            }
-
-            .mat-expansion-panel-header-title,
-            .mat-expansion-indicator:after {
-                color: var(--palette-grey-2-rgb);
-            }
-
-
-        }
-
-        ul {
-            padding-inline-start: unset;
-
-            .main-item {
-                list-style: none;
-
-                .mat-button-disabled {
-                    color: var(--palette-grey-7-rgb);
-                    cursor: not-allowed;
-                }
-
-                mat-panel-title {
-                    display: flex;
-                    justify-content: space-between;
-                }
-
-                a.mat-button {
-                    height: 48px;
-                    line-height: 48px;
-                    padding: 0 24px;
-                    text-align: start;
-                    color: var(--palette-grey-2-rgb);
-
-                    .mat-button-wrapper {
-                        font-size: 15px;
-                        font-weight: 500;
-                    }
-                }
-
-                mat-icon {
-                    font-size: 24px;
-                    &.pointer{
-                        cursor: pointer;
-                    }
-                }
-
-                .sidebarlistItem {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    a {
-                        height: 24px;
-                        padding: unset;
-                        line-height: 24px;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-
-                    section{
-                        min-width: 50px;
-                    }
-                }
-            }
-        }
-
-        .active {
-            color: var(--accent-color) !important;
-        }
-    }
-
-    .bottom{
-        bottom: 1em;
-        align-self: center;
-        display: flex;
-        position: absolute;
-    }
-} */
-
 .toolbar-wrapper{
     display: flex;
     justify-content: center;
@@ -148,4 +30,12 @@
 width: 2em;
 font-size: 1em;
 height: 1em;
+}
+
+.fullPageHeader{
+    z-index: 99999;
+    background-color: var(--primary-color);
+    opacity: 0.9;
+    justify-content: center;
+    align-items: center;
 }

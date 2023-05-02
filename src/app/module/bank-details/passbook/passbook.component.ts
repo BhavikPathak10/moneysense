@@ -348,4 +348,5 @@ export class PassbookComponent implements OnInit {
 
     this.dialog.open(AddBankDialogComponent, dialogObj);
   }
+  
 }
