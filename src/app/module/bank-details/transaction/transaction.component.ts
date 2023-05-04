@@ -215,6 +215,11 @@ export class TransactionComponent implements OnInit {
     return data;
   }
 
+  toggleInternalTransfer(e:any){
+    e.stopPropagation();
+    this.isOpen =!this.isOpen;
+  }
+
   onBankSelect(val:any){
     this.internalBankSelected = val;
     this.isOpen = false;

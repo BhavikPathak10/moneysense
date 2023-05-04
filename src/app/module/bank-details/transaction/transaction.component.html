@@ -53,7 +53,7 @@
         formControlName="reference"
         [matAutocomplete]="referenceAuto"
       />
-      <mat-icon matSuffix class="role-button" [ngClass]="{'display-none': !isInternalTransfer}" type="button" (click)="isOpen =!isOpen" cdkOverlayOrigin #trigger="cdkOverlayOrigin">{{internalBankSelected ? 'assured_workload': 'account_balance' }} </mat-icon>
+      <mat-icon matSuffix class="role-button" [ngClass]="{'display-none': !isInternalTransfer}" type="button" (click)="toggleInternalTransfer($event)" cdkOverlayOrigin #trigger="cdkOverlayOrigin">{{internalBankSelected ? 'assured_workload': 'account_balance' }} </mat-icon>
       <mat-hint class="flexRow" *ngIf="internalBankSelected"> with {{  internalBankSelected }}
         <mat-icon class="role-button" color="warn" type="button" (click)="onBankSelect(false)">clear</mat-icon>
       </mat-hint>
