@@ -7,7 +7,6 @@ import { MasterStore } from 'src/app/core/stores/master.store';
 import { DxDataGridComponent } from "devextreme-angular";
 import { TransactionService } from 'src/app/core/services/transaction.service';
 import { Router } from '@angular/router';
-import { DxiColumnComponent } from 'devextreme-angular/ui/nested';
 
 @Component({
   selector: 'app-master',
@@ -31,33 +30,8 @@ export class MasterComponent implements OnInit {
   costCenterOptions: Array<any> =[];
   costCategoryOptions: Array<any> =[];
   
-/*   filter_groupHeadOptions: Observable<any[]> | undefined;
-  filter_subHeadOptions: Observable<any[]> | undefined;
-  filter_accountHeadOptions: Observable<any[]> | undefined;
-  filter_ledgerOptions: Observable<any[]> | undefined;
-  filter_costCenterOptions: Observable<any[]> | undefined;
-  filter_costCategoryOptions: Observable<any[]> | undefined; */
-
   focusedRowKey:any ='';
   @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
-
-  /* displayedColumns = [
-    'groupHead',
-    'subHead',
-    'accountHead',
-    'ledger',
-    'costCenter',
-    'costCategory',
-    'action',
-  ]; */
-/*   masterForm = new FormGroup({
-    groupHead: new FormControl(null, Validators.required),
-    subHead: new FormControl(null, Validators.required),
-    accountHead: new FormControl(null, Validators.required),
-    ledger: new FormControl(null, Validators.required),
-    costCenter: new FormControl(null, Validators.required),
-    costCategory: new FormControl(null, Validators.required),
-  }); */
 
   constructor(
     private router : Router,
@@ -66,8 +40,6 @@ export class MasterComponent implements OnInit {
     private toast: ToastMessageService,
     private transactionService : TransactionService
   ) {
-
-    //this.onDeleteMasterDx = this.onDeleteMasterDx.bind(this);
 
     this.subscription.push(
       this.masterStore.bindStore().subscribe((data) => {
@@ -163,19 +135,9 @@ export class MasterComponent implements OnInit {
     return detailsAvail ? detailsAvail : obj;
   }
 
-  /* onCostCenterValueChanged(event: any) {
+  addNewCostCategory(e:any){
     debugger;
-    const newCostCenterName = event.value;
-    if (newCostCenterName && !this.costCenterOptions.some((cc) => cc.name === newCostCenterName)) {
-      // create a new cost center object with a unique ID and the entered name
-      const newCostCenter = {
-        id: Math.max(...this.costCenterOptions.map((cc) => cc.id)) + 1,
-        name: newCostCenterName
-      };
-      // add the new cost center to the options array
-      this.costCenterOptions = [...this.costCenterOptions, newCostCenter];
-    }
-  } */
+  }
 
   ngOnDestroy() {
     this.subscription.map((sub) => sub.unsubscribe());

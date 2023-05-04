@@ -6,10 +6,16 @@ import { AdminComponent } from './admin.component';
 import { MasterComponent } from './master/master.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CoreModule } from 'src/app/core/core.module';
-import { DxDataGridModule, DxSelectBoxModule } from 'devextreme-angular';
+import { DxDataGridModule} from 'devextreme-angular';
 
 @NgModule({
   declarations: [MasterComponent, AdminComponent],
-  imports: [CommonModule, AdminRoutingModule, SharedModule,CoreModule , DxDataGridModule,DxSelectBoxModule],
+  imports: [
+    CommonModule,
+    AdminRoutingModule, 
+    SharedModule,
+    CoreModule,
+    DxDataGridModule
+  ]
 })
 export class AdminModule {}

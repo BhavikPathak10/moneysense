@@ -24,41 +24,14 @@
       [allowDeleting]="true"
       [allowAdding]="true"
       ></dxo-editing>
-    <dxi-column dataField="groupHead" caption="Group Head">
-      <dxo-lookup
-            [dataSource]="groupHeadOptions">
-        </dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="subHead" caption="Sub Head">
-      <dxo-lookup
-            [dataSource]="subHeadOptions">
-        </dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="accountHead" caption="Account Head">
-      <dxo-lookup
-            [dataSource]="accountHeadOptions">
-        </dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="ledger" caption="Ledger">
-      <!-- <dxo-lookup
-            [dataSource]="ledgerOptions">
-        </dxo-lookup> -->
-    </dxi-column>
-    <dxi-column dataField="costCenter" caption="Cost Center">
-      <dxo-lookup
-            [dataSource]="costCenterOptions"
-            >
-            <!-- allowAdding="true"
-            (onValueChanged)="onCostCenterValueChanged($event)" -->
-        </dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="costCategory" caption="Cost Category">
-      <!-- <dxo-lookup
-            [dataSource]="costCategoryOptions">
-        </dxo-lookup> -->
-    </dxi-column>
+    <dxi-column dataField="groupHead" caption="Group Head" editorType='dxDropDownBox' [lookup]="{ dataSource: groupHeadOptions}"  [editorOptions]="{ acceptCustomValue: true }"></dxi-column>
+    <dxi-column dataField="subHead" caption="Sub Head" editorType='dxDropDownBox' [lookup]="{ dataSource: subHeadOptions}"  [editorOptions]="{ acceptCustomValue: true }"></dxi-column>
+    <dxi-column dataField="accountHead" caption="Account Head" editorType='dxDropDownBox' [lookup]="{ dataSource: accountHeadOptions}"  [editorOptions]="{ acceptCustomValue: true }"></dxi-column>
+    <dxi-column dataField="ledger" caption="Ledger"></dxi-column>
+    <dxi-column dataField="costCenter" caption="Cost Center" editorType='dxDropDownBox' [lookup]="{ dataSource: costCenterOptions}"  [editorOptions]="{ acceptCustomValue: true }"></dxi-column>
+    <dxi-column dataField="costCategory" caption="Cost Category" editorType='dxDropDownBox' [lookup]="{ dataSource: costCategoryOptions}"  [editorOptions]="{ acceptCustomValue: true }"></dxi-column>
     <dxo-filter-row [visible]="true"></dxo-filter-row>
-    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-search-panel [visible]="true"></dxo-search-panel> 
   </dx-data-grid>
 </ng-template>
 
