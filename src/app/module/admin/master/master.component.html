@@ -45,9 +45,12 @@
         </dxo-lookup> -->
     </dxi-column>
     <dxi-column dataField="costCenter" caption="Cost Center">
-      <!-- <dxo-lookup
-            [dataSource]="costCenterOptions">
-        </dxo-lookup> -->
+      <dxo-lookup
+            [dataSource]="costCenterOptions"
+            >
+            <!-- allowAdding="true"
+            (onValueChanged)="onCostCenterValueChanged($event)" -->
+        </dxo-lookup>
     </dxi-column>
     <dxi-column dataField="costCategory" caption="Cost Category">
       <!-- <dxo-lookup

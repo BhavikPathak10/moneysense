@@ -115,7 +115,6 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     let matchedData = {};
     if(plan.hasOwnProperty('completedDates')){
       let indx = plan.completedDates.map((d:any)=>moment(d.taskdate).format('YYYY/MM/DD')).indexOf(date);
-      //matchedData = plan.completedDates.find((cd:any)=>moment(cd.taskdate).format('YYYY/MM/DD')===date);
       if(indx>-1){
         matchedData = plan.completedDates[indx];
       }

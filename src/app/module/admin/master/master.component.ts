@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { map, Observable, startWith, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Master } from 'src/app/core/enums/master.enum';
 import { MasterService } from 'src/app/core/services/master.service';
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
@@ -8,6 +7,7 @@ import { MasterStore } from 'src/app/core/stores/master.store';
 import { DxDataGridComponent } from "devextreme-angular";
 import { TransactionService } from 'src/app/core/services/transaction.service';
 import { Router } from '@angular/router';
+import { DxiColumnComponent } from 'devextreme-angular/ui/nested';
 
 @Component({
   selector: 'app-master',
@@ -31,17 +31,17 @@ export class MasterComponent implements OnInit {
   costCenterOptions: Array<any> =[];
   costCategoryOptions: Array<any> =[];
   
-  filter_groupHeadOptions: Observable<any[]> | undefined;
+/*   filter_groupHeadOptions: Observable<any[]> | undefined;
   filter_subHeadOptions: Observable<any[]> | undefined;
   filter_accountHeadOptions: Observable<any[]> | undefined;
   filter_ledgerOptions: Observable<any[]> | undefined;
   filter_costCenterOptions: Observable<any[]> | undefined;
-  filter_costCategoryOptions: Observable<any[]> | undefined;
+  filter_costCategoryOptions: Observable<any[]> | undefined; */
 
   focusedRowKey:any ='';
   @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
 
-  displayedColumns = [
+  /* displayedColumns = [
     'groupHead',
     'subHead',
     'accountHead',
@@ -49,7 +49,7 @@ export class MasterComponent implements OnInit {
     'costCenter',
     'costCategory',
     'action',
-  ];
+  ]; */
 /*   masterForm = new FormGroup({
     groupHead: new FormControl(null, Validators.required),
     subHead: new FormControl(null, Validators.required),
@@ -162,6 +162,20 @@ export class MasterComponent implements OnInit {
 
     return detailsAvail ? detailsAvail : obj;
   }
+
+  /* onCostCenterValueChanged(event: any) {
+    debugger;
+    const newCostCenterName = event.value;
+    if (newCostCenterName && !this.costCenterOptions.some((cc) => cc.name === newCostCenterName)) {
+      // create a new cost center object with a unique ID and the entered name
+      const newCostCenter = {
+        id: Math.max(...this.costCenterOptions.map((cc) => cc.id)) + 1,
+        name: newCostCenterName
+      };
+      // add the new cost center to the options array
+      this.costCenterOptions = [...this.costCenterOptions, newCostCenter];
+    }
+  } */
 
   ngOnDestroy() {
     this.subscription.map((sub) => sub.unsubscribe());
