@@ -98,7 +98,6 @@ export class SidenavComponent implements OnInit {
             );
           },
           (err) => {
-            console.log(err);
             this.toast.warning(
               `Some error occured. Please try again later.`,
               'close'

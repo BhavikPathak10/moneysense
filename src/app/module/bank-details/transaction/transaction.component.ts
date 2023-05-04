@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { debounceTime, forkJoin, map, Observable, startWith, Subscription } from 'rxjs';
@@ -47,6 +47,7 @@ export class TransactionComponent implements OnInit {
   isOpen : boolean = false;
   isInternalTransfer : boolean = false;
   internalBankSelected : any = undefined;
+  editRecord : any;
 
   subscription: Subscription[] = [];
   masterDetail: any;
@@ -84,6 +85,8 @@ export class TransactionComponent implements OnInit {
     return this.transactionForm.get('reference');
   }
 
+  @ViewChild('formDirective', {static:false}) formDirective! : FormGroupDirective;
+
   constructor(
     private masterStore: MasterStore,
     private route: ActivatedRoute,
@@ -107,7 +110,23 @@ export class TransactionComponent implements OnInit {
       }),
       this.transactionStore.bindStore().subscribe((data)=>{
         this.referenceData = [...new Set(data.map((d:Transaction)=>d.reference).filter((d:any)=>d))];
-      })
+      }),
+      this.transactionService.selectedTransaction$.subscribe((data)=>{
+        this.editRecord = data;
+        if(this.editRecord){
+          this.transactionForm.setValue({
+            transactionDate: this.editRecord.transactionDate ? this.editRecord.transactionDate : null,
+            particular: this.editRecord.particular ? this.editRecord.particular : null,
+            reference: this.editRecord.reference ? this.editRecord.reference : null,
+            transactionType: this.editRecord.transactionType ? this.editRecord.transactionType : null,
+            transactionMode: this.editRecord.transactionMode ? this.editRecord.transactionMode : null,
+            transactionAmount: this.editRecord.transactionAmount ? this.editRecord.transactionAmount : null,
+            remark: this.editRecord.remark ? this.editRecord.remark : null
+          });
+        }else{
+          this.resetFormAndDetails();
+        }
+      }) 
     );
   }
 
@@ -145,7 +164,8 @@ export class TransactionComponent implements OnInit {
     this.reference?.valueChanges.pipe(
       debounceTime(500)
     ).subscribe((data:any)=>{
-      if(this.INTERNAL_TRANSFER_KEYS.map(v=>v.toLowerCase()).includes(data.toLowerCase())){
+
+      if(data && this.INTERNAL_TRANSFER_KEYS.map(v=>v.toLowerCase()).includes(data.toLowerCase())){
         this.isInternalTransfer = true;
       }else{
         this.isInternalTransfer = false;
@@ -154,7 +174,7 @@ export class TransactionComponent implements OnInit {
     })
   }
 
-  onAddTransaction(formDirective: FormGroupDirective) {
+  onAddTransaction() {
     if (this.transactionForm.valid) {
       let data = this.addcomputedValues(this.transactionForm.value);
       let objSubscription:any = {data1 : this.transactionService.add(data)};
@@ -170,15 +190,24 @@ export class TransactionComponent implements OnInit {
         objSubscription = {...objSubscription, data2 : this.transactionService.add(transferData)};
       }
 
+      if(this.editRecord){
+        objSubscription = {...objSubscription, delete_Data:this.transactionService.delete(this.editRecord)};
+      }
+
       forkJoin(objSubscription).subscribe((res)=>{
         this.transactionService.syncStore();
-        this.toast.success('Transaction has been added.', 'close');
-        formDirective.resetForm();
-        this.onBankSelect(false);
-        this.isInternalTransfer = false;
-        this.transactionForm.reset();
+        this.toast.success(`Transaction has been  ${this.editRecord ? 'updated' : 'added'}.`, 'close');
+        this.resetFormAndDetails();
+        this.transactionService.selectedTransaction$.next(false);
       })
     }
+  }
+
+  resetFormAndDetails(){
+    this.formDirective.resetForm();
+    this.onBankSelect(false);
+    this.isInternalTransfer = false;
+    this.transactionForm.reset();
   }
 
   addLedger(){
@@ -224,4 +253,9 @@ export class TransactionComponent implements OnInit {
     this.internalBankSelected = val;
     this.isOpen = false;
   }
+
+  onCancelEdit(){
+    this.transactionService.selectedTransaction$.next(false);
+  }
+
 }

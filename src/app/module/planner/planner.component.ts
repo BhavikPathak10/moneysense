@@ -180,7 +180,7 @@ export class PlannerComponent implements OnInit {
   }
 
   getPaymentText(data:any){
-    console.log(data);
+    //ToDo
   }
 
   onUpdateTransactionDetail(data:any){

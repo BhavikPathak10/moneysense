@@ -201,7 +201,6 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   }
   
   markAsIgnore(e:any){
-    console.log(e);
     e.event.preventDefault();
     e.row.cells.forEach((cell:any)=>{
       cell.cellElement.classList.remove('lapsed');

@@ -135,10 +135,6 @@ export class MasterComponent implements OnInit {
     return detailsAvail ? detailsAvail : obj;
   }
 
-  addNewCostCategory(e:any){
-    debugger;
-  }
-
   ngOnDestroy() {
     this.subscription.map((sub) => sub.unsubscribe());
   }

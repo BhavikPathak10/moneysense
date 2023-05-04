@@ -1,7 +1,7 @@
 <mat-card class="mat-elevation-z0">
 <form
     [formGroup]="transactionForm"
-    (ngSubmit)="onAddTransaction(formDirective)"
+    (ngSubmit)="onAddTransaction()"
     class="transactionFormClass"
     #formDirective="ngForm"
   >
@@ -120,14 +120,14 @@
       <mat-label>Remark</mat-label>
       <input matInput placeholder="Enter remark" formControlName="remark" />
     </mat-form-field>
-    <button
+      <button
       type="submit"
       mat-raised-button
       color="primary"
       [disabled]="transactionForm.invalid"
       class="col-1"
-    >
-      Add Transaction
-    </button>
+      >
+        {{editRecord ? 'Update': 'Add'}} Transaction
+      </button>
   </form>
 </mat-card>

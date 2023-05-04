@@ -175,3 +175,34 @@ input:disabled{
 {
     color:var(--warn-color);
 }
+
+$border-highlight-edited : 1px solid var(--palette-grey-4-rgb);
+
+.edit-row td{
+    height: 2.25rem;
+    border:$border-highlight-edited;
+    border-left:none;
+    border-right:none;
+    background: var(--palette-primary-contrast-rgb);
+    color: var(--palette-warning-rgb);
+    &:last-child{
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-left:none;
+        border-right:$border-highlight-edited;
+    }
+    &:first-child{
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-left:$border-highlight-edited;
+        border-right:none;
+    }
+    .edit-icon{
+        font-weight: bold;
+    }
+}
+
+.disabled-icon{
+    opacity: 0.2;
+    cursor: not-allowed;
+}

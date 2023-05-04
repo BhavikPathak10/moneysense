@@ -59,6 +59,7 @@ export class PassbookComponent implements OnInit {
   });
 
   transactionEnum = TransactionEnum;
+  editRecord :any;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,6 +90,9 @@ export class PassbookComponent implements OnInit {
           new Transaction().deserialize(x)
         );
         this.computeTableData();
+      }),
+      this.transactionService.selectedTransaction$.subscribe((data)=>{
+        this.editRecord = data;
       })
     );
   }
@@ -109,6 +113,7 @@ export class PassbookComponent implements OnInit {
   ngAfterViewInit() {}
 
   updateDataByBank() {
+    this.transactionService.selectedTransaction$.next(false);
     if (this.banks.length > 0) {
       this.activeBank = this.banks.find((b) => b.accountName == this.activeId);
     }
@@ -162,10 +167,8 @@ export class PassbookComponent implements OnInit {
     this.bankService.updateBankDetails(this.activeBank)?.subscribe(
       (data) => {
         //this.bankService.syncStore();
-        console.log('UPDATED');
       },
       (err) => {
-        console.log('ERROR!!!');
       }
     );
   }
@@ -203,8 +206,17 @@ export class PassbookComponent implements OnInit {
     });
   }
 
-  onEditTransaction(rec: any) {
-    //console.log(rec);
+  onEditCancelTransaction(rec: any) {
+    if(this.editRecord && rec.id !== this.editRecord.id){
+      this.toast.info('Please save or cancel the changes on the current transaction before proceeding with editing another one.','close');
+      return;
+    }
+    rec.isEdited = !rec.isEdited;
+    this.editRecord = false;
+    if(rec.isEdited){
+      this.editRecord = rec;
+    }
+    this.transactionService.selectedTransaction$.next(this.editRecord);
   }
 
   onExportBankDetails(){
@@ -299,7 +311,6 @@ export class PassbookComponent implements OnInit {
         }
       },
       (err) => {
-            console.log(err);
             this.toast.warning(
               `Some error occured. Please try again later.`,
               'close'
@@ -348,5 +359,11 @@ export class PassbookComponent implements OnInit {
 
     this.dialog.open(AddBankDialogComponent, dialogObj);
   }
-  
+ 
+  isRecordDisabled(el:any){
+    if(el.id == this.editRecord.id){
+      return false;
+    }
+    return true;
+  }
 }

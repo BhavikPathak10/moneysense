@@ -14,6 +14,7 @@ export class TransactionService {
   transactions: Transaction[] = [];
 
   public returnBank$: ReplaySubject<string> = new ReplaySubject<string>(1);
+  public selectedTransaction$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(
     private api: ApiService,
@@ -68,20 +69,14 @@ export class TransactionService {
 
     Promise.all(transactions.map((t) => this.delete(t).subscribe())).then(
       (value) => {
-        console.log('Transactions deleted successfully');
         this.bankService.deleteBank(bank.id).subscribe(
           (data) => {
             this.bankService.syncStore();
-            console.log('Bank Deleted successfully');
           },
-          (err) => {
-            console.log('Unable to delete bank, Please try again later.');
-          }
+          (err) => {}
         );
       },
-      (reason) => {
-        console.log(reason);
-      }
+      (reason) => {}
     );
   }
 
