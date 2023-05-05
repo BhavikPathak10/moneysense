@@ -17,9 +17,9 @@
         </dxo-lookup>
       </dxi-column>
       <dxi-column dataField="dueDate" dataType="date" caption="Due Date" format="dd-MMM-yyyy"></dxi-column>
-      <dxi-column dataField="invoiceAmount" dataType="number" caption="Invoice Amount" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="amountPaid" dataType="number" caption="Amount Paid" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="pendingPayment" dataType="number" caption="Pending Payment" [allowEditing]="false" cssClass="not-editable" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="invoiceAmount" dataType="number" caption="Invoice Amount" format="₹ ,##0.00"></dxi-column>
+      <dxi-column dataField="amountPaid" dataType="number" caption="Amount Paid" format="₹ ,##0.00"></dxi-column>
+      <dxi-column dataField="pendingPayment" dataType="number" caption="Pending Payment" [allowEditing]="false" cssClass="not-editable" format="₹ ,##0.00"></dxi-column>
       <dxi-column dataField="remark" dataType="string" caption="Remark"></dxi-column>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
       <dxo-scrolling mode="virtual"></dxo-scrolling>
@@ -32,11 +32,17 @@
       <dxo-summary>
         <dxi-total-item
         column="amountPaid"
-        summaryType="sum">
+        summaryType="sum"
+        valueFormat="₹ ,##0.00"
+        displayFormat="{0}"
+        >
     </dxi-total-item>
         <dxi-total-item
             column="pendingPayment"
-            summaryType="sum">
+            summaryType="sum"
+            valueFormat="₹ ,##0.00"
+            displayFormat="{0}"
+        >
         </dxi-total-item>
     </dxo-summary>
     </dx-data-grid>
