@@ -33,11 +33,10 @@
   <button mat-icon-button color="primary" (click)="onExportBankDetails()"><mat-icon>file_download</mat-icon></button>
   </form>
 
-  <form [formGroup]="balanceForm">
+  <form [formGroup]="balanceForm" (ngSubmit)="onBankBalanceUpdate()">
       <mat-form-field appearance="outline">
         <mat-label>Balance</mat-label>
         <input
-          readonly
           matInput
           type="number"
           placeholder="Enter Current Balance"

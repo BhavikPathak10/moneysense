@@ -369,6 +369,36 @@ export class PassbookComponent implements OnInit {
     return true;
   }
 
+  onBankBalanceUpdate(){
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: {
+        title: 'Confirm Balance update',
+        message: `Do you want to update bank balance from to ₹ ${this.activeBank!.currentBalance.toLocaleString('en-IN')}/- to ₹ ${this.balanceForm.get('currentBalance')?.value.toLocaleString('en-IN')}/- ?`,
+        okButtonText: 'Update',
+        cancelButtonText: 'Cancel',
+        hideCancel: 'no',
+    }}
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,dialogObj);
+
+    dialogRef.afterClosed().subscribe((result)=>{
+      if(result){
+        this.updateBankAndTransactionDetails(this.balanceForm.value);
+      }else{
+        this.balanceForm.get('currentBalance')?.setValue(this.activeBank?.currentBalance);
+      }
+    })
+  }
+
+  updateBankAndTransactionDetails(p_bal:{currentBalance:any}){
+    this.activeBank!.currentBalance = p_bal.currentBalance;
+    this.bankService.updateBankDetails(new BankDetails().deserialize(this.activeBank))?.subscribe((result)=>{
+      this.transactionService.syncStore();
+    })
+  }
+
   ngOnDestroy(){
     this.subscription.map(sub=>sub.unsubscribe());
   }

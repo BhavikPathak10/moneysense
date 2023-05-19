@@ -219,7 +219,7 @@ export class TransactionComponent implements OnInit {
   }
 
   resetFormAndDetails(){
-    this.formDirective.resetForm();
+    this.formDirective && this.formDirective.resetForm();
     this.onBankSelect(false);
     this.isInternalTransfer = false;
     this.transactionForm.reset();
