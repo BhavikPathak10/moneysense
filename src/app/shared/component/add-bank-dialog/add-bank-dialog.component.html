@@ -6,6 +6,28 @@
   <form [formGroup]="bankForm">
     <ng-container *ngIf="showOtherFields || this.data.isViewData">
       <mat-form-field appearance="outline">
+        <mat-label>Associated Ledger</mat-label>
+        <input
+          matInput
+          placeholder="Enter associated ledger"
+          formControlName="accountLedger"
+          [matAutocomplete]="ledgerAuto"
+        />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #ledgerAuto="matAutocomplete"
+        [panelWidth]="'auto'"
+      >
+        <mat-option
+          *ngFor="let option of filteredMasterDetails | async"
+          [value]="option?.Ledger"
+        >
+          {{ option?.Ledger }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="accountLedger?.invalid">Please select valid particular</mat-error>
+    </mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>URL</mat-label>
         <input
           matInput

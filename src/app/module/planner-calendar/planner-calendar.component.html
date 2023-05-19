@@ -42,9 +42,9 @@
             [dataSource]="taskNames">
       </dxo-lookup>        
       </dxi-column>
-      <dxi-column dataField="budget" dataType="number" caption="Estimated" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="transactionAmount" dataType="number" caption="Actual" format="₹ ,##0.##"></dxi-column>
-      <dxi-column dataField="difference" dataType="number" caption="Difference" format="₹ ,##0.##"></dxi-column>
+      <dxi-column dataField="budget" dataType="number" caption="Estimated" format="₹ ,##,##0.##"></dxi-column>
+      <dxi-column dataField="transactionAmount" dataType="number" caption="Actual" format="₹ ,##,##0.##"></dxi-column>
+      <dxi-column dataField="difference" dataType="number" caption="Difference" format="₹ ,##,##0.##"></dxi-column>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
       <dxi-column type="buttons" caption="Mark as">
         <dxi-button name="done" text="Done" icon="todo" [visible]="isDoneVisible.bind(this)" [onClick]="markAsDoneDialog.bind(this)">Done</dxi-button>
@@ -55,21 +55,21 @@
       column="budget"
       summaryType="sum"
       [alignByColumn]="true"
-      valueFormat="₹ ,##0.##"
+      valueFormat="₹ ,##,##0.##"
       displayFormat="{0}">
     </dxi-group-item>
     <dxi-group-item
     column="transactionAmount"
     summaryType="sum"
     [alignByColumn]="true"
-    valueFormat="₹ ,##0.##"
+    valueFormat="₹ ,##,##0.##"
     displayFormat="{0}">
   </dxi-group-item>
   <dxi-group-item
   column="difference"
   summaryType="sum"
   [alignByColumn]="true"
-  valueFormat="₹ ,##0.##"
+  valueFormat="₹ ,##,##0.##"
   displayFormat="{0}">
 </dxi-group-item>
     </dxo-summary>

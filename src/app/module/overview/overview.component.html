@@ -42,7 +42,7 @@
     <dxi-column dataField="bankName" caption="Bank"></dxi-column>
     <dxi-column dataField="branch" caption="Branch"></dxi-column>
     <dxi-column dataField="accountNumber" caption="Account number"></dxi-column>
-    <dxi-column dataField="estimatedBalance" caption="Balance" format="₹ ,##0.00"></dxi-column>
+    <dxi-column dataField="estimatedBalance" caption="Balance" format="₹ ,##,##0.00"></dxi-column>
     <dxo-filter-row [visible]="true"></dxo-filter-row>
     <dxo-summary>
       <dxi-group-item
@@ -54,7 +54,7 @@
     column="estimatedBalance"
     summaryType="sum"
     [alignByColumn]="true"
-    valueFormat="₹ ,##0.00"
+    valueFormat="₹ ,##,##0.00"
     displayFormat="{0}">
   </dxi-group-item>
   <dxi-total-item
@@ -64,7 +64,7 @@
         <dxi-total-item
             column="estimatedBalance"
             summaryType="sum"
-            valueFormat="₹ ,##0.00"
+            valueFormat="₹ ,##,##0.00"
             displayFormat="{0}">
         </dxi-total-item>
   </dxo-summary>

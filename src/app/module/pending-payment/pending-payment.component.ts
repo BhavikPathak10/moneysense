@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
 import { Master } from 'src/app/core/enums/master.enum';
 import { PendingPaymentModel } from 'src/app/core/models/pendingPayement.model';
@@ -6,6 +7,7 @@ import { PendingPaymentService } from 'src/app/core/services/pending-payment.ser
 import { ToastMessageService } from 'src/app/core/services/toast-message.service';
 import { MasterStore } from 'src/app/core/stores/master.store';
 import { PendingPaymentStore } from 'src/app/core/stores/pendingPayemnt.store';
+import { ConfirmPlannerDetailsComponent } from 'src/app/shared/component/confirm-planner-details/confirm-planner-details.component';
 
 @Component({
   selector: 'app-pending-payment',
@@ -19,8 +21,15 @@ export class PendingPaymentComponent implements OnInit {
   pendingPaymentDetails: PendingPaymentModel[] = [];
   uniqueLedger : any = [];
   MASTER = Master;
+  editPrevPayment: any;
 
-  constructor(private pendingPayemntStore : PendingPaymentStore ,private masterStore:MasterStore, private pendingPaymentService : PendingPaymentService, private toast: ToastMessageService) { 
+  constructor(
+    private pendingPayemntStore : PendingPaymentStore ,
+    private masterStore:MasterStore, 
+    private pendingPaymentService : PendingPaymentService, 
+    private toast: ToastMessageService,
+    private dialog : MatDialog
+    ) { 
     this.subscription.push(
       this.pendingPayemntStore.bindStore().subscribe((data)=>{
         this.pendingPaymentDetails = data;
@@ -35,6 +44,9 @@ export class PendingPaymentComponent implements OnInit {
   }
 
   savePayment(e:any){
+    if(e.changes.length < 1){
+      return;
+    }
     let computedData = this.pendingPaymentService.calcComputedData(e.changes[0].data || e.changes[0].key);
     this.onSavePaymentDetails(e.changes[0].type,computedData).subscribe((data)=>{
       this.toast.success(`Payment detail ${e.changes[0].type} successful`,'close');
@@ -54,12 +66,34 @@ export class PendingPaymentComponent implements OnInit {
           obs = this.pendingPaymentService.deletePendingPayment(data.id);
           break;
           case 'update':
+            if(data.pendingPayment != this.editPrevPayment){
+              this.confirmAddTransactionDetail(data);
+            }
             obs = this.pendingPaymentService.updatePendingPaymentDetails(data);
         break;
         default:
         break;
     }
     return obs;
+  }
+
+  confirmAddTransactionDetail(p_data:any){
+    let dialogObj = {
+      minWidth: 450,
+      data: {
+        record:p_data,
+        isPendingPayment : true
+      }
+    };
+    this.dialog?.open(ConfirmPlannerDetailsComponent, dialogObj).afterClosed().subscribe((result)=>{
+      if(result.isTransactionAdded){
+        this.pendingPaymentService.updatePendingPaymentDetails(p_data);
+      }
+    })
+  }
+
+  onEditStart(e:any){
+    this.editPrevPayment = e.data.pendingPayment;
   }
 
   ngOnDestroy():void{

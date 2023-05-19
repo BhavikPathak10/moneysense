@@ -178,15 +178,30 @@ export class TransactionComponent implements OnInit {
     if (this.transactionForm.valid) {
       let data = this.addcomputedValues(this.transactionForm.value);
       let objSubscription:any = {data1 : this.transactionService.add(data)};
-
+      
       if(this.isInternalTransfer && this.internalBankSelected){
-       let transferData = new Transaction().deserialize({
+        let transferBankData = {
+          ...this.transactionForm.value,
+          accountName : this.internalBankSelected,
+          transactionType:data.transactionType?.toLowerCase() === this.transactionEnum.WITHDARWAL ? this.transactionEnum.DEPOSIT.toUpperCase() : this.transactionEnum.WITHDARWAL.toUpperCase()
+        }
+        
+        let activebank = this.banks?.find(b=>b.accountName == this.activeId);
+
+        if(activebank!.accountLedger){
+          transferBankData.particular = activebank?.accountLedger;
+        }
+
+        let transferData = this.addcomputedValues(transferBankData); 
+
+        /* let transferData = new Transaction().deserialize({
           ...data,
           accountName : this.internalBankSelected,
           transactionType:data.transactionType?.toLowerCase() === this.transactionEnum.WITHDARWAL ? this.transactionEnum.DEPOSIT.toUpperCase() : this.transactionEnum.WITHDARWAL.toUpperCase(),
           withdrawal : data.deposit,
           deposit : data.withdrawal
-        });
+        });*/
+
         objSubscription = {...objSubscription, data2 : this.transactionService.add(transferData)};
       }
 
@@ -218,7 +233,7 @@ export class TransactionComponent implements OnInit {
   addcomputedValues(p_data: any) {
     let data: Transaction = new Transaction().deserialize(p_data);
 
-    data.accountName = this.activeId;
+    data.accountName = p_data && p_data.accountName ? p_data.accountName : this.activeId;
 
     data.withdrawal =
       data.transactionType?.toLowerCase() ==
@@ -256,6 +271,10 @@ export class TransactionComponent implements OnInit {
 
   onCancelEdit(){
     this.transactionService.selectedTransaction$.next(false);
+  }
+
+  ngOnDestroy(){
+    this.subscription.map(sub=>sub.unsubscribe());
   }
 
 }

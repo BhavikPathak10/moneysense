@@ -1,6 +1,7 @@
 import { Deserializable } from './deserializable.model';
 
 export class BankDetails implements Deserializable {
+  public accountLedger?: string;
   public accountName!: string;
   public accountNumber?: number;
   public accountURL?: string;

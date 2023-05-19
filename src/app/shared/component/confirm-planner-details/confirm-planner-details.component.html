@@ -1,11 +1,18 @@
 <h3 mat-dialog-title>Confirm transaction details
-    <span mat-dialog-subtitle>for {{activePlanInstance.taskName}}</span>
+    <span mat-dialog-subtitle *ngIf="activePlanInstance">for {{activePlanInstance.taskName}}</span>
 </h3>
 
 <div mat-dialog-content>
+  <ng-container *ngIf="data.isPendingPayment;else plannerDetails">
+    <app-transaction-details [transactionDetail]="pendingPayment_transactionDetails" [paymentDetail]="pendingPayment_paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+  </ng-container>
+  <ng-template #plannerDetails>
     <app-transaction-details [transactionDetail]="{date: data.record.taskdate, amount: data.record.budget}" [paymentDetail]="activePlanInstance.paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+  </ng-template>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-flat-button color="primary" (click)="onDoneClick()" cdkFocusInitial>Done</button>
+  <button *ngIf="!data.isPendingPayment" mat-flat-button color="primary" (click)="onDoneClick()" cdkFocusInitial>Done</button>
+  <button *ngIf="data.isPendingPayment" mat-flat-button color="primary" (click)="onPendingPaymentDoneClick()" cdkFocusInitial>Done</button>
+  
 </div>

@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
-import { forkJoin, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TransactionEnum } from 'src/app/core/enums/transaction.enum';
 import { Transaction } from 'src/app/core/models/transaction.model';
 import { PlannerService } from 'src/app/core/services/planner.service';
@@ -22,6 +21,8 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
   activePlanInstance : any;
   paymentDetails:any;
   transactionEnum = TransactionEnum;
+  pendingPayment_paymentDetails: any;
+  pendingPayment_transactionDetails: any;
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmPlannerDetailsComponent>,
@@ -34,12 +35,29 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
       this.subscription.push(
         this.plannerStore.bindStore().subscribe((val)=>{
           this.planners = [...val];
-          this.activePlanInstance = this.planners.find((p)=>p.id == data.record.idx);
+          if(!data.isPendingPayment){
+            this.activePlanInstance = this.planners.find((p)=>p.id == data.record.idx);
+          }
         })
       )
    }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(this.data.isPendingPayment){
+       this.pendingPayment_paymentDetails = {
+        bank: '' ,
+        particular:this.data.record.ledger ? this.data.record.ledger :'',
+        reference:'' ,
+        transactionType:'',
+        transactionMode:'',
+        remark: this.data.record.remark ? this.data.record.remark : ''
+      }
+      this.pendingPayment_transactionDetails = {
+        date: this.data.record.dueDate, 
+        amount: this.data.record.amountPaid
+      }
+    }
+  }
 
   onUpdateTransactionDetail(data:any){
     this.paymentDetails = data;
@@ -66,6 +84,15 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
           })
         }
       })
+    })
+  }
+
+  onPendingPaymentDoneClick(){
+    let paymentdata = this.addcomputedValues(this.paymentDetails);
+    this.transactionService.add(paymentdata).subscribe((result)=>{
+      this.transactionService.syncStore();
+      this.toast.success('Transaction has been added.', 'close');
+      this.dialogRef.close({isTransactionAdded:true});
     })
   }
 

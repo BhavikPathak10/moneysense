@@ -17,11 +17,12 @@ import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/
 import { Clipboard } from "@angular/cdk/clipboard";
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import { DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
 import { AddBankDialogComponent } from 'src/app/shared/component/add-bank-dialog/add-bank-dialog.component';
+import enIN from '@angular/common/locales/en-In';
 
 @Component({
   selector: 'app-passbook',
@@ -72,6 +73,7 @@ export class PassbookComponent implements OnInit {
     private toast: ToastMessageService,
     private clipboard: Clipboard
   ) {
+    registerLocaleData(enIN);
     this.subscription.push(
       this.route.params.subscribe((param) => {
         this.activeId = param['bank_accountName'];
@@ -365,5 +367,9 @@ export class PassbookComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  ngOnDestroy(){
+    this.subscription.map(sub=>sub.unsubscribe());
   }
 }

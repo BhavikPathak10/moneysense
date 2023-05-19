@@ -40,12 +40,10 @@
    </mat-icon>
    <mat-menu #banksMenu="matMenu">
       <button *ngFor="let bank of banks"
-      [routerLink]="'bank/' + bank.accountName"
-      routerLinkActive="active"
+      (click)="navigateToBank(bank.accountName)"
       mat-menu-item
       [title]="bank.accountName"
-      >{{ bank.accountName }}
-      </button>
+      >{{ bank.accountName }}</button>
    </mat-menu>
    <a
       routerLinkActive="active"
