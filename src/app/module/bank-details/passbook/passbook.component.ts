@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -62,6 +62,9 @@ export class PassbookComponent implements OnInit {
   transactionEnum = TransactionEnum;
   editRecord :any;
 
+  @ViewChild('passbookTable', { static: true })
+  passbookTable!: ElementRef;
+
   constructor(
     private route: ActivatedRoute,
     private router : Router,
@@ -112,7 +115,9 @@ export class PassbookComponent implements OnInit {
     ];
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+    this.scrollToBottom(this.passbookTable.nativeElement);
+  }
 
   updateDataByBank() {
     this.transactionService.selectedTransaction$.next(false);
@@ -153,6 +158,7 @@ export class PassbookComponent implements OnInit {
     this.estimatedDeposit = prevDeposit;
     this.estimatedWithdrawal = prevWithdraw;
     this.bankTransactionData = new MatTableDataSource(sortbyDate);
+    this.scrollToBottom(this.passbookTable.nativeElement);
   }
 
   updateEstimatedBalanceForBank(data: {
@@ -370,12 +376,14 @@ export class PassbookComponent implements OnInit {
   }
 
   onBankBalanceUpdate(){
+    let prevBal:any = `₹ ${this.activeBank!.currentBalance ? this.activeBank!.currentBalance.toLocaleString('en-IN'): '0.00'} /-`;
     let dialogObj = {
       minWidth: 450,
       disableClose: true,
       data: {
         title: 'Confirm Balance update',
-        message: `Do you want to update bank balance from to ₹ ${this.activeBank!.currentBalance.toLocaleString('en-IN')}/- to ₹ ${this.balanceForm.get('currentBalance')?.value.toLocaleString('en-IN')}/- ?`,
+        message: `Do you want to update bank balance to ₹ ${this.balanceForm.get('currentBalance')?.value.toLocaleString('en-IN')}/- ?`,
+        hint:`Current Balance : ${prevBal}`,
         okButtonText: 'Update',
         cancelButtonText: 'Cancel',
         hideCancel: 'no',
@@ -397,6 +405,12 @@ export class PassbookComponent implements OnInit {
     this.bankService.updateBankDetails(new BankDetails().deserialize(this.activeBank))?.subscribe((result)=>{
       this.transactionService.syncStore();
     })
+  }
+
+  scrollToBottom(el:HTMLElement){
+    setTimeout(()=>{
+      el.scrollTo(0,el.scrollHeight);
+    },10);
   }
 
   ngOnDestroy(){
