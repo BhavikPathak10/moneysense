@@ -62,7 +62,7 @@
       [cdkConnectedOverlayOrigin]="trigger"
       [cdkConnectedOverlayOpen]="isOpen">
         <mat-card (mouseleave)="isOpen = false">
-          <mat-selection-list [multiple]="false">
+          <mat-selection-list class="overlay-selection-list" [multiple]="false">
             <mat-list-option *ngFor="let bank of banksFiltered" [value]="bank.accountName" (click)="onBankSelect(bank.accountName)">
               {{bank.accountName}}
             </mat-list-option>

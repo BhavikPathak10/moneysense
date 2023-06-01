@@ -1,9 +1,19 @@
 <mat-drawer-container class="fullHeight" [hasBackdrop]="false">
     <mat-drawer-content>
-        <button class="drawer-toggle-button" mat-icon-button (click)="drawer.toggle()">
+      <section class="drawer-toggle-button">
+        <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon>{{ drawer.opened ? 'keyboard_double_arrow_left' : 'keyboard_double_arrow_right'}}</mat-icon>
         </button>
-      <app-planner-calendar></app-planner-calendar>
+        <button mat-icon-button [matMenuTriggerFor]="legendMenu">
+          <mat-icon>filter_alt</mat-icon>
+        </button>
+        <mat-menu #legendMenu="matMenu">
+          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('lapsed')}" (click)="onLegendClick($event,'lapsed')"><span class="circle lapsed"></span> <!-- {{taskGrpVisible.includes('lapsed') ? 'Hide' : 'Show'}} --> Lapsed task</div>
+          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('completed')}" (click)="onLegendClick($event,'completed')"><span class="circle completed"></span><!-- {{taskGrpVisible.includes('completed') ? 'Hide' : 'Show'}} --> Completed task</div>
+          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('upcoming')}" (click)="onLegendClick($event,'upcoming')"><span class="circle upcoming"></span> <!-- {{taskGrpVisible.includes('upcoming') ? 'Hide' : 'Show'}}  --> Upcoming task</div>
+        </mat-menu>
+      </section>
+      <app-planner-calendar [taskGroup]="taskGrpVisible"></app-planner-calendar>
     </mat-drawer-content>
     <mat-drawer #drawer position="start" mode="side">
         <ng-container *ngTemplateOutlet="matTabPlanner"></ng-container>

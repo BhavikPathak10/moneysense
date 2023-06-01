@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DxPopoverComponent } from 'devextreme-angular';
@@ -25,6 +25,7 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   subscription:Subscription[] = [];
   planners:any = [];
   planSchedule:any = [];
+  planScheduleAllData:any = [];
 
   taskNames :any[] = [];
 
@@ -37,6 +38,15 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
   @ViewChild("dxDataPlannerGrid", { static: false }) dataGrid?: DxDataGridComponent;
   @ViewChild("dxPopOver", { static: false }) popOver?: DxPopoverComponent;
+
+  _taskGroup:any;
+  get taskGroup(){
+    return this._taskGroup;
+  }
+  @Input ('taskGroup') set taskGroup(value:any){
+    this._taskGroup = value;
+    this.filterTaskByGrp();
+  }
 
   constructor(
     private plannerStore : PlannerStore,
@@ -107,7 +117,17 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
         })
     arr.push(...flatArr);
     })
-    this.planSchedule = [...arr];
+    this.planSchedule = [...arr].map((t:any)=>{
+      t.taskGroup = 'upcoming';
+      if(moment(t.taskdate).isBefore(new Date())){
+        t.taskGroup = 'lapsed'
+      }
+      if(t.hasOwnProperty('transactionId')){
+        t.taskGroup = 'completed'
+      }
+      return t;
+    });
+    this.planScheduleAllData = [...this.planSchedule]; 
   }
 
   getCompletedDetails(plan:any,dt:any){
@@ -127,12 +147,21 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   }
 
   onCellPrepared(e:any) {
-    if(e.rowType == 'data' && moment(e.data.taskdate).isBefore(new Date())){
-      e.cellElement.classList.add('lapsed');
+    if(e.rowType == 'data'){
+      if(e.data.taskGroup == 'lapsed'){
+        e.cellElement.classList.add('lapsed');
+      }
+      if(e.data.taskGroup == 'completed'){
+        e.cellElement.classList.add('completed');
+      }
     }
-    if(e.rowType == 'data' && e.data.hasOwnProperty('transactionId')){
-      e.cellElement.classList.add('completed');
-    }
+  }
+
+  filterTaskByGrp(){
+    let filterValue = [...this.taskGroup];
+    this.planSchedule = this.planScheduleAllData.filter((t:any)=>{
+      return filterValue.includes(t.taskGroup);
+    })
   }
 
   onCellHoverChanged(e:any){
@@ -161,7 +190,6 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
     const dialog = this.dialog?.open(ConfirmPlannerDetailsComponent, dialogObj);
   }
-
 
   markAsUndoDialog(e:any){
     e.event.preventDefault();

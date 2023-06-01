@@ -36,3 +36,8 @@ mat-card{
 .display-none{
     display: none !important;
 }
+
+.overlay-selection-list{
+    max-height: 50vh;
+    overflow-y: auto;
+}

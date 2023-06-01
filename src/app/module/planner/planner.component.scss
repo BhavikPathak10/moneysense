@@ -5,9 +5,13 @@ mat-drawer{
 
 .drawer-toggle-button{
     position: absolute;
-    top: -5px;
     left: 0;
     z-index: 9999;
+    button{
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+    }
 }
 
 mat-stepper{
@@ -76,3 +80,21 @@ mat-stepper{
     background: var(--primary-color);
     color: var(--text-primary-darker-color);
 }
+
+.circle{
+    height: 0px;
+    width: 0px;
+    display: inline-block;
+    border: 5px solid;
+    border-radius: 20px;
+    margin-right: 5px;
+}
+
+.mat-menu-item{
+    height: 30px;
+    line-height: 30px;
+    &.task-hidden{
+        opacity: 0.4;
+    }
+}
+

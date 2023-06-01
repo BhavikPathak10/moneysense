@@ -7,3 +7,11 @@
         background-color: var(--palette-grey-1-rgb);
     }
 }
+
+.slider-filter{
+    position: absolute;
+    display: block;
+    z-index: 9;
+    font-size: 13px;
+    font-weight: 500;
+}

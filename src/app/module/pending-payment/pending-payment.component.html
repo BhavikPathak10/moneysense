@@ -1,4 +1,5 @@
 <div class="flexColumn fullHeight">
+    <mat-slide-toggle color="primary" class="slider-filter" (change)="onSliderPendingPaymentChange($event)">Show Pending Payments only</mat-slide-toggle>
     <ng-container *ngTemplateOutlet="DxPendingPaymentTable"></ng-container>
 </div>
 
@@ -12,7 +13,7 @@
         (onEditingStart)="onEditStart($event)"
         >
       <dxi-column dataField="billDate" dataType="date" caption="Bill Date" format="dd-MMM-yyyy"></dxi-column>
-      <dxi-column [width]="200" dataField="ledger" dataType="string" caption="Ledger">
+      <dxi-column [width]="350" dataField="ledger" dataType="string" caption="Ledger">
         <dxo-lookup
             [dataSource]="uniqueLedger">
         </dxo-lookup>

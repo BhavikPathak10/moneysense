@@ -38,6 +38,8 @@ export class PlannerComponent implements OnInit {
   isActivePlan:any = false;
   paymentDetail : any;
 
+  taskGrpVisible = ['lapsed','completed','upcoming'];
+
   taskNametFormGroup = this._formBuilder.group({
     taskName: ['',Validators.required],
     taskEstBudget : ['',Validators.required]
@@ -185,6 +187,16 @@ export class PlannerComponent implements OnInit {
 
   onUpdateTransactionDetail(data:any){
     this.paymentDetail = data;
+  }
+
+  onLegendClick(e:any,taskGrp: string){
+    e.stopPropagation();
+    if(this.taskGrpVisible.includes(taskGrp)){
+      this.taskGrpVisible.splice(this.taskGrpVisible.indexOf(taskGrp),1);
+    }else{
+      this.taskGrpVisible.push(taskGrp);
+    }
+    this.taskGrpVisible = new Array().concat(this.taskGrpVisible);
   }
 
   ngOnDestroy():void{

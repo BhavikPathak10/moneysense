@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DxDataGridComponent } from 'devextreme-angular/ui/data-grid';
 import { Observable, Subscription } from 'rxjs';
 import { Master } from 'src/app/core/enums/master.enum';
 import { PendingPaymentModel } from 'src/app/core/models/pendingPayement.model';
@@ -22,6 +24,8 @@ export class PendingPaymentComponent implements OnInit {
   uniqueLedger : any = [];
   MASTER = Master;
   editPrevPayment: any;
+
+  @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
 
   constructor(
     private pendingPayemntStore : PendingPaymentStore ,
@@ -94,6 +98,14 @@ export class PendingPaymentComponent implements OnInit {
 
   onEditStart(e:any){
     this.editPrevPayment = e.data.pendingPayment;
+  }
+
+  onSliderPendingPaymentChange(event:MatSlideToggleChange){
+    if(event.checked){
+      this.dataGrid?.instance.filter(["pendingPayment", ">", 0]);
+    }else{
+      this.dataGrid?.instance.clearFilter();
+    }
   }
 
   ngOnDestroy():void{
