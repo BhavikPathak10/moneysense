@@ -128,6 +128,7 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
       return t;
     });
     this.planScheduleAllData = [...this.planSchedule]; 
+    /* this.plannerService.plannerAllData$.next(this.planScheduleAllData); */
   }
 
   getCompletedDetails(plan:any,dt:any){

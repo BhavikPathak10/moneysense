@@ -12,6 +12,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MY_DATE_FORMATS } from 'src/app/core/constants/dateFormat.constant';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { ExcelService } from 'src/app/core/services/excel.service';
 
 @Component({
   selector: 'app-planner',
@@ -40,6 +41,8 @@ export class PlannerComponent implements OnInit {
 
   taskGrpVisible = ['lapsed','completed','upcoming'];
 
+  plannerGridData : any;
+
   taskNametFormGroup = this._formBuilder.group({
     taskName: ['',Validators.required],
     taskEstBudget : ['',Validators.required]
@@ -60,7 +63,8 @@ export class PlannerComponent implements OnInit {
     private plannerStore : PlannerStore, 
     private plannerService : PlannerService, 
     private toast : ToastMessageService,
-    private dialog:MatDialog
+    private dialog:MatDialog,
+    private excelService : ExcelService
     ) {
     this.subscription.push(
       this.plannerStore.bindStore().subscribe((data)=>{
@@ -68,8 +72,10 @@ export class PlannerComponent implements OnInit {
           d.recurText = this.plannerService.getRecurrenceRuleForPlan(d.taskRecurrence).text
           return d;
         });
-
-      })
+      }),
+      /* this.plannerService.plannerAllData$.subscribe((data)=>{
+        this.plannerGridData = data;
+      }) */
     );
   }
 
@@ -197,6 +203,12 @@ export class PlannerComponent implements OnInit {
       this.taskGrpVisible.push(taskGrp);
     }
     this.taskGrpVisible = new Array().concat(this.taskGrpVisible);
+  }
+
+  onExportPlanner(){
+   /*  console.log(this.plannerGridData); */
+    console.log(this.planner);
+    this.excelService.budgetPlannerExport(this.planner);
   }
 
   ngOnDestroy():void{

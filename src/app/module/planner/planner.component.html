@@ -27,6 +27,9 @@
       <button *ngIf="showPlanner" mat-icon-button color="primary" class="toggle-button" (click)="onTogglePlanner()"><mat-icon>arrow_back</mat-icon></button>
       <h2 class="header"> {{ showPlanner ? 'Add Task' : 'Task List' }} </h2>
       <button *ngIf="!showPlanner" mat-icon-button color="primary" class="toggle-button" (click)="onTogglePlanner()"><mat-icon>add_box_outline</mat-icon></button>
+      <div *ngIf="!showPlanner" class="button-export">
+        <button mat-icon-button color="primary" class="btn-download" (click)="onExportPlanner()"><mat-icon>download</mat-icon></button>
+      </div>
     </section>
     <div class="flex-1 content-wrapper" *ngIf="!showPlanner; else addTaskStepper">
       <ng-container *ngIf="planner.length > 0;else noPlanTemplate">

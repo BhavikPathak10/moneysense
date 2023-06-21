@@ -22,9 +22,15 @@ mat-stepper{
     section.flexRow{
         justify-content: flex-start;
         align-items: center;
+        margin:0 20px;
         .header{
             margin:unset;
-            margin-left:20px;
+        //  margin-left:20px;
+        }
+        .button-export{
+            flex: 1;
+            display: flex;
+            justify-content: end;
         }
     }
 }

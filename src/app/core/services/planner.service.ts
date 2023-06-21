@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { datetime, RRule } from 'rrule';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { PlannerStore } from '../stores/planner.store';
 import { ApiService } from './api.service';
 
@@ -10,8 +10,10 @@ import { ApiService } from './api.service';
 })
 export class PlannerService {
 
+/*   public plannerAllData$: ReplaySubject<any> = new ReplaySubject<any>(1); */
   private DATE_FORMAT_DD_MMM_YYYY = 'DD-MMM-YYYY'
   constructor(private api:ApiService, private plannerStore : PlannerStore) { }
+
 
   getPlannerDetails(): Observable<any> {
     return this.api.get('planner');
