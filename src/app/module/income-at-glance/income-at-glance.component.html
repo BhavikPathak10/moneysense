@@ -10,6 +10,7 @@
         [columnAutoWidth]="true"
         [columnMinWidth]="80"
         (onSaved)="saveIncome($event)"
+        (onEditingStart)="onEditStart($event)"
         >
       <dxi-column dataField="account" dataType="string" caption="Bank">
         <dxo-lookup

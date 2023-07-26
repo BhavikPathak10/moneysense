@@ -43,7 +43,7 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if(this.data.isPendingPayment){
+    if(this.data.from=='PendingPayment'){
        this.pendingPayment_paymentDetails = {
         bank: '' ,
         particular:this.data.record.ledger ? this.data.record.ledger :'',
@@ -56,6 +56,19 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
         date: this.data.record.dueDate, 
         amount: this.data.record.amountPaid
       }
+    }else if(this.data.from=='IncomeAtGlance'){
+      this.pendingPayment_paymentDetails = {
+        bank:  this.data.record.account ? this.data.record.account : '',
+        particular:this.data.record.clientName ? this.data.record.clientName :'',
+        reference:'' ,
+        transactionType:'',
+        transactionMode:'',
+        remark: ''
+      }
+      this.pendingPayment_transactionDetails = {
+        date: '', 
+        amount: this.data.record.amountRcvd
+      } 
     }
   }
 
@@ -88,6 +101,15 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
   }
 
   onPendingPaymentDoneClick(){
+    let paymentdata = this.addcomputedValues(this.paymentDetails);
+    this.transactionService.add(paymentdata).subscribe((result)=>{
+      this.transactionService.syncStore();
+      this.toast.success('Transaction has been added.', 'close');
+      this.dialogRef.close({isTransactionAdded:true});
+    })
+  }
+
+  onIncomeAtGlanceDoneClick(){
     let paymentdata = this.addcomputedValues(this.paymentDetails);
     this.transactionService.add(paymentdata).subscribe((result)=>{
       this.transactionService.syncStore();

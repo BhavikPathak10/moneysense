@@ -3,16 +3,39 @@
 </h3>
 
 <div mat-dialog-content>
-  <ng-container *ngIf="data.isPendingPayment;else plannerDetails">
+  <ng-container [ngSwitch]="data.from">
+    <ng-container *ngSwitchCase="'PendingPayment'">
+      <app-transaction-details [transactionDetail]="pendingPayment_transactionDetails" [paymentDetail]="pendingPayment_paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+    </ng-container>
+    <ng-container *ngSwitchCase="'IncomeAtGlance'">
+      <app-transaction-details [transactionDetail]="pendingPayment_transactionDetails" [paymentDetail]="pendingPayment_paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <app-transaction-details [transactionDetail]="{date: data.record.taskdate, amount: data.record.budget}" [paymentDetail]="activePlanInstance.paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
+    </ng-container>
+  </ng-container>
+
+<!--   <ng-container *ngIf="data.isPendingPayment;else plannerDetails">
     <app-transaction-details [transactionDetail]="pendingPayment_transactionDetails" [paymentDetail]="pendingPayment_paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
   </ng-container>
   <ng-template #plannerDetails>
     <app-transaction-details [transactionDetail]="{date: data.record.taskdate, amount: data.record.budget}" [paymentDetail]="activePlanInstance.paymentDetails" (update)="onUpdateTransactionDetail($event)"></app-transaction-details>
-  </ng-template>
+  </ng-template> -->
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button *ngIf="!data.isPendingPayment" mat-flat-button color="primary" (click)="onDoneClick()" cdkFocusInitial>Done</button>
-  <button *ngIf="data.isPendingPayment" mat-flat-button color="primary" (click)="onPendingPaymentDoneClick()" cdkFocusInitial>Done</button>
+  <ng-container [ngSwitch]="data.from">
+    <ng-container *ngSwitchCase="'PendingPayment'">
+      <button  mat-flat-button color="primary" (click)="onPendingPaymentDoneClick()" cdkFocusInitial>Done</button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'IncomeAtGlance'">
+      <button  mat-flat-button color="primary" (click)="onIncomeAtGlanceDoneClick()" cdkFocusInitial>Done</button>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <button mat-flat-button color="primary" (click)="onDoneClick()" cdkFocusInitial>Done</button>
+    </ng-container>
+  </ng-container>
+<!--   <button *ngIf="!data.isPendingPayment" mat-flat-button color="primary" (click)="onDoneClick()" cdkFocusInitial>Done</button>
+  <button *ngIf="data.isPendingPayment" mat-flat-button color="primary" (click)="onPendingPaymentDoneClick()" cdkFocusInitial>Done</button> -->
   
 </div>

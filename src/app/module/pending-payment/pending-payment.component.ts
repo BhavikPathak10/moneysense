@@ -72,8 +72,9 @@ export class PendingPaymentComponent implements OnInit {
           case 'update':
             if(data.pendingPayment != this.editPrevPayment){
               this.confirmAddTransactionDetail(data);
+            }else{
+              obs = this.pendingPaymentService.updatePendingPaymentDetails(data);
             }
-            obs = this.pendingPaymentService.updatePendingPaymentDetails(data);
         break;
         default:
         break;
@@ -86,13 +87,14 @@ export class PendingPaymentComponent implements OnInit {
       minWidth: 450,
       data: {
         record:p_data,
-        isPendingPayment : true
+        from : 'PendingPayment'
       }
     };
     this.dialog?.open(ConfirmPlannerDetailsComponent, dialogObj).afterClosed().subscribe((result)=>{
-      if(result.isTransactionAdded){
-        this.pendingPaymentService.updatePendingPaymentDetails(p_data);
-      }
+        this.pendingPaymentService.updatePendingPaymentDetails(p_data).subscribe((success)=>{
+          this.toast.success(`Payment detail updated successful`,'close');
+          this.pendingPaymentService.syncStore();
+        });
     })
   }
 

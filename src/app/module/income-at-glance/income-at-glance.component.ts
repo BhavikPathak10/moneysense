@@ -9,6 +9,8 @@ import { IncomeAtGlanceStore } from 'src/app/core/stores/incomeAtGlance.store';
 import * as moment from 'moment';
 import { MasterStore } from 'src/app/core/stores/master.store';
 import { Master } from 'src/app/core/enums/master.enum';
+import { ConfirmPlannerDetailsComponent } from 'src/app/shared/component/confirm-planner-details/confirm-planner-details.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-income-at-glance',
@@ -23,8 +25,16 @@ export class IncomeAtGlanceComponent implements OnInit {
   uniqueClientName:any = [];
   monthsShort : any = moment.monthsShort();
   MASTER = Master;
+  editPrevPayment:any = undefined;
 
-  constructor(private incomeStore:IncomeAtGlanceStore,private masterStore : MasterStore, private incomeService : IncomeService,private bankStore: BankDetailsStore, private toast :ToastMessageService) {
+  constructor(
+    private incomeStore:IncomeAtGlanceStore,
+    private masterStore : MasterStore,
+    private incomeService : IncomeService,
+    private bankStore: BankDetailsStore,
+    private toast :ToastMessageService,
+    private dialog : MatDialog
+    ) {
     this.subscription.push(
       this.incomeStore.bindStore().subscribe((data)=>{
         this.incomeDetails = data;
@@ -61,12 +71,37 @@ export class IncomeAtGlanceComponent implements OnInit {
           obs = this.incomeService.deleteIncomeAtGlance(data.id);
           break;
           case 'update':
-            obs = this.incomeService.updateIncomeAtGlanceDetails(data);
+            debugger;
+            if(this.editPrevPayment != data.pendingAmount){
+               this.confirmAddTransactionDetail(data);
+              }else{
+               obs = this.incomeService.updateIncomeAtGlanceDetails(data);
+            }
         break;
         default:
         break;
     }
     return obs;
+  }
+
+  confirmAddTransactionDetail(p_data:any){
+    let dialogObj = {
+      minWidth: 450,
+      data: {
+        record:p_data,
+        from : 'IncomeAtGlance'
+      }
+    };
+    this.dialog?.open(ConfirmPlannerDetailsComponent, dialogObj).afterClosed().subscribe((result:any)=>{
+        this.incomeService.updateIncomeAtGlanceDetails(p_data).subscribe((success)=>{
+          this.toast.success(`Income at glance detail updated successful`,'close');
+          this.incomeService.syncStore();
+        });
+    })
+  }
+
+  onEditStart(e:any){
+    this.editPrevPayment = e.data.pendingAmount;
   }
 
 }

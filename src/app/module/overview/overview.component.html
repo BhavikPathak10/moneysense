@@ -1,11 +1,12 @@
 
 <section class="flexRow">
+  <div class="flexRow">
   <mat-card class="mat-elevation-z0" (click)="navigate('income-at-glance')">
     <mat-card-subtitle>
       Income at Glance
     </mat-card-subtitle>
     <mat-card-title>
-      {{ incomeAtGlanceBalance | currency:'INR' }}
+      {{ formatInINR(incomeAtGlanceBalance) }}
     </mat-card-title>                
   </mat-card>
   <mat-card class="mat-elevation-z0" (click)="navigate('pending-payment')">
@@ -13,9 +14,36 @@
       Pending Payment
     </mat-card-subtitle>
         <mat-card-title>
-          {{ pendingPaymentBalance | currency:'INR' }}
+          {{ formatInINR(pendingPaymentBalance) }}
         </mat-card-title>
   </mat-card>
+</div>
+<div class="flexRow">
+  <mat-card class="mat-elevation-z0 is-disabled">
+    <mat-card-subtitle>
+      Current Account
+    </mat-card-subtitle>
+        <mat-card-title>
+          {{ formatInINR(accountData['CURRENT']) }}
+        </mat-card-title>
+  </mat-card>
+  <mat-card class="mat-elevation-z0 is-disabled">
+    <mat-card-subtitle>
+      Saving Account
+    </mat-card-subtitle>
+        <mat-card-title>
+          {{ formatInINR(accountData['SAVING']) }}
+        </mat-card-title>
+  </mat-card>
+  <mat-card class="mat-elevation-z0 is-disabled">
+    <mat-card-subtitle>
+      Cash in Hand
+    </mat-card-subtitle>
+        <mat-card-title>
+          {{ formatInINR(accountData['CASH IN HAND']) }}
+        </mat-card-title>
+  </mat-card>
+</div>
 </section>
 <mat-accordion>
   <mat-expansion-panel expanded>

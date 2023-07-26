@@ -19,7 +19,8 @@ export class OverviewComponent implements OnInit {
   banks : BankDetails[] = [];
   incomeAtGlanceBalance? :any = 0;
   pendingPaymentBalance? :any = 0;
-  
+  accountData:any = {};
+
   constructor(
     private bankStore: BankDetailsStore,
     private incomeStore : IncomeAtGlanceStore,
@@ -30,6 +31,15 @@ export class OverviewComponent implements OnInit {
     this.subscription.push(
       this.bankStore.bindStore().subscribe((data) => {
         this.banks = data;
+        this.accountData = {};
+        this.banks.forEach((bank)=>{
+        let bankEstBal =  bank.estimatedBalance ? bank.estimatedBalance : 0;  
+        if(!this.accountData.hasOwnProperty(bank.accountType))  {
+          this.accountData[bank.accountType] = bankEstBal;
+        }else{
+          this.accountData[bank.accountType] = this.accountData[bank.accountType]+Number(bankEstBal)
+        }
+      })
       }),
       this.incomeStore.bindStore().subscribe((data:IncomeAtGlanceModel[]) => {
         this.incomeAtGlanceBalance = 0;
@@ -60,6 +70,10 @@ export class OverviewComponent implements OnInit {
 
   ngOnDestroy():void{
     this.subscription.map(sub=>sub.unsubscribe());
+  }
+
+  formatInINR(p_val:any){
+    return Number(p_val).toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2});
   }
 
 }
