@@ -73,7 +73,7 @@ export class OverviewComponent implements OnInit {
   }
 
   formatInINR(p_val:any){
-    return Number(p_val).toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2});
+    return Number(isNaN(p_val) ? 0 : p_val).toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2});
   }
 
 }

@@ -60,13 +60,13 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
       this.pendingPayment_paymentDetails = {
         bank:  this.data.record.account ? this.data.record.account : '',
         particular:this.data.record.clientName ? this.data.record.clientName :'',
-        reference:'' ,
+        reference:this.data.record.month && this.data.record.billNumber ? this.data.record.month+'-'+this.data.record.billNumber:'',
         transactionType:'',
         transactionMode:'',
         remark: ''
       }
       this.pendingPayment_transactionDetails = {
-        date: '', 
+        date: this.data.record.paymentRcvdDate, 
         amount: this.data.record.amountRcvd
       } 
     }

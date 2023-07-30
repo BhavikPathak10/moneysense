@@ -25,7 +25,7 @@ export class IncomeAtGlanceComponent implements OnInit {
   uniqueClientName:any = [];
   monthsShort : any = moment.monthsShort();
   MASTER = Master;
-  editPrevPayment:any = undefined;
+  prevPaymentRcvdDate:any = undefined;
 
   constructor(
     private incomeStore:IncomeAtGlanceStore,
@@ -71,8 +71,9 @@ export class IncomeAtGlanceComponent implements OnInit {
           obs = this.incomeService.deleteIncomeAtGlance(data.id);
           break;
           case 'update':
-            debugger;
-            if(this.editPrevPayment != data.pendingAmount){
+            if(this.prevPaymentRcvdDate != data.paymentRcvdDate && moment(data.paymentRcvdDate).isBefore()){
+              data.amountRcvd = data.amountRcvd + data.pendingAmount;
+              data.pendingAmount = 0;
                this.confirmAddTransactionDetail(data);
               }else{
                obs = this.incomeService.updateIncomeAtGlanceDetails(data);
@@ -101,7 +102,7 @@ export class IncomeAtGlanceComponent implements OnInit {
   }
 
   onEditStart(e:any){
-    this.editPrevPayment = e.data.pendingAmount;
+    this.prevPaymentRcvdDate = e.data.paymentRcvdDate;
   }
 
 }
