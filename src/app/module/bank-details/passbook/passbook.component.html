@@ -136,7 +136,14 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ 'negative-balance-row': row._balance < 0 , 'edit-row':row.isEdited }"></tr>
+    <tr 
+    mat-row 
+    *matRowDef="let row; columns: displayedColumns;let i= index;"
+    [ngClass]="{ 'negative-balance-row': row._balance < 0 , 'edit-row':row.isEdited ,'highlight-row': selectedRowIndex == i}"
+    tabindex="999"
+    (click)="onRowClick(i)"
+    (keydown.arrowdown)="arrowDownEvent(selectedRowIndex)"
+    (keydown.arrowup)="arrowUpEvent(selectedRowIndex)"></tr>
     <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true" [ngClass]="{ 'negative-balance-row': this.estimatedBalance < 0 }"></tr>
   </table>
 </ng-template>

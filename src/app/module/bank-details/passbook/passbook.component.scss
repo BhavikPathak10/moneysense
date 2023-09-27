@@ -77,6 +77,7 @@ table {
 
 tr.mat-row,
 tr.mat-footer-row {
+    outline: none;
     height: 2.35em;
 }
 
@@ -183,8 +184,8 @@ $border-highlight-edited : 1px solid var(--palette-grey-4-rgb);
     border:$border-highlight-edited;
     border-left:none;
     border-right:none;
-    background: var(--palette-primary-contrast-rgb);
-    color: var(--palette-warning-rgb);
+    background: var(--palette-primary-contrast-rgb) !important;
+    color: var(--palette-warning-rgb) !important;
     &:last-child{
         border-top-right-radius: 5px;
         border-bottom-right-radius: 5px;
@@ -200,6 +201,11 @@ $border-highlight-edited : 1px solid var(--palette-grey-4-rgb);
     .edit-icon{
         font-weight: bold;
     }
+}
+
+.highlight-row td{
+    background-color: #5c95c5;
+    color: #fff;
 }
 
 .disabled-icon{

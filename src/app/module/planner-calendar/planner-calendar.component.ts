@@ -36,6 +36,8 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
   popoverTarget:any;
 
+  appliedFilters : any = null;
+
   @ViewChild("dxDataPlannerGrid", { static: false }) dataGrid?: DxDataGridComponent;
   @ViewChild("dxPopOver", { static: false }) popOver?: DxPopoverComponent;
 
@@ -45,6 +47,15 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   }
   @Input ('taskGroup') set taskGroup(value:any){
     this._taskGroup = value;
+    this.filterTaskByGrp();
+  }
+
+  _taskIgnore:any;
+  get taskIgnore(){
+    return this._taskIgnore;
+  }
+  @Input ('taskIgnore') set taskIgnore(value:any){
+    this._taskIgnore = value;
     this.filterTaskByGrp();
   }
 
@@ -61,8 +72,11 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
           p.recurrenceDates = this.plannerService.getRecurrenceRuleForPlan(p.taskRecurrence).dates;
           return p;
          });
-         this.generateGrid();
          this.taskNames = [...new Set(this.planners.map((d:any)=>d.taskName))];
+         this.generateGrid();
+      }),
+      this.plannerService.budgetPlannerFilter$.subscribe((data)=>{
+        this.appliedFilters = data;
       })
     )
     this.groupBy.valueChanges.subscribe((data)=>{
@@ -81,19 +95,22 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     })
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
+  
   ngAfterViewInit(): void {
-    let filterValue = [
-      new Date(new Date().getFullYear(), 0, 1), 
-      new Date(new Date().getFullYear(), 11, 31)
-    ];
-
-     this.dataGrid?.instance.columnOption('taskdate', 'filterValue', filterValue);
-     this.dataGrid?.instance.columnOption('taskdate', 'selectedFilterOperation', 'between');
-
-     this.dataGrid?.instance.refresh();
+    if(this.appliedFilters){
+      //this.dataGrid?.instance.filter(this.appliedFilters);
+      this.dataGrid?._setOption('filterValue',this.appliedFilters);
+    }else{
+      let filterValue = [
+        new Date(new Date().getFullYear(), 0, 1), 
+        new Date(new Date().getFullYear(), 11, 31)
+      ];
+      
+      this.dataGrid?.instance.columnOption('taskdate', 'filterValue', filterValue);
+      this.dataGrid?.instance.columnOption('taskdate', 'selectedFilterOperation', 'between');
+    }
+    this.dataGrid?.instance.refresh();
   }
 
   generateGrid(){
@@ -110,6 +127,7 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
             budget:t.taskEstBudget,
             name : t.taskName,
             idx: t.id,
+            ignored : this.setIgnoredDetails(t,dt)
           }
           let data:any = {...obj,...cData};
           data.difference = data.budget - (data.transactionAmount ? data.transactionAmount : 0);
@@ -127,8 +145,8 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
       }
       return t;
     });
-    this.planScheduleAllData = [...this.planSchedule]; 
-    /* this.plannerService.plannerAllData$.next(this.planScheduleAllData); */
+    this.planScheduleAllData = [...this.planSchedule];
+    this.filterTaskByGrp();
   }
 
   getCompletedDetails(plan:any,dt:any){
@@ -143,6 +161,14 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     return matchedData;
   }
 
+  setIgnoredDetails(plan:any,dt:any){
+    let date = moment(new Date(dt)).format('YYYY/MM/DD');
+    if(plan.hasOwnProperty('ignoredDates')){
+      return plan.ignoredDates.includes(date);
+    }
+    return false;
+  }
+
   generateReccurence(recurr:any){
    return this.plannerService.getRecurrenceRuleForPlan(recurr).dates;
   }
@@ -155,13 +181,22 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
       if(e.data.taskGroup == 'completed'){
         e.cellElement.classList.add('completed');
       }
+      if(e.data.ignored){
+        e.cellElement.classList.add('strike');
+      }
     }
   }
 
   filterTaskByGrp(){
+    if(!this.taskGroup){
+      return;
+    }
     let filterValue = [...this.taskGroup];
     this.planSchedule = this.planScheduleAllData.filter((t:any)=>{
-      return filterValue.includes(t.taskGroup);
+      if(this.taskIgnore == 'show'){
+        return filterValue.includes(t.taskGroup);
+      }
+      return filterValue.includes(t.taskGroup) && !t.ignored;
     })
   }
 
@@ -228,21 +263,61 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
       }
     });
   }
-  
-  markAsIgnore(e:any){
+
+  markAsIgnoreDialog(e:any){
     e.event.preventDefault();
-    e.row.cells.forEach((cell:any)=>{
-      cell.cellElement.classList.remove('lapsed');
-      cell.cellElement.classList.add('strike');
-    })
+    let rowData = e.row.data;
+    let isUndo = false;
+    if(rowData.hasOwnProperty('ignored') && rowData.ignored){
+      isUndo = true;
+    }
+
+    let dialogObj = {
+      minWidth: 450,
+      disableClose: true,
+      data: {
+        okButtonText: isUndo ? 'Revoke': 'Ignore',
+        cancelButtonText: 'Cancel',
+        hideCancel: 'no',
+        title: `${isUndo ? 'Revoke':'Ignore'} task`,
+        message: `Are you sure you want to ${isUndo ? 'revoke' : 'ignore'} ${rowData.name} task on ${moment(rowData.taskdate).format('Do MMM YYYY')} ?`,
+      },
+    };
+
+    const dialog = this.dialog?.open(ConfirmDialogComponent, dialogObj);
+
+    dialog?.afterClosed().subscribe((result) => {
+      if (result) {
+        let activePlan = this.planners.find((p:any)=>p.id == rowData.idx);
+        if(isUndo){
+          if(activePlan.hasOwnProperty('ignoredDates')){
+            activePlan.ignoredDates.splice(activePlan.ignoredDates.findIndex((tdate:any)=>moment(tdate).format('YYYY/MM/DD') == moment(rowData.taskdate).format('YYYY/MM/DD')),
+            1);
+          }
+        }else{
+          if(activePlan.hasOwnProperty('ignoredDates')){
+          activePlan.ignoredDates.push(moment(rowData.taskdate).format('YYYY/MM/DD'))
+        }else{
+          activePlan.ignoredDates = [(moment(rowData.taskdate).format('YYYY/MM/DD'))];
+        }
+      }
+          this.plannerService.updatePlannerData(activePlan).subscribe(()=>{
+            this.plannerService.syncStore();
+          });
+      }
+    });
   }
 
   isDoneVisible(e:any){
     let row = e.row;
-    if(row.rowType == 'data' && row.data.hasOwnProperty('transactionId')){
+    if(row.rowType == 'data' && (row.data.hasOwnProperty('transactionId') || row.data.ignored)){
       return false;
     }
     return true;
+  }
+
+  isIgnoreVisible(e:any){
+    return !this.isUndoVisible(e);
   }
 
   isUndoVisible(e:any){
@@ -271,6 +346,9 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   }
 
   ngOnDestroy(){
+    if(this.dataGrid?.filterValue){
+      this.plannerService.budgetPlannerFilter$.next(this.dataGrid?.filterValue);
+    }
     this.subscription.map((sub)=>sub.unsubscribe());
   }
 

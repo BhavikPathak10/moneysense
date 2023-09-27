@@ -5,6 +5,16 @@ dx-data-grid{
     .lapsed{
     color:var(--palette-quaternary-rgb);
     }
+    .strike{
+        text-decoration:line-through;
+        opacity: 0.4;
+        .dx-icon-ignore::before{
+            background: url('../../../assets/images/add_calendar.png');
+            background-repeat: no-repeat;
+            background-size: 17px;
+            background-position: center
+        }
+    }
     .dx-command-edit .dx-icon-todo{
         &::before{
             content:"\f153";
@@ -23,5 +33,23 @@ dx-data-grid{
         &.dx-icon-undo{
             color:var(--palette-grey-3-rgb) !important;
         }
+    }
+    .dx-icon-ignore{
+        &::before{
+            content: "";
+            background:url('../../../assets/images/remove_calendar.png');
+            opacity: 0.35;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            display: block;
+            background-size: 14px;
+            height: 18px;
+            width: 14px;
+        }
+    }
+    .dx-command-edit-with-icons{
+        opacity: 1 !important;
+        text-decoration :none;
     }
 }

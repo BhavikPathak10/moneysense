@@ -7,9 +7,10 @@ import { MasterComponent } from './master/master.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CoreModule } from 'src/app/core/core.module';
 import { DxDataGridModule} from 'devextreme-angular';
+import { SafeBoxComponent } from './safe-box/safe-box.component';
 
 @NgModule({
-  declarations: [MasterComponent, AdminComponent],
+  declarations: [MasterComponent,SafeBoxComponent, AdminComponent],
   imports: [
     CommonModule,
     AdminRoutingModule, 

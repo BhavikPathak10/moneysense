@@ -24,6 +24,7 @@ export class PendingPaymentComponent implements OnInit {
   uniqueLedger : any = [];
   MASTER = Master;
   editPrevPayment: any;
+  isToggleEnabled = false;
 
   @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
 
@@ -105,8 +106,10 @@ export class PendingPaymentComponent implements OnInit {
   onSliderPendingPaymentChange(event:MatSlideToggleChange){
     if(event.checked){
       this.dataGrid?.instance.filter(["pendingPayment", ">", 0]);
+      this.isToggleEnabled = true;
     }else{
       this.dataGrid?.instance.clearFilter();
+      this.isToggleEnabled = false;
     }
   }
 

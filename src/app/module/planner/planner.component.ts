@@ -40,6 +40,7 @@ export class PlannerComponent implements OnInit {
   paymentDetail : any;
 
   taskGrpVisible = ['lapsed','completed','upcoming'];
+  taskIgnore:string = 'hide';
 
   plannerGridData : any;
 
@@ -71,7 +72,7 @@ export class PlannerComponent implements OnInit {
         this.planner = data.map((d:any)=>{
           d.recurText = this.plannerService.getRecurrenceRuleForPlan(d.taskRecurrence).text
           return d;
-        });
+        }).sort((a:any,b:any)=>a.taskName > b.taskName ? 1 : -1);
       }),
       /* this.plannerService.plannerAllData$.subscribe((data)=>{
         this.plannerGridData = data;
@@ -204,10 +205,13 @@ export class PlannerComponent implements OnInit {
     }
     this.taskGrpVisible = new Array().concat(this.taskGrpVisible);
   }
+  
+  onLegendIgnoreClick(e:any){
+    e.stopPropagation();
+    this.taskIgnore = this.taskIgnore == 'show' ? 'hide' : 'show';
+  }
 
   onExportPlanner(){
-   /*  console.log(this.plannerGridData); */
-    console.log(this.planner);
     this.excelService.budgetPlannerExport(this.planner);
   }
 

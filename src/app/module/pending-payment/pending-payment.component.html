@@ -1,5 +1,5 @@
 <div class="flexColumn fullHeight">
-    <mat-slide-toggle color="primary" class="slider-filter" (change)="onSliderPendingPaymentChange($event)">Show Pending Payments only</mat-slide-toggle>
+    <mat-slide-toggle color="primary" class="slider-filter" (change)="onSliderPendingPaymentChange($event)"> {{isToggleEnabled ? 'Hide' : 'Show' }} Pending Payments</mat-slide-toggle>
     <ng-container *ngTemplateOutlet="DxPendingPaymentTable"></ng-container>
 </div>
 
@@ -32,20 +32,9 @@
       [allowAdding]="true"
       ></dxo-editing>
       <dxo-summary>
-        <dxi-total-item
-        column="amountPaid"
-        summaryType="sum"
-        valueFormat="₹ ,##,##0.00"
-        displayFormat="{0}"
-        >
-    </dxi-total-item>
-        <dxi-total-item
-            column="pendingPayment"
-            summaryType="sum"
-            valueFormat="₹ ,##,##0.00"
-            displayFormat="{0}"
-        >
-        </dxi-total-item>
+        <dxi-total-item column="invoiceAmount" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
+        <dxi-total-item column="amountPaid" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
+        <dxi-total-item column="pendingPayment" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
     </dxo-summary>
     </dx-data-grid>
   </ng-template>

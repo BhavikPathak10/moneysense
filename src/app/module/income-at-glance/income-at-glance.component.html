@@ -1,4 +1,5 @@
 <div class="flexColumn fullHeight">
+  <mat-slide-toggle color="primary" class="slider-filter"  (change)="onSliderPendingIncomeChange($event)">{{isToggleEnabled ? 'Hide' : 'Show' }} Pending Income</mat-slide-toggle>
   <ng-container *ngTemplateOutlet="DxIncomeAtGlanceTable"></ng-container>
 </div>
 
@@ -44,6 +45,10 @@
       ></dxo-editing>
       <dxo-summary>
         <dxi-total-item column="amountRcvd" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
+        <dxi-total-item column="igst" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
+        <dxi-total-item column="cgst" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
+        <dxi-total-item column="sgst" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
+        <dxi-total-item column="afterTDS" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
         <dxi-total-item column="pendingAmount" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
         <dxi-total-item column="billAmount" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>
         <dxi-total-item column="totalTax" summaryType="sum" valueFormat="₹ ,##,##0.00" displayFormat="{0}"></dxi-total-item>

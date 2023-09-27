@@ -8,12 +8,13 @@
           <mat-icon>filter_alt</mat-icon>
         </button>
         <mat-menu #legendMenu="matMenu">
-          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('lapsed')}" (click)="onLegendClick($event,'lapsed')"><span class="circle lapsed"></span> <!-- {{taskGrpVisible.includes('lapsed') ? 'Hide' : 'Show'}} --> Lapsed task</div>
-          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('completed')}" (click)="onLegendClick($event,'completed')"><span class="circle completed"></span><!-- {{taskGrpVisible.includes('completed') ? 'Hide' : 'Show'}} --> Completed task</div>
-          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('upcoming')}" (click)="onLegendClick($event,'upcoming')"><span class="circle upcoming"></span> <!-- {{taskGrpVisible.includes('upcoming') ? 'Hide' : 'Show'}}  --> Upcoming task</div>
+          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('lapsed')}" (click)="onLegendClick($event,'lapsed')"><span class="circle lapsed"></span> Lapsed task</div>
+          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('completed')}" (click)="onLegendClick($event,'completed')"><span class="circle completed"></span> Completed task</div>
+          <div mat-menu-item [ngClass]="{'task-hidden': !taskGrpVisible.includes('upcoming')}" (click)="onLegendClick($event,'upcoming')"><span class="circle upcoming"></span> Upcoming task</div>
+          <div mat-menu-item (click)="onLegendIgnoreClick($event)"><span [ngClass]="{'hide': taskIgnore != 'show'}" class="ignored"></span> {{taskIgnore != 'show' ? 'Show' : 'Hide'}} Ignored task</div>
         </mat-menu>
       </section>
-      <app-planner-calendar [taskGroup]="taskGrpVisible"></app-planner-calendar>
+      <app-planner-calendar [taskGroup]="taskGrpVisible" [taskIgnore]="taskIgnore"></app-planner-calendar>
     </mat-drawer-content>
     <mat-drawer #drawer position="start" mode="side">
         <ng-container *ngTemplateOutlet="matTabPlanner"></ng-container>

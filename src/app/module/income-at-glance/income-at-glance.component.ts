@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { BankDetails } from 'src/app/core/models/bankDetails.model';
 import { IncomeAtGlanceModel } from 'src/app/core/models/incomeAtGlance.model';
@@ -11,6 +11,8 @@ import { MasterStore } from 'src/app/core/stores/master.store';
 import { Master } from 'src/app/core/enums/master.enum';
 import { ConfirmPlannerDetailsComponent } from 'src/app/shared/component/confirm-planner-details/confirm-planner-details.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-income-at-glance',
@@ -26,6 +28,9 @@ export class IncomeAtGlanceComponent implements OnInit {
   monthsShort : any = moment.monthsShort();
   MASTER = Master;
   prevPaymentRcvdDate:any = undefined;
+  isToggleEnabled = false;
+
+  @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
 
   constructor(
     private incomeStore:IncomeAtGlanceStore,
@@ -99,6 +104,16 @@ export class IncomeAtGlanceComponent implements OnInit {
           this.incomeService.syncStore();
         });
     })
+  }
+
+  onSliderPendingIncomeChange(event:MatSlideToggleChange){
+    if(event.checked){
+      this.dataGrid?.instance.filter(["pendingAmount", ">", 0]);
+      this.isToggleEnabled = true;
+    }else{
+      this.dataGrid?.instance.clearFilter();
+      this.isToggleEnabled = false;
+    }
   }
 
   onEditStart(e:any){

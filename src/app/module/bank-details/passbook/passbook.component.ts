@@ -54,6 +54,8 @@ export class PassbookComponent implements OnInit {
     currentBalance: new FormControl(null),
   });
 
+  selectedRowIndex:any = -1;
+
   range:FormGroup = new FormGroup({
     start: new FormControl(moment().startOf('month')),
     end: new FormControl(moment().endOf('month')),
@@ -411,6 +413,20 @@ export class PassbookComponent implements OnInit {
     setTimeout(()=>{
       el.scrollTo(0,el.scrollHeight);
     },10);
+  }
+
+  onRowClick(index:number){
+    if(index >= 0 && index <= this.bankTransactionData.data.length - 1){
+      this.selectedRowIndex = index;
+    }
+  }
+
+  arrowUpEvent(index: number){
+    this.onRowClick(index - 1);
+  }
+
+  arrowDownEvent(index: number){
+     this.onRowClick(index + 1);
   }
 
   ngOnDestroy(){

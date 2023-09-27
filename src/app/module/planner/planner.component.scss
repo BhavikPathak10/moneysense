@@ -96,6 +96,28 @@ mat-stepper{
     margin-right: 5px;
 }
 
+.ignored{
+    position: relative;
+    display: inline-flex;
+    top: 4px;
+    right: 4px;
+    &::before{
+        content: ' ';
+        background: url('../../../assets/images/hide.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        height:16px;
+        width:18px;
+    }
+    &.hide::before{
+        background: url('../../../assets/images/visible.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+}
+
 .mat-menu-item{
     height: 30px;
     line-height: 30px;
