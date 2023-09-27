@@ -32,6 +32,7 @@ export class SafeBoxComponent implements OnInit {
         }
         callback.subscribe((result)=>{
           this.toast.success('Safe Box data Auto Saved','close');
+          this.safeBoXService.syncStore();
         })
       }),
       this.safeBoxStore.bindStore().subscribe((data)=>{
