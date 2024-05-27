@@ -85,7 +85,7 @@ export class PlannerComponent implements OnInit {
 
   onPlanAddorUpdate(){
     let taskNameForm = this.taskNametFormGroup.value;
-    let taskDetails = {
+    let taskDetails:any = {
       taskName: taskNameForm.taskName,
       taskEstBudget: taskNameForm.taskEstBudget,
       taskRecurrence: {
@@ -99,9 +99,12 @@ export class PlannerComponent implements OnInit {
         endDate:this.scheduleFormGroup.value['endDate']
       },
       paymentDetails: this.paymentDetail,
-      /* completedDates: [],
-      lapsedDates: [] */
     };
+
+    if(this.isActivePlan){
+      taskDetails.ignoredDates = this.isActivePlan.ignoredDates ? this.isActivePlan.ignoredDates : [];
+      taskDetails.completedDates = this.isActivePlan.ignoredDates ? this.isActivePlan.completedDates : [];
+    }
 
     this.AddOrUpdatePlan(taskDetails).subscribe((data)=>{
       this.toast.success(`Plan ${taskDetails.taskName} ${this.isActivePlan ? 'updated': 'added'} successfully.`,'close');

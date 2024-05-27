@@ -1,0 +1,33 @@
+.img-rounded{
+    max-height: 80px;
+    max-width: 80px;
+    border-radius: 50%;
+}
+
+.align-center{
+    justify-content: center;
+    align-items: center;
+}
+
+.top-section{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    .email-text{
+        margin-top:15px;   
+    }
+}
+
+.bottom-section{
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    div{
+        margin:50px;
+    }
+}
+
+form{
+    min-width:300px;
+}

@@ -1,0 +1,31 @@
+<div class="profile-wrapper flexColumn align-center">
+    <section class="top-section">
+        <img class="img-rounded" [src]="userData.photoUrl || 'assets/images/account.png'">
+        <h4 class="email-text">{{userData.email}}</h4>
+    </section>
+    <section class="bottom-section">
+        <div class="user-details">
+            <form [formGroup]="userDataForm" class="flexColumn" (ngSubmit)="onUserDataFormSubmit()">            
+                <mat-form-field appearance="fill">
+                    <mat-label>Phone Number</mat-label>
+                    <input matInput type="text" formControlName="phoneNumber" placeholder="+91 9999 999 999">
+                    <mat-error *ngIf="userDataForm.get('phoneNumber')?.invalid">Please enter a valid phone number</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Display Name</mat-label>
+                    <input matInput type="text" formControlName="displayName" placeholder="Bhavik Pathak">
+                    <mat-error *ngIf="userDataForm.get('displayName')?.invalid">Please enter a valid Name</mat-error>
+                  </mat-form-field>
+                  <button [disabled]="!(userDataForm.valid && userDataForm.dirty)" mat-flat-button color="primary" type="submit"> Update Details </button>
+            </form>
+        </div>
+<!--         <div class="change-password">
+            <p>Current Password</p>
+            <p>New Password</p>
+            <p>Re enter New number</p>
+        </div> -->
+    </section>
+</div>
+
+<div id="recaptcha-container"></div>
+<code>{{userData | json}}</code>

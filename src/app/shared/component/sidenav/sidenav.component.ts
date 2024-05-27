@@ -151,6 +151,10 @@ export class SidenavComponent implements OnInit {
     this.router.navigate(['home','bank',accName]);
   }
 
+  userProfile(){
+    this.router.navigate(['home','profile']);
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.map((sub) => sub.unsubscribe());
   }

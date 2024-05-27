@@ -116,25 +116,32 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
   generateGrid(){
     let arr:any = [];
     this.planners.forEach((t:any)=>{
-    let flatArr = t.recurrenceDates.map((dt:any)=>{
-        let cData = this.getCompletedDetails(t,dt);
-        let obj = {
-            taskdate: moment(new Date(dt)).format('YYYY/MM/DD'),
-            month : moment(new Date(dt)).set('date',1).format('YYYY/MM/DD'),
-            year :moment(new Date(dt)).format('YYYY'),
-            //week : moment(new Date(dt)).isoWeek(),
-            week : this.getWeekOfMonth(new Date(dt)),
-            budget:t.taskEstBudget,
-            name : t.taskName,
-            idx: t.id,
-            ignored : this.setIgnoredDetails(t,dt)
-          }
-          let data:any = {...obj,...cData};
+      let recurringDates = t.recurrenceDates ? t.recurrenceDates.map((dt:any)=>moment(new Date(dt)).valueOf()) : [];
+      let completedDates = t.completedDates ?t.completedDates.map((dt:any)=>moment(new Date(dt.taskdate)).valueOf()): [];
+      
+      let plannerDates = [...new Set([...completedDates, ...recurringDates])];
+      
+      arr = plannerDates.map((dt:any)=>{
+        let data:any = {
+          taskdate: moment(new Date(dt)).format('YYYY/MM/DD'),
+          month : moment(new Date(dt)).set('date',1).format('YYYY/MM/DD'),
+          year :moment(new Date(dt)).format('YYYY'),
+          week : this.getWeekOfMonth(new Date(dt)),
+          budget:t.taskEstBudget,
+          name : t.taskName,
+          idx: t.id,
+          ignored : this.setIgnoredDetails(t,dt)
+        }
+        if(completedDates.includes(dt)){
+          let completedDateData = t.completedDates.find((ct:any)=>moment(new Date(ct.taskdate)).valueOf() == dt);
+          Object.assign(data,completedDateData);
+        }
+
           data.difference = data.budget - (data.transactionAmount ? data.transactionAmount : 0);
           return data;
         })
-    arr.push(...flatArr);
     })
+        
     this.planSchedule = [...arr].map((t:any)=>{
       t.taskGroup = 'upcoming';
       if(moment(t.taskdate).isBefore(new Date())){
@@ -147,18 +154,6 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
     });
     this.planScheduleAllData = [...this.planSchedule];
     this.filterTaskByGrp();
-  }
-
-  getCompletedDetails(plan:any,dt:any){
-    let date = moment(new Date(dt)).format('YYYY/MM/DD')
-    let matchedData = {};
-    if(plan.hasOwnProperty('completedDates')){
-      let indx = plan.completedDates.map((d:any)=>moment(d.taskdate).format('YYYY/MM/DD')).indexOf(date);
-      if(indx>-1){
-        matchedData = plan.completedDates[indx];
-      }
-    }
-    return matchedData;
   }
 
   setIgnoredDetails(plan:any,dt:any){

@@ -13,6 +13,7 @@ import { VerifyEmailComponent } from './component/verify-email/verify-email.comp
 import { FooterTextComponent } from './component/footer-text/footer-text.component';
 import { TransactionDetailsComponent } from './component/transaction-details/transaction-details.component';
 import { ConfirmPlannerDetailsComponent } from './component/confirm-planner-details/confirm-planner-details.component';
+import { ProfileComponent } from './component/profile/profile.component';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { ConfirmPlannerDetailsComponent } from './component/confirm-planner-deta
     FooterTextComponent,
     TransactionDetailsComponent,
     ConfirmPlannerDetailsComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,

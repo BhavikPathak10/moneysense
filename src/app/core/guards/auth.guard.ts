@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { map, Observable,pipe ,take,tap } from 'rxjs';
+import { User } from 'firebase/auth';
+import { map, Observable,pipe ,ReplaySubject,take,tap } from 'rxjs';
 import { TokenStorageService } from '../services/token-storage.service';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  user:any;
   _token :any;
 
-  constructor(private token : TokenStorageService, private router: Router,private auth:AngularFireAuth){}
+  constructor(private token : TokenStorageService, private router: Router,private auth:AngularFireAuth,private userService:UserService){
+    this.auth.onAuthStateChanged((user:User|any)=>{
+      if(user){
+        this.userService.currentUser$.next(user);
+      }else{
+        //no user login.
+      }
+    })
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,

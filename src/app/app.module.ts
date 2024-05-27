@@ -19,6 +19,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { PlannerComponent } from './module/planner/planner.component';
 import { PlannerCalendarComponent } from './module/planner-calendar/planner-calendar.component';
 import { DxPopoverModule } from 'devextreme-angular';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @NgModule({
   declarations: [

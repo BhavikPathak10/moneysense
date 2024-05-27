@@ -87,6 +87,7 @@ export class ConfirmPlannerDetailsComponent implements OnInit {
           if(!planDetailData.hasOwnProperty('completedDates')){
             planDetailData['completedDates'] = [];
           }
+          this.paymentDetails.budget = this.activePlanInstance.taskEstBudget;
           planDetailData['completedDates'].push(this.paymentDetails);
           this.plannerService.updatePlannerData({...planDetailData,id:this.activePlanInstance.id}).subscribe(()=>{
             this.transactionService.syncStore();

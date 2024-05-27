@@ -8,6 +8,7 @@ import { PlannerComponent } from './module/planner/planner.component';
 import { HomeComponent } from './shared/component/home/home.component';
 import { LoginComponent } from './shared/component/login/login.component';
 import { PageNotFoundComponent } from './shared/component/page-not-found/page-not-found.component';
+import { ProfileComponent } from './shared/component/profile/profile.component';
 import { VerifyEmailComponent } from './shared/component/verify-email/verify-email.component';
 
 const routes: Routes = [
@@ -62,6 +63,10 @@ const routes: Routes = [
         path: 'planner',
         component: PlannerComponent,
       },
+      /* {
+        path:'profile',
+        component:ProfileComponent
+      }, */
       {
         path: '**',
         redirectTo:'overview'

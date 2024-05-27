@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {AngularFireAuth } from '@angular/fire/compat/auth';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { getAuth,onAuthStateChanged } from "firebase/auth";
+import { ReplaySubject } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/shared/component/confirm-dialog/confirm-dialog.component';
 import { ToastMessageService } from './toast-message.service';
 import { TokenStorageService } from './token-storage.service';
@@ -10,8 +12,10 @@ import { TokenStorageService } from './token-storage.service';
   providedIn: 'root'
 })
 export class AuthService {
-
+  //auth = getAuth();
   authState: any = null;
+
+  public currentUser$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   constructor(
     private fireauth : AngularFireAuth,
@@ -19,7 +23,15 @@ export class AuthService {
     private toast: ToastMessageService,
     private token: TokenStorageService,
     private dialog : MatDialog
-    ) {}
+    ) {
+      /* onAuthStateChanged(this.auth,(user)=>{
+        if(user){
+          this.currentUser$.next(user);
+        }else{
+          //no user login.
+        }
+      }) */
+    }
 
     get isAuthenticated():boolean{
       return this.authState !== null; 
@@ -38,7 +50,7 @@ export class AuthService {
         this.token.saveToken(token);
         if(res.user?.emailVerified == true) {
           this.router.navigate(['home','overview']);
-        } else {
+         } else {
           this.router.navigate(['auth','verify-email']);
         }
       })
