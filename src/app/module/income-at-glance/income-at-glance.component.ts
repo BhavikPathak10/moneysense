@@ -23,12 +23,17 @@ export class IncomeAtGlanceComponent implements OnInit {
 
   subscription:Subscription[] = [];
   incomeDetails:IncomeAtGlanceModel[] = [];
+  displayedIncomeDetails:IncomeAtGlanceModel[] = [];
   banks:[] =[];
   uniqueClientName:any = [];
-  monthsShort : any = moment.monthsShort();
+  currentYear = moment().year();
+  monthsShort : any = moment.monthsShort().map(month => {
+    return [this.currentYear, this.currentYear - 1, this.currentYear - 2].map(year => `${month} ${year.toString()}`);
+  }).flat().sort((a,b) => new Date(b).getTime() - new Date(a).getTime());
   MASTER = Master;
   prevPaymentRcvdDate:any = undefined;
   isToggleEnabled = false;
+  isCurrentYearToggleEnabled = false;
 
   @ViewChild(DxDataGridComponent,{static:false}) dataGrid?: DxDataGridComponent;
 
@@ -43,6 +48,7 @@ export class IncomeAtGlanceComponent implements OnInit {
     this.subscription.push(
       this.incomeStore.bindStore().subscribe((data)=>{
         this.incomeDetails = data;
+        this.displayedIncomeDetails = data;
       }),
       this.bankStore.bindStore().subscribe((data)=>{
         this.banks = data.map((d:BankDetails)=>d.accountName)
@@ -113,6 +119,16 @@ export class IncomeAtGlanceComponent implements OnInit {
     }else{
       this.dataGrid?.instance.clearFilter();
       this.isToggleEnabled = false;
+    }
+  }
+
+  onSliderCurrentYearPendingIncomeChange(event:MatSlideToggleChange){
+    if(event.checked){
+      this.displayedIncomeDetails = [...this.incomeDetails.filter(data=>data.month?.endsWith(this.currentYear.toString()))];
+      this.isCurrentYearToggleEnabled = true;
+    }else{
+      this.displayedIncomeDetails = [...this.incomeDetails];
+      this.isCurrentYearToggleEnabled = false;
     }
   }
 

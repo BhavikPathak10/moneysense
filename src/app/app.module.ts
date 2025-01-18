@@ -41,7 +41,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
     HttpClientModule,
     DxDataGridModule,
     DxPopoverModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

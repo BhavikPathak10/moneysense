@@ -1,11 +1,14 @@
 <div class="flexColumn fullHeight">
-  <mat-slide-toggle color="primary" class="slider-filter"  (change)="onSliderPendingIncomeChange($event)">{{isToggleEnabled ? 'Hide' : 'Show' }} Pending Income</mat-slide-toggle>
+  <div class="slider-filter">
+    <mat-slide-toggle color="primary" (change)="onSliderPendingIncomeChange($event)">{{isToggleEnabled ? 'Hide' : 'Show' }} Pending Income</mat-slide-toggle>
+    <mat-slide-toggle color="primary" (change)="onSliderCurrentYearPendingIncomeChange($event)">{{isCurrentYearToggleEnabled ? 'All Year(s)' : 'Current Year' }}</mat-slide-toggle>
+  </div>
   <ng-container *ngTemplateOutlet="DxIncomeAtGlanceTable"></ng-container>
 </div>
 
 <ng-template #DxIncomeAtGlanceTable>
     <dx-data-grid
-        [dataSource]="incomeDetails"
+        [dataSource]="displayedIncomeDetails"
         [allowColumnReordering]="true"
         [allowColumnResizing]="true"
         [columnAutoWidth]="true"
@@ -18,7 +21,7 @@
             [dataSource]="banks">
         </dxo-lookup>
       </dxi-column>
-      <dxi-column dataField="month" dataType="string" caption="Month">
+      <dxi-column [width]="100" dataField="month" dataType="string" caption="Month">
         <dxo-lookup
             [dataSource]="monthsShort">
         </dxo-lookup>

@@ -1,18 +1,19 @@
-
-
 ::ng-deep {
-    dx-data-grid{
-        height: inherit;
-    }
-    .dx-datagrid-rowsview .not-editable{
-        background-color: var(--palette-grey-1-rgb);
-    }
+  dx-data-grid {
+    height: inherit;
+  }
+  .dx-datagrid-rowsview .not-editable {
+    background-color: var(--palette-grey-1-rgb);
+  }
 }
 
-.slider-filter{
-    position: absolute;
-    display: block;
-    z-index: 9;
-    font-size: 13px;
-    font-weight: 500;
+.slider-filter {
+  position: absolute;
+  display: block;
+  z-index: 9;
+  font-size: 13px;
+  font-weight: 500;
+  mat-slide-toggle {
+    margin-right: 20px;
+  }
 }
