@@ -121,7 +121,7 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
       
       let plannerDates = [...new Set([...completedDates, ...recurringDates])];
       
-      arr = plannerDates.map((dt:any)=>{
+      arr.push(...plannerDates.map((dt:any)=>{
         let data:any = {
           taskdate: moment(new Date(dt)).format('YYYY/MM/DD'),
           month : moment(new Date(dt)).set('date',1).format('YYYY/MM/DD'),
@@ -139,19 +139,19 @@ export class PlannerCalendarComponent implements OnInit,AfterViewInit {
 
           data.difference = data.budget - (data.transactionAmount ? data.transactionAmount : 0);
           return data;
+        }).map((t:any)=>{
+          t.taskGroup = 'upcoming';
+          if(t.hasOwnProperty('transactionId')){
+            t.taskGroup = 'completed'
+          } else if(moment(t.taskdate).isBefore(new Date())){
+            t.taskGroup = 'lapsed'
+          }
+          return t;
         })
-    })
-        
-    this.planSchedule = [...arr].map((t:any)=>{
-      t.taskGroup = 'upcoming';
-      if(moment(t.taskdate).isBefore(new Date())){
-        t.taskGroup = 'lapsed'
-      }
-      if(t.hasOwnProperty('transactionId')){
-        t.taskGroup = 'completed'
-      }
-      return t;
+      );
     });
+        
+    this.planSchedule = [...arr];
     this.planScheduleAllData = [...this.planSchedule];
     this.filterTaskByGrp();
   }
